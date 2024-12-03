@@ -1,1 +1,1 @@
-Data science roject is EAISI Cohort Nov 2024
+Data science project for EAISI Cohort Nov 2024
