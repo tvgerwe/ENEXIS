@@ -1,6 +1,6 @@
 {
     "api_endpoint": "https://api.dataplatform.knmi.nl/open-data/v1/datasets/knmi14_globale_straling/versions/3.2/files",
-    "api_key": "nctBcxmIU5Ox5CxqzBuiUxLDoDC4yNabewk63UGW",
+    "api_key": "",
     "download_dir": "downloads",
-    "notification_key":"eyJvcmciOiI1ZTU1NGUxOTI3NGE5NjAwMDEyYTNlYjEiLCJpZCI6IjM3ODk5YjE4NjM5ZDQ0ZmRhYjMzYjdhMjBlZDE3Mjg3IiwiaCI6Im11cm11cjEyOCJ9"
+    "notification_key":""
 }
