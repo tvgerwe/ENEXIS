@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "KNMI": {
         "api_endpoint": "https://api.dataplatform.knmi.nl/open-data/v1/datasets/knmi14_globale_straling/versions/3.2/files",
         "api_key": "nctBcxmIU5Ox5CxqzBuiUxLDoDC4yNabewk63UGW",
@@ -8,19 +7,10 @@
     "ned": {
         "ned_api_endpoint":"https://api.ned.nl/v1/utilizations",
         "demo-ned-api-key":"01dd5b246eb73805193aa271dfe3ada2589d20f60838d091077155ad4658ac84",
-        "ned_download_dir": "../../src/data/weather/",
+        "ned_download_dir": "../../src/data/weather/"
     },
     "settings": {
         "download_dir": "downloads"
     }
-=======
-    "api_endpoint": "https://api.dataplatform.knmi.nl/open-data/v1/datasets/knmi14_globale_straling/versions/3.2/files",
-    "api_key": "",
-    "ned_api_endpoint":"https://api.ned.nl/v1/utilizations",
-    "demo-ned-api-key":"",
-    "download_dir": "downloads",
-    "ned_download_dir": "../../src/data/weather/",
-    "notification_key":""
->>>>>>> cbf295c7c4930bdc8167999ad9305f3cceec5d0e
 }
 
