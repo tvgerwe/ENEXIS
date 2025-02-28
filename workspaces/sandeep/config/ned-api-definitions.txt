@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------------------------------
-JSON Payload Information
+JSON Payload Information for NED API
 ------------------------------------------------------------------------------------------------------
 
 This JSON represents a collection of "Utilization" data, likely related to energy usage or some other resource. Let's break down the structure and the meaning of the fields:
