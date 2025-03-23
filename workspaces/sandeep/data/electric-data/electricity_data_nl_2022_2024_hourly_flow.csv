@@ -1,4 +1,4 @@
-,Load,Price,Flow_BE_to_NL,Flow_NL_to_BE,Flow_DE_to_NL,Flow_NL_to_DE,Flow_GB_to_NL,Flow_NL_to_GB,Flow_DK_to_NL,Flow_NL_to_DK,Flow_NO_to_NL,Flow_NL_to_NO,Flow_BE,Flow_DE,Flow_GB,Flow_DK,Flow_NO,Total_Flow
+date,Load,Price,Flow_BE_to_NL,Flow_NL_to_BE,Flow_DE_to_NL,Flow_NL_to_DE,Flow_GB_to_NL,Flow_NL_to_GB,Flow_DK_to_NL,Flow_NL_to_DK,Flow_NO_to_NL,Flow_NL_to_NO,Flow_BE,Flow_DE,Flow_GB,Flow_DK,Flow_NO,Total_Flow
 2021-12-31 23:00:00+00:00,10374.0,124.7,0.0,620.0,1419.5,738.25,0.0,633.0,619.0,0.0,0.0,720.0,-620.0,681.25,-633.0,619.0,-720.0,666.25
 2022-01-01 00:00:00+00:00,10249.75,124.7,0.0,728.0,1314.0,425.5,0.0,591.0,582.0,0.0,0.0,680.0,-728.0,888.5,-591.0,582.0,-680.0,733.5
 2022-01-01 01:00:00+00:00,9907.0,134.0,0.0,1070.0,1092.0,281.75,0.0,456.0,552.0,0.0,0.0,151.0,-1070.0,810.25,-456.0,552.0,-151.0,388.25
