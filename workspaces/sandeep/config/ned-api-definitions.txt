@@ -30,6 +30,12 @@ validfrom: The start time of the period for which the utilization data is valid 
 validto: The end time of the period for which the utilization data is valid (ISO 8601 format with timezone).
 lastupdate: The timestamp when this utilization record was last updated (ISO 8601 format with timezone).
 
+Capacity – the average capacity over the selected time interval (called granularity) in kW
+Volume – the production volume in kWh
+Percentage – the utilization rate expressed as a percentage of the total capacity at that time
+Emission – the emission of CO₂ in kg.
+Emission factor – the emission factor used for the energy carrier in kg/kWh; if no value is specified, the emission is zero (0). 
+
 
 ------------------------------------------------------------------------------------------------------
 JSON Rquest parameters
