@@ -1,22 +1,21 @@
 from src.data.fetch_weather import fetch_weather_data
+from src.data.fetch_entsoe import fetch_entsoe_data
 from src.features.time_features import add_time_features
-import pandas as pd
+from src.models.baseline import train_naive_model
 
 def main():
     print("🔁 Running ENEXIS pipeline...")
 
-    # Load raw weather data
     df_weather = fetch_weather_data()
+    df_weather_features = add_time_features(df_weather)
 
-    # Add time-based features
-    df_features = add_time_features(df_weather)
+    df_energy = fetch_entsoe_data()
 
-    # Output preview
-    print(df_features.head())
+    df_energy_features = add_time_features(df_energy)  # Je kunt ook hier tijdfeatures toepassen
 
-    # Save processed output
-    df_features.to_csv("data/processed/weather_with_features.csv", index=False)
-    print("✅ Pipeline finished. Output saved to data/processed/")
+    _, metrics = train_naive_model(df_energy_features)
+
+    print(f"✅ Pipeline finished. MAE: {metrics['mae']:.3f}, RMSE: {metrics['rmse']:.3f}")
 
 if __name__ == "__main__":
     main()
