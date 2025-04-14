@@ -1,7 +1,7 @@
-# ⚡ WRAP - Electricity Price Forecasting MVP
+# ⚡ WARP - Electricity Price Forecasting MVP
 
 ## 📟 Project Overview
-WRAP is a minimal, functional system that provides **hourly electricity price forecasts** for the Netherlands over a **7-day horizon**, with **highest accuracy optimized for the first 48 hours**. This MVP is designed for usability, reproducibility, and timely delivery.
+WARP is a minimal, functional system that provides **hourly electricity price forecasts** for the Netherlands over a **7-day horizon**, with **highest accuracy optimized for the first 48 hours**. This MVP is designed for usability, reproducibility, and timely delivery.
 
 ---
 
@@ -17,7 +17,7 @@ WRAP is a minimal, functional system that provides **hourly electricity price fo
 ## 📁 Project Structure
 
 ```
-wrap-mvp/
+warp-mvp/
 │
 ├── data/                     # Raw and processed data
 ├── notebooks/                # Exploratory analysis and modeling
