@@ -9,7 +9,8 @@
         "demo-ned-api-key":"01dd5b246eb73805193aa271dfe3ada2589d20f60838d091077155ad4658ac84",
         "ned_download_dir": "../data/powergen/",
         "ned_test_download_dir": "../data/",
-        "ned_model_download_dir": "../models/"
+        "ned_model_download_dir": "../models/",
+        "ned_model_run_download_dir": "../model-run/"
     },
     "settings": {
         "download_dir": "downloads"
