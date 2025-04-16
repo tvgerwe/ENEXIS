@@ -1,0 +1,30 @@
+[
+    {
+        "Device": "Washing Machine",
+        "Duration_h": 1.5,
+        "kWh_per_use": 1.0,
+        "Weekly_Uses": 3,
+        "Flexibility": "Yes"
+    },
+    {
+        "Device": "Dishwasher",
+        "Duration_h": 2.0,
+        "kWh_per_use": 1.2,
+        "Weekly_Uses": 5,
+        "Flexibility": "Yes"
+    },
+    {
+        "Device": "Heat Pump",
+        "Duration_h": 1.0,
+        "kWh_per_use": 0.67,
+        "Weekly_Uses": 84,
+        "Flexibility": "Partial"
+    },
+    {
+        "Device": "EV Charging",
+        "Duration_h": 6.0,
+        "kWh_per_use": 15.0,
+        "Weekly_Uses": 3,
+        "Flexibility": "Yes"
+    }
+]
