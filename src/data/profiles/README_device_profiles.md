@@ -1,6 +1,3 @@
-# 📦 Device Usage Profiles — README
-
-This file describes the structure and purpose of the `device_usage_profile.json` file, used for modeling household energy consumption in combination with time-based electricity price forecasts.
 
 ## 🔍 Purpose
 The JSON file contains structured usage behavior per device, allowing accurate simulation and optimization of energy consumption based on:
