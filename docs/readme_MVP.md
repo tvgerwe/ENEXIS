@@ -1,7 +1,7 @@
 # ⚡ WARP - Electricity Price Forecasting MVP
 
 ## 📟 Project Overview
-WARP is a minimal, functional system that provides **hourly electricity price forecasts** for the Netherlands over a **7-day horizon**, with **highest accuracy optimized for the first 48 hours**. This MVP is designed for usability, reproducibility, and timely delivery.
+"Week-Ahead Reduced Pricing for Electricity Costs" (WARP) is a minimal, functional system that provides **hourly electricity price forecasts** for the Netherlands over a **7-day horizon**, with **highest accuracy optimized for the first 48 hours**. This MVP is designed for usability, reproducibility, and timely delivery.
 
 ---
 
@@ -40,8 +40,8 @@ A modular ETL system for:
 
 - Collecting external data from:
   - [ENTSO-E](https://www.entsoe.eu/) (market prices)
-  - [Open-Meteo](https://open-meteo.com/) (weather forecasts)
-  - [NED](https://ned.nl) (expected production)
+  - [Open-Meteo](https://open-meteo.com/) (weather parameters)
+  - [NED](https://ned.nl) (electricity production data)
 - Cleaning, validating, and harmonizing time series inputs
 - Automating **twice-daily** updates of the forecasting engine
 
@@ -56,8 +56,8 @@ A forecasting model (e.g. **SARIMA** / **LightGBM** / **XGBoost** / **Prophet**)
 - Trains on:
   - Historical prices (ENTSO-E)
   - Weather data (Open-Meteo: temperature, wind, solar radiation, cloud cover)
-  - Renewable energy production (NED)
-- Tracks performance using **RMSE**, **MAE**, and compares against baseline models
+  - Renewable energy production data per production type (NED)
+- Tracks performance using **RMSE**, and compares against baseline models
 
 ---
 
@@ -80,8 +80,8 @@ Delivered in a version-controlled GitHub repository:
 - Interactive, zoomable **HTML dashboard** using Plotly or Chart.js
 - Shows:
   - Predicted hourly prices
+  - Confidence intervals
   - Historical comparisons
-  - Confidence intervals (if applicable)
 - Built for **local use** (no API/server needed)
 
 ---
