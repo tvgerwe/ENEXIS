@@ -8,7 +8,6 @@
 ## 📦 Final Deliverables
 
 - A working forecasting pipeline and model
-- Twice-daily updated predictions
 - Interactive local dashboard
 - Transparent documentation and ethical considerations
 
@@ -56,7 +55,7 @@ A forecasting model (e.g. **SARIMA** / **LightGBM** / **XGBoost** / **Prophet**)
 - Trains on:
   - Historical prices (ENTSO-E)
   - Weather data (Open-Meteo: temperature, wind, solar radiation, cloud cover)
-  - Renewable energy production data per production type (NED)
+  - Energy production data per production type (NED)
 - Tracks performance using **RMSE**, and compares against baseline models
 
 ---
