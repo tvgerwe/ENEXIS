@@ -11,7 +11,7 @@ client = EntsoePandasClient(api_key=API_KEY)
 # Define parameters
 country_code = 'NL'
 neighboring_countries = ['BE', 'DE', 'GB', 'DK', 'NO']  # Pas dit aan op basis van de relevante buren
-years = [2022, 2023, 2024, 2025]  # List of years to fetch
+year = 2025  # List of years to fetch
 
 # Data storage
 all_data = []
@@ -27,45 +27,58 @@ def fetch_with_retries(fetch_func, *args, retries=3, delay=5, **kwargs):
     raise Exception(f"Failed to fetch data after {retries} attempts")
 
 # Loop through each year and fetch data separately
-for year in years:
-    start = pd.Timestamp(f'{year}-01-01', tz='Europe/Amsterdam')
-    end = pd.Timestamp(f'{year+1}-01-01', tz='Europe/Amsterdam')  # Exclusive end
 
-    print(f"Fetching load data for {year}...")
-    yearly_load = fetch_with_retries(client.query_load, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
+start = pd.Timestamp(f'{year}-01-01', tz='Europe/Amsterdam')
+end = pd.Timestamp(f'{year+1}-01-01', tz='Europe/Amsterdam')  # Exclusive end
 
-    print(f"Fetching load forecast for {year}...")
-    yearly_load_forecast = fetch_with_retries(client.query_load_forecast, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
+print(f"Fetching load data for {year}...")
+yearly_load = fetch_with_retries(client.query_load, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
 
-    print(f"Fetching price data for {year}...")
-    yearly_price = fetch_with_retries(client.query_day_ahead_prices, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
+print(f"Fetching load forecast for {year}...")
+yearly_load_forecast = fetch_with_retries(client.query_load_forecast, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
 
-    # Fetch cross-border flows
-    flow_data = {}
-    for neighbor in neighboring_countries:
-        print(f"Fetching cross-border flow from {neighbor} to {country_code} for {year}...")
-        yearly_flow_to = fetch_with_retries(client.query_crossborder_flows, country_code_from=neighbor, 
+print(f"Fetching price data for {year}...")
+yearly_price = fetch_with_retries(client.query_day_ahead_prices, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
+
+# Fetch cross-border flows
+flow_data = {}
+for neighbor in neighboring_countries:
+    print(f"Fetching cross-border flow from {neighbor} to {country_code} for {year}...")
+    yearly_flow_to = fetch_with_retries(client.query_crossborder_flows, country_code_from=neighbor, 
                                             country_code_to=country_code, start=start, end=end).squeeze()  # Convert to 1D Series
-        flow_data[f'Flow_{neighbor}_to_{country_code}'] = yearly_flow_to
+    flow_data[f'Flow_{neighbor}_to_{country_code}'] = yearly_flow_to
 
-        print(f"Fetching cross-border flow from {country_code} to {neighbor} for {year}...")
-        yearly_flow_from = fetch_with_retries(client.query_crossborder_flows, country_code_from=country_code, 
+    print(f"Fetching cross-border flow from {country_code} to {neighbor} for {year}...")
+    yearly_flow_from = fetch_with_retries(client.query_crossborder_flows, country_code_from=country_code, 
                                               country_code_to=neighbor, start=start, end=end).squeeze()  # Convert to 1D Series
-        flow_data[f'Flow_{country_code}_to_{neighbor}'] = yearly_flow_from
+    flow_data[f'Flow_{country_code}_to_{neighbor}'] = yearly_flow_from
 
     # Merge all data
-    if not yearly_load.empty and not yearly_price.empty:
-        df = pd.DataFrame({'Load': yearly_load, 'Price': yearly_price})
-        for col_name, flow_series in flow_data.items():
-            if not flow_series.empty:
-                df[col_name] = flow_series
+if not yearly_load.empty and not yearly_price.empty:
+    df = pd.DataFrame({'Load': yearly_load, 'Price': yearly_price})
+    for col_name, flow_series in flow_data.items():
+        if not flow_series.empty:
+            df[col_name] = flow_series
 
         # Store yearly data
-        all_data.append(df)
-    else:
-        print(f"No data for year {year}")
+    all_data.append(df)
+else:
+    print(f"No data for year {year}")
 
 # Concatenate all years into one DataFrame if there is data
-final_data = pd.concat(all_data)
-final_data.to_csv('electricity_data_nl_2022_2025.csv')
-print("Data saved successfully!")
+raw_entsoe = pd.concat(all_data)
+
+import sqlite3
+
+# Connect to the SQLite database
+db_path = 'C:/Users/shba/Documents/ENEXIS/ENEXIS/src/data/WARP.db'
+conn = sqlite3.connect(db_path)
+
+# Write the DataFrame to the database table 'raw_entsoe_obs'
+# If table exists, replace it. If not, create new table
+raw_entsoe.to_sql('raw_entsoe_obs', conn, if_exists='replace', index=False)
+
+# Close the connection
+conn.close()
+
+print("Data successfully written to database table 'raw_entsoe_obs'")
