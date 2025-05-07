@@ -5,3 +5,4 @@ api-call,json
 mqtt-call.json
 ned-api.js
 weather-data-config.json.cache.sqlite
+venv/
