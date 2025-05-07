@@ -13,7 +13,7 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 CONFIG_PATH = os.path.join(ROOT_DIR, 'workspaces', 'sandeep', 'config', 'api-call.json')
 WARP_DB_PATH = os.path.join(ROOT_DIR, 'src', 'data', 'WARP.db')
 LOGS_DB_PATH = os.path.join(ROOT_DIR, 'src', 'data', 'logs.db')
-DEFAULT_START_DATE = '2022-01-01'
+DEFAULT_START_DATE = '2025-01-01'
 NED_TYPES = [2]
 TIMESTAMP_COLUMN = 'validfrom'
 
@@ -107,18 +107,23 @@ def fetch_records(endpoint, headers, start_date, end_date, gen_type):
     resp = requests.get(endpoint, params=params, headers=headers)
     resp.raise_for_status()
     data = resp.json()
-    last_url = data.get('hydra:view', {}).get('hydra:last')
+    
+    last_url = data.get("hydra:view", {}).get("hydra:last", None)
+    
     if not last_url:
-        raise RuntimeError('Could not determine last page from API response')
-    last_page = int(last_url.split('page=')[-1])
-
-    # Loop door alle pagina's
-    for page in range(1, last_page + 1):
-        params['page'] = page
-        resp = requests.get(endpoint, params=params, headers=headers)
-        resp.raise_for_status()
+        # This flow is when single API response gets all data and pagination is NOT required
         members = resp.json().get('hydra:member', [])
         all_recs.extend(members)
+    else:    
+        # This flow is when pagination is required
+        last_page = int(last_url.split('page=')[-1])
+        # Loop door alle pagina's
+        for page in range(1, last_page + 1):
+            params['page'] = page
+            resp = requests.get(endpoint, params=params, headers=headers)
+            resp.raise_for_status()
+            members = resp.json().get('hydra:member', [])
+            all_recs.extend(members)
     return all_recs
 
 
@@ -148,6 +153,7 @@ def main():
         endpoint = config['ned']['ned_api_endpoint']
         api_key = config['ned']['demo-ned-api-key']
         headers = {'X-AUTH-TOKEN': api_key, 'Content-Type': 'application/json'}
+        
 
         # Connect to DBs
         conn_data = get_connection(WARP_DB_PATH)
@@ -156,10 +162,12 @@ def main():
 
         # Determine date range
         prev_ts = get_last_timestamp(conn_data)
+        
         if prev_ts:
-            start_date = prev_ts
+            start_date = pd.to_datetime(prev_ts).date()
         else:
             start_date = DEFAULT_START_DATE
+        
         end_date = datetime.date.today().isoformat()
 
         # Fetch and store
@@ -188,7 +196,8 @@ def main():
         write_log(conn_log, start_time, end_time, endpoint, rows_fetched, last_timestamp, status, error_msg)
         conn_data.close()
         conn_log.close()
-
+        print(error_msg)
+        print("completed NED data ingestion")
 
 if __name__ == '__main__':
     main()
