@@ -196,8 +196,6 @@ def main():
         write_log(conn_log, start_time, end_time, endpoint, rows_fetched, last_timestamp, status, error_msg)
         conn_data.close()
         conn_log.close()
-        print(error_msg)
-        print("completed NED data ingestion")
 
 if __name__ == '__main__':
     main()
