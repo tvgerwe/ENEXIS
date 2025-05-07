@@ -6,6 +6,33 @@ import requests
 import pandas as pd
 import sqlite3
 import datetime
+import sqlite3
+
+# Connect to the SQLite database
+db_path = '../data/WARP.db'
+conn = sqlite3.connect(db_path)
+
+# Connect to the SQLite database using the existing db_path
+conn = sqlite3.connect(db_path)
+# Query the last 5 rows from raw_weather_obs table
+df_head = pd.read_sql_query("SELECT * FROM raw_weather_obs ORDER BY date DESC LIMIT 5", conn)
+
+# Close the connection
+conn.close()
+
+# Display the results
+print(df_head)
+
+# Connect to the SQLite database
+# collect the date column from the raw_weather_obs table
+conn = sqlite3.connect(db_path)
+hist_weather_dates = pd.read_sql_query("SELECT date FROM raw_weather_obs", conn)
+conn.close()
+
+# Convert to datetime and find max date
+hist_weather_dates['date'] = pd.to_datetime(hist_weather_dates['date'])
+most_recent_date = hist_weather_dates['date'].max().strftime('%Y-%m-%d')
+print(f"The most recent date in raw_weather_obs is: {most_recent_date}")
 
 # --- Constants ---
 # ROOT_DIR: twee niveaus omhoog vanaf dit bestand
