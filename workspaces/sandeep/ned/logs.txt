@@ -1,0 +1,16 @@
+2025-05-08 13:33:24,596 - INFO - Pipeline started.
+2025-05-08 13:43:44,069 - INFO - Pipeline started.
+2025-05-08 13:43:44,085 - INFO - Configs loaded.
+2025-05-08 13:43:44,411 - INFO - CSV read complete.
+2025-05-08 13:43:44,510 - INFO - Filtered dataframe created.
+2025-05-08 13:43:45,377 - INFO - Boxplot created.
+2025-05-08 13:43:46,754 - INFO - Line graph created.
+2025-05-08 13:43:46,797 - INFO - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2025-05-08 13:43:46,801 - INFO - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2025-05-08 13:43:47,085 - INFO - Scatter plot created.
+2025-05-08 13:43:47,422 - INFO - Additional Scatter plot created.
+2025-05-08 13:43:47,718 - INFO - Additional box plot created.
+2025-05-08 13:43:47,911 - INFO - Avg volume plot created.
+2025-05-08 13:43:48,079 - INFO - Avg capacity per month plot created.
+2025-05-08 13:43:48,456 - INFO - Model plot run plot created.
+2025-05-08 13:43:50,868 - INFO - Pipeline completed.
