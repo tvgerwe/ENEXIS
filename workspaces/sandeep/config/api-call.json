@@ -1,0 +1,27 @@
+{
+    "KNMI": {
+      "api_endpoint": "https://api.dataplatform.knmi.nl/open-data/v1/datasets/knmi14_globale_straling/versions/3.2/files",
+      "api_key": "nctBcxmIU5Ox5CxqzBuiUxLDoDC4yNabewk63UGW",
+      "notification_key": "eyJvcmciOiI1ZTU1NGUxOTI3NGE5NjAwMDEyYTNlYjEiLCJpZCI6IjM3ODk5YjE4NjM5ZDQ0ZmRhYjMzYjdhMjBlZDE3Mjg3IiwiaCI6Im11cm11cjEyOCJ9"
+    },
+    "ned": {
+      "ned_api_endpoint": "https://api.ned.nl/v1/utilizations",
+      "demo-ned-api-key": "01dd5b246eb73805193aa271dfe3ada2589d20f60838d091077155ad4658ac84",
+      "ned_download_dir": "../../src/data/weather/"
+    },
+    "entsoe": {
+      "api_key": "82aa28d4-59f3-4e3a-b144-6659aa9415b5",
+      "default_start": "2020-01-01",
+      "country": "NL",
+      "neighbors": [
+        "BE",
+        "DE",
+        "GB",
+        "DK",
+        "NO"
+      ]
+    },
+    "settings": {
+      "download_dir": "downloads"
+    }
+  }
