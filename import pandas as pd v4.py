@@ -1,0 +1,72 @@
+import pandas as pd
+from entsoe import EntsoePandasClient
+import time
+
+# Insert your API key here once you get it
+API_KEY = '82aa28d4-59f3-4e3a-b144-6659aa9415b5'
+
+# Initialize ENTSO-E client
+client = EntsoePandasClient(api_key=API_KEY)
+
+# Define parameters
+country_code = 'NL'
+neighboring_countries = ['BE', 'DE', 'GB', 'DK', 'NO']  # Pas dit aan op basis van de relevante buren
+years = [2022, 2023, 2024]  # List of years to fetch
+
+# Data storage
+all_data = []
+
+# Function to fetch data with retries
+def fetch_with_retries(fetch_func, *args, retries=3, delay=5, **kwargs):
+    for attempt in range(retries):
+        try:
+            return fetch_func(*args, **kwargs)
+        except Exception as e:
+            print(f"Error: {e}, retrying in {delay} seconds...")
+            time.sleep(delay)
+    raise Exception(f"Failed to fetch data after {retries} attempts")
+
+# Loop through each year and fetch data separately
+for year in years:
+    start = pd.Timestamp(f'{year}-01-01', tz='Europe/Amsterdam')
+    end = pd.Timestamp(f'{year+1}-01-01', tz='Europe/Amsterdam')  # Exclusive end
+
+    print(f"Fetching load data for {year}...")
+    yearly_load = fetch_with_retries(client.query_load, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
+    
+    print(f"Fetching price data for {year}...")
+    yearly_price = fetch_with_retries(client.query_day_ahead_prices, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
+
+    # Fetch cross-border flows
+    flow_data = {}
+    for neighbor in neighboring_countries:
+        print(f"Fetching cross-border flow from {neighbor} to {country_code} for {year}...")
+        yearly_flow_to = fetch_with_retries(client.query_crossborder_flows, country_code_from=neighbor, 
+                                            country_code_to=country_code, start=start, end=end).squeeze()  # Convert to 1D Series
+        flow_data[f'Flow_{neighbor}_to_{country_code}'] = yearly_flow_to
+
+        print(f"Fetching cross-border flow from {country_code} to {neighbor} for {year}...")
+        yearly_flow_from = fetch_with_retries(client.query_crossborder_flows, country_code_from=country_code, 
+                                              country_code_to=neighbor, start=start, end=end).squeeze()  # Convert to 1D Series
+        flow_data[f'Flow_{country_code}_to_{neighbor}'] = yearly_flow_from
+
+    # Merge all data
+    if not yearly_load.empty and not yearly_price.empty:
+        df = pd.DataFrame({'Load': yearly_load, 'Price': yearly_price})
+        for col_name, flow_series in flow_data.items():
+            if not flow_series.empty:
+                df[col_name] = flow_series
+
+        # Store yearly data
+        all_data.append(df)
+    else:
+        print(f"No data for year {year}")
+
+# Concatenate all years into one DataFrame if there is data
+if all_data:
+    final_data = pd.concat(all_data)
+    # Save to CSV
+    final_data.to_csv('electricity_data_nl_2022_2024.csv')
+    print("Data saved successfully!")
+else:
+    print("No data to save.")
