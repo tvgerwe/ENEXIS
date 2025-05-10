@@ -1,0 +1,18 @@
+{
+    "KNMI": {
+        "api_endpoint": "https://api.dataplatform.knmi.nl/open-data/v1/datasets/knmi14_globale_straling/versions/3.2/files",
+        "api_key": "21702b116e4c72974d62853623de0adcb0f530d98591b308a41a881735267bbb",
+        "notification_key":"eyJvcmciOiI1ZTU1NGUxOTI3NGE5NjAwMDEyYTNlYjEiLCJpZCI6IjM3ODk5YjE4NjM5ZDQ0ZmRhYjMzYjdhMjBlZDE3Mjg3IiwiaCI6Im11cm11cjEyOCJ9"
+    },
+    "ned": {
+        "ned_api_endpoint":"https://api.ned.nl/v1/utilizations",
+        "demo-ned-api-key":"01dd5b246eb73805193aa271dfe3ada2589d20f60838d091077155ad4658ac84",
+        "ned_download_dir": "../data/powergen/",
+        "ned_test_download_dir": "../data/",
+        "ned_model_download_dir": "../models/"
+    },
+    "settings": {
+        "download_dir": "downloads"
+    }
+}
+
