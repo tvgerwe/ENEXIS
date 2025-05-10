@@ -1,6 +1,0 @@
-{
-    "data_dir": "/data/weather/",
-    "weather_file":"../../src/data/weather/Eindhovn-daggegevens-010123-120224.csv",
-    "github_data_dir": "/data/pv-gen-huis-01/",
-    "api_key": ""
-}
