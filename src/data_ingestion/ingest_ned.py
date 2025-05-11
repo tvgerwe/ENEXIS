@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import json
 import requests
 import pandas as pd
 import sqlite3
 import datetime
 import logging
+import time
 from pathlib import Path
-import time  # Import at the top of the file
+
+# Add the parent directory to the path so we can import config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config.config import MAIN_DB_PATH, LOGS_DB_PATH, config
 
 # Set up logging
 logging.basicConfig(
@@ -18,63 +23,11 @@ logging.basicConfig(
 logger = logging.getLogger('ingest_ned')
 
 # --- Constants ---
-ROOT_DIR = Path(__file__).resolve().parent.parent
-CONFIG_PATH = ROOT_DIR / 'config' / 'config.json'  # Fixed path - removed extra 'src'
 TIMESTAMP_COLUMN = 'validfrom'
 
-# Debug output for paths
-logger.info(f"Script location: {Path(__file__).resolve()}")
-logger.info(f"Root directory: {ROOT_DIR}")
-logger.info(f"Config path: {CONFIG_PATH}")
-logger.info(f"Config exists: {CONFIG_PATH.exists()}")
-
 # --- Helpers ---
-def load_config():
-    """Load JSON config from file."""
-    # If the config doesn't exist at the expected location, try alternative locations
-    if not CONFIG_PATH.exists():
-        alt_paths = [
-            ROOT_DIR / 'src' / 'config' / 'config.json',
-            Path('/Users/redouan/ENEXIS/config/config.json'),
-            Path('/Users/redouan/ENEXIS/src/config/config.json'),
-            Path(os.getcwd()) / 'config' / 'config.json',
-            Path(os.getcwd()) / 'src' / 'config' / 'config.json'
-        ]
-        
-        for alt_path in alt_paths:
-            logger.info(f"Trying alternative config path: {alt_path}")
-            if alt_path.exists():
-                logger.info(f"Found config at: {alt_path}")
-                return json.load(open(alt_path, 'r'))
-        
-        # If we get here, we couldn't find the config file
-        logger.error("Could not find config file in any of the expected locations")
-        # Create a minimal default config for testing
-        return {
-            "api": {
-                "ned": {
-                    "endpoint": "https://api.ned.nl/v1/utilizations",
-                    "api_key": "21702b116e4c72974d62853623de0adcb0f530d98591b308a41a881735267bbb",
-                    "types": [2]
-                },
-                "open_meteo": {
-                    "default_start": "2025-01-01"
-                }
-            },
-            "database": {
-                "main_db_path": "src/data/WARP.db",
-                "logs_db_path": "src/data/logs.db"
-            }
-        }
-    
-    with open(CONFIG_PATH, 'r') as f:
-        return json.load(f)
-
 def get_connection(db_path):
-    """Return a sqlite3 connection, create folder if needed."""
-    folder = os.path.dirname(db_path)
-    if folder and not os.path.exists(folder):
-        os.makedirs(folder, exist_ok=True)
+    """Return a sqlite3 connection."""
     return sqlite3.connect(db_path)
 
 def table_exists(conn, table_name):
@@ -215,39 +168,21 @@ def main():
     endpoint = None
 
     try:
-        # Load config
-        config = load_config()
-        
-        # Get database paths from config
-        main_db_path = Path(config['database']['main_db_path'])
-        logs_db_path = Path(config['database']['logs_db_path'])
-        
-        # Ensure paths are absolute
-        if not main_db_path.is_absolute():
-            main_db_path = ROOT_DIR / main_db_path
-            logger.info(f"Using absolute database path: {main_db_path}")
-        
-        if not logs_db_path.is_absolute():
-            logs_db_path = ROOT_DIR / logs_db_path
-            logger.info(f"Using absolute logs path: {logs_db_path}")
-            
-        # Create directories if needed
-        os.makedirs(main_db_path.parent, exist_ok=True)
-        os.makedirs(logs_db_path.parent, exist_ok=True)
+        # Log the database paths
+        logger.info(f"Using main database at: {MAIN_DB_PATH}")
+        logger.info(f"Using logs database at: {LOGS_DB_PATH}")
             
         # Get API settings
         endpoint = config['api']['ned']['endpoint']
         api_key = config['api']['ned']['api_key']
         headers = {'X-AUTH-TOKEN': api_key, 'Content-Type': 'application/json'}
         
-        # Default start date from config or fallback
+        # Default start date from config
         default_start = config['api']['ned'].get('default_start', config['api']['open_meteo']['default_start'])
         
         # Connect to DBs
-        logger.info(f"Connecting to main DB: {main_db_path}")
-        conn_data = get_connection(str(main_db_path))
-        logger.info(f"Connecting to logs DB: {logs_db_path}")
-        conn_log = get_connection(str(logs_db_path))
+        conn_data = get_connection(MAIN_DB_PATH)
+        conn_log = get_connection(LOGS_DB_PATH)
         ensure_tables_exist(conn_data, conn_log)
 
         # Determine date range
