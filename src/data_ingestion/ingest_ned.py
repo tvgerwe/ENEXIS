@@ -9,7 +9,7 @@ import datetime
 import sqlite3
 
 # Connect to the SQLite database
-db_path = '../data/WARP.db'
+db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
 conn = sqlite3.connect(db_path)
 
 # Connect to the SQLite database using the existing db_path
@@ -181,7 +181,6 @@ def main():
         api_key = config['ned']['demo-ned-api-key']
         headers = {'X-AUTH-TOKEN': api_key, 'Content-Type': 'application/json'}
         
-
         # Connect to DBs
         conn_data = get_connection(WARP_DB_PATH)
         conn_log = get_connection(LOGS_DB_PATH)
