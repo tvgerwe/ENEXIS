@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 
 # Pad naar de SQLite-database
-db_path = 'C:/Users/shba/Documents/ENEXIS/ENEXIS/src/data/WARP.db'
+db_path = 'C:/Users/shba/Documents/JADS project/ENEXIS/src/data/WARP.db'
 
 # Maak verbinding met de database
 conn = sqlite3.connect(db_path)

@@ -71,7 +71,7 @@ raw_entsoe = pd.concat(all_data)
 import sqlite3
 
 # Connect to the SQLite database
-db_path = 'C:/Users/shba/Documents/ENEXIS/ENEXIS/src/data/WARP.db'
+db_path = 'C:/Users/shba/Documents/JADS project/ENEXIS/src/data/WARP.db'
 conn = sqlite3.connect(db_path)
 
 # Write the DataFrame to the database table 'raw_entsoe_obs'
