@@ -53,32 +53,54 @@ for neighbor in neighboring_countries:
                                               country_code_to=neighbor, start=start, end=end).squeeze()  # Convert to 1D Series
     flow_data[f'Flow_{country_code}_to_{neighbor}'] = yearly_flow_from
 
-    # Merge all data
-if not yearly_load.empty and not yearly_price.empty:
-    df = pd.DataFrame({'Load': yearly_load, 'Price': yearly_price})
-    for col_name, flow_series in flow_data.items():
-        if not flow_series.empty:
-            df[col_name] = flow_series
+# ...existing code...
 
-        # Store yearly data
+# Merge all data
+if not yearly_load.empty and not yearly_price.empty:
+    # Align all Series to the same index (timestamps)
+    common_index = yearly_load.index.union(yearly_price.index)
+    for flow_series in flow_data.values():
+        common_index = common_index.union(flow_series.index)
+
+    # Reindex all Series to the common index
+    yearly_load = yearly_load.reindex(common_index)
+    yearly_price = yearly_price.reindex(common_index)
+    for col_name in flow_data:
+        flow_data[col_name] = flow_data[col_name].reindex(common_index)
+
+    # Create a DataFrame with the aligned data
+    df = pd.DataFrame({'Timestamp': common_index, 'Load': yearly_load.values, 'Price': yearly_price.values})
+    
+    # Add cross-border flow data to the DataFrame
+    for col_name, flow_series in flow_data.items():
+        df[col_name] = flow_series.values
+
+    # Store yearly data
     all_data.append(df)
 else:
     print(f"No data for year {year}")
 
 # Concatenate all years into one DataFrame if there is data
-raw_entsoe = pd.concat(all_data)
-
-import sqlite3
-
-# Connect to the SQLite database
-db_path = 'C:/Users/shba/Documents/JADS project/ENEXIS/src/data/WARP.db'
-conn = sqlite3.connect(db_path)
+if all_data:
+    raw_entsoe = pd.concat(all_data)
+else:
+    raw_entsoe = pd.DataFrame()  # Create an empty DataFrame if no data is available
 
 # Write the DataFrame to the database table 'raw_entsoe_obs'
-# If table exists, replace it. If not, create new table
-raw_entsoe.to_sql('raw_entsoe_obs', conn, if_exists='replace', index=False)
+if not raw_entsoe.empty:
+    import sqlite3
 
-# Close the connection
-conn.close()
+    # Connect to the SQLite database
+    db_path = 'C:/Users/shba/Documents/JADS project/ENEXIS/src/data/WARP.db'
+    conn = sqlite3.connect(db_path)
 
-print("Data successfully written to database table 'raw_entsoe_obs'")
+    # Write the DataFrame to the database table 'raw_entsoe_obs'
+    # If table exists, replace it. If not, create new table
+    raw_entsoe.to_sql('raw_entsoe_obs', conn, if_exists='replace', index=False)
+
+    # Close the connection
+    conn.close()
+
+    print("Data successfully written to database table 'raw_entsoe_obs'")
+else:
+    print("No data available to write to the database.")
