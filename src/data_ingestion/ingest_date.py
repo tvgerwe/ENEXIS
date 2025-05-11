@@ -1,57 +1,30 @@
 #!/usr/bin/env python3
 
-import os
 import pandas as pd
 import numpy as np
 import holidays
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 import sqlite3
 import logging
-from pathlib import Path
+import os
+import sys
+
+# Add the parent directory to the path so we can import config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config.config import MAIN_DB_PATH, config
 
 # Set up logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
-logger = logging.getLogger('create_dim_datetime')
+logger = logging.getLogger('ingest_date')
 
 # Constants
-ROOT_DIR = Path(__file__).resolve().parent.parent
-CONFIG_PATH = ROOT_DIR / 'config' / 'config.json'
 TABLE_NAME = 'dim_datetime'
-
-def load_config():
-    """Load JSON config from file."""
-    import json
-    if not CONFIG_PATH.exists():
-        alt_paths = [
-            ROOT_DIR / 'src' / 'config' / 'config.json',
-            Path('/Users/redouan/ENEXIS/config/config.json'),
-            Path('/Users/redouan/ENEXIS/src/config/config.json'),
-            Path(os.getcwd()) / 'config' / 'config.json',
-            Path(os.getcwd()) / 'src' / 'config' / 'config.json'
-        ]
-        
-        for alt_path in alt_paths:
-            if alt_path.exists():
-                return json.load(open(alt_path, 'r'))
-        
-        # Default configuration if no config file found
-        return {
-            "database": {
-                "main_db_path": "src/data/WARP.db"
-            }
-        }
-    
-    with open(CONFIG_PATH, 'r') as f:
-        return json.load(f)
 
 def get_connection(db_path):
     """Return a sqlite3 connection, create folder if needed."""
-    folder = os.path.dirname(db_path)
-    if folder and not os.path.exists(folder):
-        os.makedirs(folder, exist_ok=True)
     return sqlite3.connect(db_path)
 
 def table_exists(conn, table_name):
@@ -133,28 +106,14 @@ def create_datetime_rows(start_date, end_date):
 
 def main():
     try:
-        # Load configuration
-        config = load_config()
-        
-        # Get database path
-        db_path = Path(config['database']['main_db_path'])
-        if not db_path.is_absolute():
-            db_path = ROOT_DIR / db_path
-        
-        # Debug path issues
-        data_dir = db_path.parent
-        logger.info(f"Using database at: {db_path}")
-        logger.info(f"Data directory: {data_dir}, exists: {data_dir.exists()}")
-        
-        # Make sure directory exists
-        os.makedirs(data_dir, exist_ok=True)
+        logger.info(f"Using database at: {MAIN_DB_PATH}")
         
         # Connect to database
-        conn = get_connection(str(db_path))
+        conn = get_connection(MAIN_DB_PATH)
         
         # Determine date range for updates
         # Use UTC timezone for all datetime operations to be consistent
-        current_date = pd.Timestamp.now(tz='UTC').floor('H')
+        current_date = pd.Timestamp.now(tz='UTC').floor('h')
         forecast_end = current_date + pd.Timedelta(days=7)  # Current time + 7 days
         
         # Check if table exists and get max date
