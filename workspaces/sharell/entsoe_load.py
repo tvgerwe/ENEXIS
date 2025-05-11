@@ -53,8 +53,6 @@ for neighbor in neighboring_countries:
                                               country_code_to=neighbor, start=start, end=end).squeeze()  # Convert to 1D Series
     flow_data[f'Flow_{country_code}_to_{neighbor}'] = yearly_flow_from
 
-# ...existing code...
-
 # Merge all data
 if not yearly_load.empty and not yearly_price.empty:
     # Align all Series to the same index (timestamps)
@@ -85,6 +83,9 @@ if all_data:
     raw_entsoe = pd.concat(all_data)
 else:
     raw_entsoe = pd.DataFrame()  # Create an empty DataFrame if no data is available
+
+# Save the DataFrame to a CSV file
+raw_entsoe.to_csv('raw_entsoe.csv', index=False)
 
 # Write the DataFrame to the database table 'raw_entsoe_obs'
 if not raw_entsoe.empty:
