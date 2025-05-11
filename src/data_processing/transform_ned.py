@@ -1,49 +1,58 @@
 #!/usr/bin/env python3
-import os
+
 import sqlite3
 import pandas as pd
+import logging
+from pathlib import Path
+
+# Logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - transform_ned - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger('transform_ned')
+
+# Config
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DB_PATH = PROJECT_ROOT / "src" / "data" / "WARP.db"
+RAW_TABLE = "raw_ned_obs"
+TRANSFORM_TABLE = "transform_ned_obs"
 
 def clean_ned_obs(df):
-    df = df[['capacity','volume','percentage','validfrom']].copy()
-    df['capacity'] = pd.to_numeric(df['capacity'], errors='coerce').astype('Int64')
+    if 'validto' not in df.columns or 'volume' not in df.columns:
+        raise KeyError("⚠️ Vereiste kolommen 'validto' en 'volume' ontbreken in raw_ned_obs.")
+
+    df = df[['volume', 'validto']].copy()
     df['volume'] = pd.to_numeric(df['volume'], errors='coerce').astype('Int64')
-    df['percentage'] = pd.to_numeric(df['percentage'], errors='coerce').astype(float)
-    df['validfrom'] = pd.to_datetime(df['validfrom'], utc=True)
+    df['validto'] = pd.to_datetime(df['validto'], utc=True)
     return df.rename(columns=lambda c: f'ned.{c}')
 
-def load_transform_ned_obs(df, db_path, table_name='transform_ned_obs'):
-    folder = os.path.dirname(db_path)
-    if folder and not os.path.exists(folder):
-        os.makedirs(folder)
-    conn = sqlite3.connect(db_path)
-    conn.execute(
-        f'CREATE TABLE IF NOT EXISTS {table_name} ('
-        '"ned.capacity" INTEGER,'
-        '"ned.volume" INTEGER,'
-        '"ned.percentage" REAL,'
-        '"ned.validfrom" TEXT'
-        ')'
-    )
-    conn.commit()
-    df.to_sql(table_name, conn, if_exists='append', index=False)
-    conn.execute(
-        f'DELETE FROM {table_name} WHERE rowid NOT IN ('
-        f'SELECT MIN(rowid) FROM {table_name} GROUP BY '
-        '"ned.capacity","ned.volume","ned.percentage","ned.validfrom"'
-        ')'
-    )
-    conn.commit()
-    conn.close()
+def transform_ned_pipeline():
+    logger.info(f"📦 Using DB at: {DB_PATH}")
+    if not DB_PATH.exists():
+        raise FileNotFoundError(f"❌ Database niet gevonden op: {DB_PATH}")
 
-def transform_ned_pipeline(db_path=None, raw_table='raw_ned_obs', transform_table='transform_ned_obs'):
-    if db_path is None:
-        here = os.path.dirname(__file__)
-        db_path = os.path.abspath(os.path.join(here, '..', 'data', 'WARP.db'))
-    conn = sqlite3.connect(db_path)
-    df = pd.read_sql_query(f"SELECT * FROM {raw_table}", conn)
-    conn.close()
-    df2 = clean_ned_obs(df)
-    load_transform_ned_obs(df2, db_path, transform_table)
+    conn = sqlite3.connect(DB_PATH)
+
+    try:
+        logger.info(f"📥 Ophalen van {RAW_TABLE}")
+        df = pd.read_sql_query(f"SELECT * FROM {RAW_TABLE}", conn)
+        if df.empty:
+            logger.warning("⚠️ Geen data gevonden in raw_ned_obs. Pipeline stopt.")
+            return
+
+        logger.info("🔧 Start transformatie")
+        df_transformed = clean_ned_obs(df)
+
+        logger.info(f"🧱 Overschrijven van {TRANSFORM_TABLE}")
+        df_transformed.to_sql(TRANSFORM_TABLE, conn, if_exists='replace', index=False)
+
+        logger.info(f"✅ Transformatie klaar. {len(df_transformed)} rijen opgeslagen in {TRANSFORM_TABLE}.")
+    except Exception as e:
+        logger.error(f"❌ Fout tijdens transformatie: {e}", exc_info=True)
+    finally:
+        conn.close()
+        logger.info("🔒 Verbinding gesloten")
 
 if __name__ == '__main__':
     transform_ned_pipeline()
