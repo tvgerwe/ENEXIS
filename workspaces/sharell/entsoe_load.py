@@ -105,10 +105,3 @@ if not raw_entsoe.empty:
     print("Data successfully written to database table 'raw_entsoe_obs'")
 else:
     print("No data available to write to the database.")
-
-# Verify timestamps
-print("Yearly load timestamps:", yearly_load.index)
-print("Yearly price timestamps:", yearly_price.index)
-
-for col_name, flow_series in flow_data.items():
-    print(f"Timestamps for {col_name}:", flow_series.index)
