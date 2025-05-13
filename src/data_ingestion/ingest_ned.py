@@ -180,10 +180,12 @@ def main():
         end_date = datetime.date.today().isoformat()
         logger.info(f"Startdatum: {start_date} → Einddatum: {end_date}")
 
-        ned_types = config['api']['ned'].get('types', [2])
+        ned_types = config['api']['ned'].get('types')
+        
         all_records = []
         for gen_type in ned_types:
             try:
+                logger.info(f"gen_type: {gen_type}")
                 recs = fetch_records(endpoint, headers, start_date, end_date, gen_type)
                 all_records.extend(recs)
             except Exception as e:
