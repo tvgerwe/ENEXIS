@@ -42,28 +42,28 @@ conn = sqlite3.connect(db_path)
 # Connect to the SQLite database using the existing db_path
 conn = sqlite3.connect(db_path)
 # Step 2: Read data from table
-df_pd_orig = pd.read_sql_query("SELECT * FROM raw_ned_df ORDER BY validto DESC", conn)
+df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
 # Step 3: Close the connection
 conn.close()
 
 # Step 1: Convert 'validto' column to datetime
-df_pd_orig['validto'] = pd.to_datetime(df_pd_orig['validto'])
+df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
 # Step 2: Sort the DataFrame by 'validto' to avoid data leakage
-df = df_pd_orig.sort_values(by='validto')
+df = df_pd_orig.sort_values(by='datetime')
 
-df['year'] = df['validto'].dt.year
-df['month'] = df['validto'].dt.month
-df['day'] = df['validto'].dt.day
-df['day_of_week'] = df['validto'].dt.dayofweek
-df['week_of_year'] = df['validto'].dt.isocalendar().week
+df['year'] = df['datetime'].dt.year
+df['month'] = df['datetime'].dt.month
+df['day'] = df['datetime'].dt.day
+df['day_of_week'] = df['datetime'].dt.dayofweek
+df['week_of_year'] = df['datetime'].dt.isocalendar().week
 
-df['lag_1'] = df['volume'].shift(1)
-df['lag_2'] = df['volume'].shift(2)
-df['rolling_mean_3'] = df['volume'].shift(1).rolling(window=3).mean()
+df['lag_1'] = df['Price'].shift(1)
+df['lag_2'] = df['Price'].shift(2)
+df['rolling_mean_3'] = df['Price'].shift(1).rolling(window=3).mean()
 
 features = ['year', 'month', 'day', 'day_of_week', 'week_of_year', 'lag_1', 'lag_2', 'rolling_mean_3']
 X = df[features]
-y = df['volume']
+y = df['Price']
 
 tscv = TimeSeriesSplit(n_splits=5)
 
@@ -73,12 +73,12 @@ for train_index, test_index in tscv.split(df):
     test = df.iloc[test_index].copy()
 
 # Step 4: Convert 'validto' (datetime) to numeric format (Unix timestamp in seconds)
-train['validto_numeric'] = train['validto'].astype('int64') // 10**9  # Convert datetime to numeric timestamp
-test['validto_numeric'] = test['validto'].astype('int64') // 10**9
+train['datetime_numeric'] = train['datetime'].astype('int64') // 10**9  # Convert datetime to numeric timestamp
+test['datetime_numeric'] = test['datetime'].astype('int64') // 10**9
 
 # Step 1: Prepare training data for Prophet
-train_prophet = train[['validto', 'volume']].rename(columns={'validto': 'ds', 'volume': 'y'})
-test_prophet = test[['validto', 'volume']].rename(columns={'validto': 'ds', 'volume': 'y'})
+train_prophet = train[['datetime', 'Price']].rename(columns={'datetime': 'ds', 'Price': 'y'})
+test_prophet = test[['datetime', 'Price']].rename(columns={'datetime': 'ds', 'Price': 'y'})
 
 # Remove timezone if present
 train_prophet['ds'] = train_prophet['ds'].dt.tz_localize(None)
@@ -93,8 +93,8 @@ model.fit(train_prophet)
 print("train complete")
 
 # Step 6: Make predictions on the test set
-X_test = test[['validto_numeric']]
-y_test = test['volume']
+X_test = test[['datetime_numeric']]
+y_test = test['Price']
 
 print("test start")
 # Step 3: Create future dataframe for the test period
