@@ -35,7 +35,6 @@ def compute_aic(y_true, y_pred, num_params):
     return aic
 
 
-
 # Connect to the SQLite database
 db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
 conn = sqlite3.connect(db_path)
@@ -124,6 +123,42 @@ plt.tight_layout()
 plt.show()
 
 print("plot complete")
+
+
+# Step 5: Evaluation
+y_true = test_prophet['y'].values
+y_pred = forecast['yhat'].values
+
+y_int_pred = np.round(future).astype(int)  # Rounds and converts to int
+
+# Step 6: Plot the forecast
+model.plot(forecast)
+plt.title("Prophet Forecast")
+plt.xlabel("Date")
+plt.ylabel("Predicted Value")
+plt.tight_layout()
+plt.show()
+
+# Optional: Plot forecast components (trend, weekly, yearly seasonality)
+model.plot_components(forecast)
+plt.tight_layout()
+plt.show()
+
+
+# Step 7: Convert Predictions Back to Polars (Optional)
+df_pred = pl.DataFrame({"X Values": X_test.values, "Actual": y_test.values, "Predicted": y_int_pred, "Diff": y_test.values - y_int_pred})
+print(df_pred)
+
+# Step 8: Visualize the results (optional)
+plt.plot(test['datetime_numeric'], y_test, label='True Price')
+plt.plot(test['datetime_numeric'], future, label='Predicted Price')
+plt.xlabel('Date')
+plt.ylabel('Price')
+plt.legend()
+plt.show()
+
+# aic_prophet = compute_aic(y_test, y_int_pred, num_params=X_train.shape[1] + 1)
+
 
 
 #residuals = y_test - y_int_pred
