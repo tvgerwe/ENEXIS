@@ -41,6 +41,9 @@ print("Data resampled to hourly frequency based on the past hour!")
 df_hourly.reset_index(inplace=True)
 print("Timestamps added to the final DataFrame!")
 
+# Shift timestamps by 1 hour to calculate the mean for the past hour
+df.index = df.index - pd.Timedelta(hours=-1)
+
 neighboring_countries = ['BE', 'DE', 'GB', 'DK', 'NO']
 
 for neighbor in neighboring_countries:
