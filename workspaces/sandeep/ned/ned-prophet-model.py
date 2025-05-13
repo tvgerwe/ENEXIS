@@ -41,9 +41,13 @@ conn = sqlite3.connect(db_path)
 # Connect to the SQLite database using the existing db_path
 conn = sqlite3.connect(db_path)
 # Step 2: Read data from table
-df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
+# df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
+df_pd_orig = pd.read_sql_query("SELECT * FROM raw_entsoe_obs ORDER BY Timestamp DESC", conn)
 # Step 3: Close the connection
 conn.close()
+
+df_pd_orig["datetime"] = df_pd_orig["Timestamp"]
+
 
 # Step 1: Convert 'validto' column to datetime
 df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
@@ -70,6 +74,8 @@ tscv = TimeSeriesSplit(n_splits=5)
 for train_index, test_index in tscv.split(df):
     train = df.iloc[train_index].copy()
     test = df.iloc[test_index].copy()
+
+
 
 # Step 4: Convert 'validto' (datetime) to numeric format (Unix timestamp in seconds)
 train['datetime_numeric'] = train['datetime'].astype('int64') // 10**9  # Convert datetime to numeric timestamp
@@ -143,7 +149,6 @@ plt.show()
 model.plot_components(forecast)
 plt.tight_layout()
 plt.show()
-
 
 # Step 7: Convert Predictions Back to Polars (Optional)
 df_pred = pl.DataFrame({"X Values": X_test.values, "Actual": y_test.values, "Predicted": y_int_pred, "Diff": y_test.values - y_int_pred})
