@@ -28,7 +28,6 @@ df.index = df.index - pd.Timedelta(hours=1)
 # Ensure the index is datetime with UTC
 df['Timestamp'] = pd.to_datetime(df['Timestamp'], errors='coerce')
 df.set_index('Timestamp', inplace=True)  # Set 'Timestamp' as the index
-print("Index converted to datetime with UTC!")
 
 # Shift timestamps by 1 hour to calculate the mean for the past hour
 df.index = df.index - pd.Timedelta(hours=1)
