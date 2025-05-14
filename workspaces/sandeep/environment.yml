@@ -1,0 +1,32 @@
+name: enexis-may-03-env-run
+channels:
+  - defaults
+  - conda-forge
+
+# numpy pandas matplotlib scipy scikit-learn xgboost joblib polars icecream transformers prefect gradio
+
+dependencies:
+  - python=3.10
+  - numpy=1.26.4
+  - pandas
+  - rich
+  - matplotlib
+  - scipy
+  - scikit-learn
+#  - statsmodels
+#  - xgboost
+#  - joblib
+#  - polars
+#  - icecream
+#  - tensorflow
+#  - prophet
+#  - pytorch
+#  - torchvision
+#  - torchaudio
+#  - transformers
+  - prefect>=2.14.10
+#  - gradio
+  - griffe>=0.22.0
+  - streamlit
+
+# conda env create -f workspaces/sandeep/environment.yml 
