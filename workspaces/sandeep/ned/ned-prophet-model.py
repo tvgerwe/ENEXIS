@@ -41,13 +41,12 @@ conn = sqlite3.connect(db_path)
 # Connect to the SQLite database using the existing db_path
 conn = sqlite3.connect(db_path)
 # Step 2: Read data from table
-# df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
-df_pd_orig = pd.read_sql_query("SELECT * FROM raw_entsoe_obs ORDER BY Timestamp DESC", conn)
+df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
+
+# df_pd_orig = pd.read_sql_query("SELECT * FROM raw_entsoe_obs ORDER BY Timestamp DESC", conn)
+#df_pd_orig["datetime"] = df_pd_orig["Timestamp"]
 # Step 3: Close the connection
 conn.close()
-
-df_pd_orig["datetime"] = df_pd_orig["Timestamp"]
-
 
 # Step 1: Convert 'validto' column to datetime
 df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
@@ -72,18 +71,16 @@ tscv = TimeSeriesSplit(n_splits=5)
 
 # Example to get the latest train-test split
 for train_index, test_index in tscv.split(df):
-    train = df.iloc[train_index].copy()
-    test = df.iloc[test_index].copy()
-
-
+    X_train, X_test = df.iloc[train_index], X.iloc[test_index]
+    y_train, y_test = df.iloc[train_index], y.iloc[test_index]
 
 # Step 4: Convert 'validto' (datetime) to numeric format (Unix timestamp in seconds)
-train['datetime_numeric'] = train['datetime'].astype('int64') // 10**9  # Convert datetime to numeric timestamp
-test['datetime_numeric'] = test['datetime'].astype('int64') // 10**9
+X_train['datetime_numeric'] = X_train['datetime'].astype('int64') // 10**9  # Convert datetime to numeric timestamp
+y_train['datetime_numeric'] = y_train['datetime'].astype('int64') // 10**9
 
 # Step 1: Prepare training data for Prophet
-train_prophet = train[['datetime', 'Price']].rename(columns={'datetime': 'ds', 'Price': 'y'})
-test_prophet = test[['datetime', 'Price']].rename(columns={'datetime': 'ds', 'Price': 'y'})
+train_prophet = X_train[['datetime', 'Price']].rename(columns={'datetime': 'ds', 'Price': 'y'})
+test_prophet = y_train[['datetime', 'Price']].rename(columns={'datetime': 'ds', 'Price': 'y'})
 
 # Remove timezone if present
 train_prophet['ds'] = train_prophet['ds'].dt.tz_localize(None)
@@ -96,10 +93,6 @@ model = Prophet()
 model.fit(train_prophet)
 
 print("train complete")
-
-# Step 6: Make predictions on the test set
-X_test = test[['datetime_numeric']]
-y_test = test['Price']
 
 print("test start")
 # Step 3: Create future dataframe for the test period
@@ -130,6 +123,9 @@ plt.show()
 
 print("plot complete")
 
+print("y_test preview:")
+print(y_test.describe())
+print(y_test.head(10))
 
 # Step 5: Evaluation
 y_true = test_prophet['y'].values
@@ -151,20 +147,47 @@ plt.tight_layout()
 plt.show()
 
 # Step 7: Convert Predictions Back to Polars (Optional)
-df_pred = pl.DataFrame({"X Values": X_test.values, "Actual": y_test.values, "Predicted": y_int_pred, "Diff": y_test.values - y_int_pred})
-print(df_pred)
+
+# Ensure actual and predicted are 1D NumPy arrays
+actual = y_test.to_numpy().ravel()             # 1D array
+predicted = y_int_pred                         # y_int_pred might be a DataFrame
+
+# If predicted is a DataFrame, extract the first column as a Series
+if isinstance(predicted, pd.DataFrame):
+    predicted = predicted.iloc[:, 0].to_numpy().ravel()
+elif isinstance(predicted, pd.Series):
+    predicted = predicted.to_numpy().ravel()
+else:
+    predicted = np.array(predicted).ravel()
+
+# Now compute the difference safely
+diff = actual - predicted
+
+# Handle x-axis values for Polars DataFrame
+x_values = X_test['validto'].to_numpy() if 'validto' in X_test.columns else X_test.index.to_numpy()
+
+# Create the Polars DataFrame
+df_pred = pl.DataFrame({
+    "X_Values": x_values,
+    "Actual": actual,
+    "Predicted": predicted,
+    "Diff": diff
+})
 
 # Step 8: Visualize the results (optional)
-plt.plot(test['datetime_numeric'], y_test, label='True Price')
-plt.plot(test['datetime_numeric'], future, label='Predicted Price')
+# Make sure test['datetime_numeric'] and future are aligned in shape
+plt.figure(figsize=(10, 5))
+plt.plot(y_test['datetime_numeric'].values, y_test.values, label='True Price')
+plt.plot(y_test['datetime_numeric'].values, y_int_pred, label='Predicted Price')
 plt.xlabel('Date')
 plt.ylabel('Price')
+plt.title('Prediction vs Actual')
 plt.legend()
+plt.tight_layout()
 plt.show()
 
+
 # aic_prophet = compute_aic(y_test, y_int_pred, num_params=X_train.shape[1] + 1)
-
-
 
 #residuals = y_test - y_int_pred
 #mse = np.mean(residuals**2)
@@ -181,4 +204,3 @@ print("model_name", "Prophet")
 #print("execution_time", execution_time)
 
 print("Model run complete")
-
