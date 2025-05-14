@@ -9,7 +9,7 @@ from matplotlib.ticker import MaxNLocator # To ensure demand axis are integer.
 
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import TimeSeriesSplit
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from prophet import Prophet
 import polars as pl
@@ -54,22 +54,12 @@ df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
 # Step 2: Sort the DataFrame by 'validto' to avoid data leakage
 df = df_pd_orig.sort_values(by='datetime')
 
-'''
-df['year'] = df['datetime'].dt.year
-df['month'] = df['datetime'].dt.month
-df['day'] = df['datetime'].dt.day
-df['day_of_week'] = df['datetime'].dt.dayofweek
-df['week_of_year'] = df['datetime'].dt.isocalendar().week
-
-df['lag_1'] = df['Price'].shift(1)
-df['lag_2'] = df['Price'].shift(2)
-df['rolling_mean_3'] = df['Price'].shift(1).rolling(window=3).mean()
-'''
-# features = ['year', 'month', 'day', 'day_of_week', 'week_of_year', 'lag_1', 'lag_2', 'rolling_mean_3']
-
 # Step 1: Define features and target
 X = df.drop(columns=['Price'])                   # All features except target
 y = df[['datetime', 'Price']]                    # Only datetime and target
+y = y[y['Price'] > 0]                            # Picking up prices that are positive   
+X = X.loc[y.index]                               # realigning the indexes
+
 
 # Step 2: Time Series Split
 tscv = TimeSeriesSplit(n_splits=5)
@@ -77,9 +67,18 @@ for train_index, test_index in tscv.split(X):
     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
     y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
+print("Train Date Range:")
+print(f"Start: {X_train['datetime'].min()}")
+print(f"End:   {X_train['datetime'].max()}")
+
+print("\nTest Date Range:")
+print(f"Start: {X_test['datetime'].min()}")
+print(f"End:   {X_test['datetime'].max()}")
+
 # Step 3: Prepare data for Prophet
 train_prophet = y_train.rename(columns={'datetime': 'ds', 'Price': 'y'}).copy()
 test_prophet = y_test.rename(columns={'datetime': 'ds', 'Price': 'y'}).copy()
+
 train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
 test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
 
@@ -87,18 +86,26 @@ test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
 model_run_start_time = time.time()
 model = Prophet()
 model.fit(train_prophet)
-model_run_end_time = time.time()
 print("✅ Training complete")
+
+print(y_test.describe())
+print(y_test.head(10))
+print("Zero or negative actuals:")
+#print(y_test[y_test <= 0])
+
 
 # Step 5: Forecasting
 future = test_prophet[['ds']].copy()
 forecast = model.predict(future)
 print("✅ Forecast complete")
+model_run_end_time = time.time()
+
 
 # Step 6: Evaluation
 y_true = test_prophet['y'].values
 y_pred = forecast['yhat'].values
 diff = y_true - y_pred
+
 
 # Step 7: Plot Forecast
 model.plot(forecast)
@@ -133,6 +140,7 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
+
 # Final: Print execution time
 print(f"⏱️ Execution time: {model_run_end_time - model_run_start_time:.2f} seconds")
 
@@ -140,18 +148,21 @@ print(f"⏱️ Execution time: {model_run_end_time - model_run_start_time:.2f} s
 mae = mean_absolute_error(y_true, y_pred)
 mse = mean_squared_error(y_true, y_pred)
 rmse = np.sqrt(mse)
-mape = np.mean(np.abs((y_true - y_pred) / np.clip(y_true, a_min=1e-10, a_max=None))) * 100
-smape = np.mean(2 * np.abs(y_true - y_pred) / (np.abs(y_true) + np.abs(y_pred))) * 100
+# mape = np.mean(np.abs((y_true - y_pred) / np.clip(y_true, a_min=1e-10, a_max=None))) * 100
+# smape = np.mean(2 * np.abs(y_true - y_pred) / (np.abs(y_true) + np.abs(y_pred))) * 100
 
 print("\n📊 Evaluation Metrics:")
 
+r2 = r2_score(y_true, y_pred)
 
 model_name = "Prophet"
 print("model_name", "Prophet")
 print(f"MAE   : {mae:.2f}")
 print(f"MSE   : {mse:.2f}")
 print(f"RMSE  : {rmse:.2f}")
-print(f"MAPE  : {mape:.2f}%")
-print(f"sMAPE : {smape:.2f}%")
+print(f"R²    : {r2:.4f}")
+
+# print(f"MAPE  : {mape:.2f}%")
+# print(f"sMAPE : {smape:.2f}%")
 
 print("Model run complete")
