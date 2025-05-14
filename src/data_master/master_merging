@@ -39,13 +39,13 @@ def build_master_table():
         df_time = safe_load_table(conn, "dim_datetime")
         df_entsoe = safe_load_table(conn, "transform_entsoe_obs")
         df_weather = safe_load_table(conn, "transform_weather_obs")
-        df_ned = safe_load_table(conn, "transform_ned_obs")
+        df_ned = safe_load_table(conn, "transform_ned_obs_2")
         df_forecast = safe_load_table(conn, "transform_meteo_forecast_now")
 
         # Kolomnamen normaliseren
         df_entsoe.rename(columns={"Timestamp": "datetime"}, inplace=True)
         df_weather.rename(columns={"date": "datetime"}, inplace=True)
-        df_ned.rename(columns={"ned.validfrom": "datetime"}, inplace=True)
+        df_ned.rename(columns={"validto": "datetime"}, inplace=True) # replacing validfrom with validto
         df_forecast.rename(columns={"date": "datetime"}, inplace=True)
 
         for df_name, df in zip([
