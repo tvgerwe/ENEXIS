@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# creates 'raw_ned_obs' table
 
 import os
 import sys
@@ -34,7 +33,7 @@ with open(CONFIG_PATH, "r") as f:
 
 # === CONSTANTS ===
 
-TIMESTAMP_COLUMN = 'validfrom' # To be changed to 'validto'  to have right timestamp ?
+TIMESTAMP_COLUMN = 'validfrom' # To be changed from 'validfrom' to 'validto' to have right timestamp
 
 # === HELPERS ===
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# creates 'raw_ned_obs' table
+# creates 
 
 import os
 import sys

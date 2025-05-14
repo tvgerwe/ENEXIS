@@ -3,7 +3,7 @@
         "ned": {
             "endpoint": "https://api.ned.nl/v1/utilizations",
             "api_key": "21702b116e4c72974d62853623de0adcb0f530d98591b308a41a881735267bbb",
-            "types": [1,2,17,20] # only Types for which varying 7 days predictions are available
+            "types": [1,2,17,20] # 
         },
         "entsoe": {
             "api_key": "82aa28d4-59f3-4e3a-b144-6659aa9415b5",
