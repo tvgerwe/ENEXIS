@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# creates 'raw_ned_obs_2025' table, with 1,2,17,20 as types
+# creates 'raw_ned_obs_2025' table, 
 
 import os
 import sys

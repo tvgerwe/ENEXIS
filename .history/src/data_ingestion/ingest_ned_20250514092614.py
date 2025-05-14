@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# creates 'raw_ned_obs_2025' table, with 1,2,17,20 as types
+# creates 'raw_ned_obs' table
 
 import os
 import sys
@@ -65,10 +65,10 @@ def ensure_tables_exist(conn_log):
         conn_log.commit()
 
 def get_last_timestamp(conn):
-    if not table_exists(conn, 'raw_ned_obs_2'):
+    if not table_exists(conn, 'raw_ned_obs'):
         return None
     cur = conn.cursor()
-    cur.execute(f"SELECT MAX({TIMESTAMP_COLUMN}) FROM raw_ned_obs_2")
+    cur.execute(f"SELECT MAX({TIMESTAMP_COLUMN}) FROM raw_ned_obs")
     return cur.fetchone()[0]
 
 def create_table_from_df(conn, df, table_name):
@@ -179,7 +179,6 @@ def main():
 
         #prev_ts = get_last_timestamp(conn_data)
         #start_date = pd.to_datetime(prev_ts).date() if prev_ts else default_start
-        start_date = pd.to_datetime("2025-01-01").date()
         end_date = datetime.date.today().isoformat()
         logger.info(f"Startdatum: {start_date} → Einddatum: {end_date}")
 
@@ -197,15 +196,15 @@ def main():
         if all_records:
             df = pd.DataFrame(all_records)
             df.columns = [c.lower() for c in df.columns]
-            if not table_exists(conn_data, 'raw_ned_obs_2'):
-                create_table_from_df(conn_data, df, 'raw_ned_obs_2')
-                logger.info("Created raw_ned_obs_2 table")
+            if not table_exists(conn_data, 'raw_ned_obs'):
+                create_table_from_df(conn_data, df, 'raw_ned_obs')
+                logger.info("Created raw_ned_obs table")
 
             logger.info(f"Writing {len(df)} records to DB")
-            df.to_sql('raw_ned_obs_2', conn_data, if_exists='append', index=False)
+            df.to_sql('raw_ned_obs', conn_data, if_exists='append', index=False)
 
             logger.info("Removing duplicates...")
-            remove_duplicates(conn_data, 'raw_ned_obs_2')
+            remove_duplicates(conn_data, 'raw_ned_obs')
 
             rows_fetched = len(df)
             last_timestamp = df[TIMESTAMP_COLUMN].max()
