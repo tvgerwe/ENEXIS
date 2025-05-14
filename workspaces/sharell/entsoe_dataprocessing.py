@@ -16,6 +16,7 @@ df = pd.read_sql_query(query, conn)
 # Sluit de verbinding
 conn.close()
 
+df['Price'] = df['Price']*1000 # Convert price to € per kW
 
 # Ensure the index is datetime with UTC
 df.index = pd.to_datetime(df.index, utc=True)
