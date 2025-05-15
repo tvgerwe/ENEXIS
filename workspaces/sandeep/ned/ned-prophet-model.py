@@ -23,6 +23,7 @@ import sqlite3
 from pathlib import Path
 import logging
 import json
+import joblib
 
 
 logging.basicConfig(
@@ -196,7 +197,7 @@ print("\n📊 Evaluation Metrics:")
 r2 = r2_score(y_true, y_pred)
 
 model_name = "Prophet"
-comments = "All attributes with -ve values for Price Model Run"
+comments = "Saving the Model Run"
 print("model_name", "Prophet")
 print(f"MAE   : {mae:.2f}")
 print(f"MSE   : {mse:.2f}")
@@ -233,5 +234,11 @@ if os.path.exists(model_results_file_path):
 else:
     # Create new file
     metrics_df.to_csv(model_results_file_path, index=False)
+
+model_file_path = f'{MODEL_RUN_RESULTS_DIR}prophet_model.pkl'
+
+# Save model
+joblib.dump(model, model_file_path)
+print("Model saved.")
 
 print(f"✅ Model evaluation saved to {model_results_file_path}")
