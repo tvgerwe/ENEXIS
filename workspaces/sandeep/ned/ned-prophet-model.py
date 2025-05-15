@@ -78,19 +78,22 @@ df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
 # Step 2: Sort the DataFrame by 'validto' to avoid data leakage
 df = df_pd_orig.sort_values(by='datetime')
 
-# Step 1: Define features and target
-X = df.drop(columns=['Price'])                   # All features except target
-y = df[['datetime', 'Price']]                    # Only datetime and target
-y = y[y['Price'] > 0]                            # Picking up prices that are positive   
-X = X.loc[y.index]                               # realigning the indexes
+# Step 1: Filter out negative Price and prepare data
+# df = df[df['Price'] > 0].copy()                   # Keep only rows with positive Price
+df['datetime'] = pd.to_datetime(df['datetime'])   # Ensure datetime column is datetime type
+df['datetime'] = df['datetime'].dt.tz_localize(None)  # Remove timezone info if present
 
+# Step 2: Define target and features
+y = df[['datetime', 'Price']]                     # Target with timestamp
+X = df.drop(columns=['Price'])                    # All other features, including datetime
 
-# Step 2: Time Series Split
+# Step 3: Time Series Split
 tscv = TimeSeriesSplit(n_splits=5)
 for train_index, test_index in tscv.split(X):
     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
     y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
+# Print train/test datetime range
 print("Train Date Range:")
 print(f"Start: {X_train['datetime'].min()}")
 print(f"End:   {X_train['datetime'].max()}")
@@ -99,12 +102,24 @@ print("\nTest Date Range:")
 print(f"Start: {X_test['datetime'].min()}")
 print(f"End:   {X_test['datetime'].max()}")
 
-# Step 3: Prepare data for Prophet
-train_prophet = y_train.rename(columns={'datetime': 'ds', 'Price': 'y'}).copy()
-test_prophet = y_test.rename(columns={'datetime': 'ds', 'Price': 'y'}).copy()
+# Step 4: Merge X and y for Prophet input
+train_prophet = pd.concat([y_train.reset_index(drop=True), 
+                           X_train.drop(columns=['datetime']).reset_index(drop=True)], axis=1)
+test_prophet = pd.concat([y_test.reset_index(drop=True), 
+                          X_test.drop(columns=['datetime']).reset_index(drop=True)], axis=1)
 
+# Step 5: Rename for Prophet
+train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
+test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
+
+# Step 6: Ensure datetime has no timezone
 train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
 test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
+
+# (Optional) Show the head of the training DataFrame for verification
+print("\nProphet Training Data:")
+print(train_prophet.head())
+
 
 # Step 4: Train Prophet model
 model_run_start_time = time.time()
@@ -181,7 +196,7 @@ print("\n📊 Evaluation Metrics:")
 r2 = r2_score(y_true, y_pred)
 
 model_name = "Prophet"
-comments = "All attributes Model Run"
+comments = "All attributes with -ve values for Price Model Run"
 print("model_name", "Prophet")
 print(f"MAE   : {mae:.2f}")
 print(f"MSE   : {mse:.2f}")

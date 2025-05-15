@@ -25,6 +25,29 @@ import time
 
 import sqlite3
 
+from pathlib import Path
+import logging
+import json
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger('model_run_prophet')
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+CONFIG_PATH = PROJECT_ROOT / "sandeep" / "config" / "config.json"
+
+# === CONFIG ===
+
+if not CONFIG_PATH.exists():
+    raise FileNotFoundError(f"❌ Config not found at : {CONFIG_PATH}")
+with open(CONFIG_PATH, "r") as f:
+    config = json.load(f)
+
+MODEL_RUN_RESULTS_DIR = config['ned']['ned_model_download_dir']
+
 # Custom function for MAPE and sMAPE
 def mean_absolute_percentage_error(y_true, y_pred): 
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
@@ -59,46 +82,50 @@ df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
 # Step 2: Sort the DataFrame by 'validto' to avoid data leakage
 df = df_pd_orig.sort_values(by='datetime')
 
-# STEP 1: Remove outliers
-df = df[df['Price'] > 0].copy()
+# Step 1: Filter out negative Price and prepare data
+# df = df[df['Price'] > 0].copy()                   # Keep only rows with positive Price
+df['datetime'] = pd.to_datetime(df['datetime'])   # Ensure datetime column is datetime type
+df['datetime'] = df['datetime'].dt.tz_localize(None)  # Remove timezone info if present
 
+# Step 2: Define target and features
+y = df[['datetime', 'Price']]                     # Target with timestamp
+X = df.drop(columns=['Price'])                    # All other features, including datetime
 
-# STEP 2: Define features and target
-# Exclude target and datetime from regressors
-regressors = [col for col in df.columns if col not in ['Price', 'datetime']]
-
-# STEP 3: Prepare X and y
-X = df[regressors]
-y = df[['datetime', 'Price']]
-
-
-# Step 2: Time Series Split
+# Step 3: Time Series Split
 tscv = TimeSeriesSplit(n_splits=5)
 for train_index, test_index in tscv.split(X):
     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
     y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
+# Print train/test datetime range
 print("Train Date Range:")
-# print(f"Start: {X_train['datetime'].min()}")
-# print(f"End:   {X_train['datetime'].max()}")
+print(f"Start: {X_train['datetime'].min()}")
+print(f"End:   {X_train['datetime'].max()}")
 
 print("\nTest Date Range:")
-# print(f"Start: {X_test['datetime'].min()}")
-# print(f"End:   {X_test['datetime'].max()}")
+print(f"Start: {X_test['datetime'].min()}")
+print(f"End:   {X_test['datetime'].max()}")
 
-# Step 3: Prepare data for Prophet
-# STEP 5: Create training DataFrame for Prophet
-train_prophet = pd.concat([y_train.reset_index(drop=True), X_train.reset_index(drop=True)], axis=1)
-test_prophet = pd.concat([y_test.reset_index(drop=True), X_test.reset_index(drop=True)], axis=1)
+# Step 4: Merge X and y for Prophet input
+train_prophet = pd.concat([y_train.reset_index(drop=True), 
+                           X_train.drop(columns=['datetime']).reset_index(drop=True)], axis=1)
+test_prophet = pd.concat([y_test.reset_index(drop=True), 
+                          X_test.drop(columns=['datetime']).reset_index(drop=True)], axis=1)
 
+# Step 5: Rename for Prophet
 train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 
-# STEP 6: Remove timezone
+# Step 6: Ensure datetime has no timezone
 train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
 test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
 
+# (Optional) Show the head of the training DataFrame for verification
+print("\nProphet Training Data:")
+print(train_prophet.head())
+
 """
+
 # Parameter grid
 param_grid = {
     'changepoint_prior_scale': [0.001, 0.01, 0.1, 0.5],
@@ -110,10 +137,9 @@ param_grid = {
 # Best Model Param grid
 param_grid = {
     'changepoint_prior_scale': [0.001],
-    'seasonality_mode': ['multiplicative'],
-    'seasonality_prior_scale': [10.0]
+    'seasonality_mode': ['additive'],
+    'seasonality_prior_scale': [20.0]
 }
-
 
 # Create list of all parameter combinations
 import itertools
@@ -218,4 +244,36 @@ print(f"R²    : {r2:.4f}")
 # print(f"MAPE  : {mape:.2f}%")
 # print(f"sMAPE : {smape:.2f}%")
 
-print("Model run complete")
+# Define the filename
+model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+results = []
+model_name = "Prophet"
+comments = "All data with hyperparameter tuning Model Run"
+print("model_name", "Prophet")
+
+model_execution_time = model_run_end_time - model_run_start_time
+
+# Append results to results
+results.append(["Prophet", mae, mse, rmse, r2, comments, model_execution_time, model_run_timestamp])
+
+# Convert results to DataFrame
+metrics_df = pd.DataFrame(results, columns=["Model", "MAE", "MSE", "RMSE", "R2", "Comments", "Execution Time", "Run At"])
+
+# Display Table
+print(metrics_df)
+
+
+model_results_file_path = f'{MODEL_RUN_RESULTS_DIR}warp-prophet-model-results.csv'
+
+# Step 10: Check if file exists, then append or create
+if os.path.exists(model_results_file_path):
+    # Append to existing file
+    existing_results = pd.read_csv(model_results_file_path)
+    updated_results = pd.concat([existing_results, metrics_df], ignore_index=True)
+    updated_results.to_csv(model_results_file_path, index=False)
+else:
+    # Create new file
+    metrics_df.to_csv(model_results_file_path, index=False)
+
+print(f"✅ Model evaluation saved to {model_results_file_path}")
