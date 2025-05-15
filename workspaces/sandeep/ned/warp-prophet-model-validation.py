@@ -39,53 +39,88 @@ conn = sqlite3.connect(db_path)
 df_raw = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
 conn.close()
 
+
+# Prepare data
 df_raw['datetime'] = pd.to_datetime(df_raw['datetime']).dt.tz_localize(None)
 
-df = df_raw[df_raw['Price'] > 0].copy()
-df['ds'] = df['datetime']
+val_start = pd.to_datetime("2025-04-15")
+val_end = pd.to_datetime("2025-05-14")
+
+# Filter raw data for validation period
+df_filtered = df_raw[(df_raw['datetime'] >= val_start) & (df_raw['datetime'] <= val_end)].copy()
+
+# Filter positive Price and prepare target
+# df = df_filtered[df_filtered['Price'] > 0].copy()
+df = df_filtered.copy()
+df['ds'] = pd.to_datetime(df['datetime']).dt.tz_localize(None)
 df['y'] = df['Price']
-df = df[['ds', 'y']].sort_values(by='ds')
+df = df[['ds', 'y']].sort_values('ds')
 
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 
-# === Define Validation Date Range ===
-val_start = "2025-04-15"
-val_end   = "2025-05-14"
+# Prepare regressors DataFrame (make sure columns exist and are cleaned)
+regressors = ['Total_Flow', 'Solar_Vol', 'Wind_Vol', 'WindOffshore_Vol', 'Nuclear_Vol', 'temperature_2m']
+X = df_filtered[['datetime'] + regressors].copy()
+X['ds'] = pd.to_datetime(X['datetime']).dt.tz_localize(None)
+X.drop(columns=['datetime'], inplace=True)
+X.dropna(subset=regressors, inplace=True)
 
-# Create Future DataFrame and Predict
-future = model.make_future_dataframe(periods=(pd.to_datetime(val_end) - df['ds'].min()).days + 1, freq='D')
-forecast = model.predict(future)
+# Manually create future DataFrame for validation period only
+future_val = pd.DataFrame({'ds': pd.date_range(start=val_start, end=val_end, freq='D')})
 
-# Filter actual and predicted for validation window
-actual = df[(df['ds'] >= val_start) & (df['ds'] <= val_end)].copy().set_index('ds')
-pred = forecast[(forecast['ds'] >= val_start) & (forecast['ds'] <= val_end)].copy().set_index('ds')
+# Merge regressors onto future_val on 'ds'
+future_val = future_val.merge(X, on='ds', how='left')
 
-# === Join and Evaluate ===
-merged = actual.join(pred[['yhat']], how='inner').dropna()
-merged = merged.reset_index()  # Bring 'ds' back as a column
+# Fill missing regressor values (forward then backward fill)
+future_val[regressors] = future_val[regressors].ffill().bfill()
+
+print(f"Future validation dataframe length: {len(future_val)}")
+print(f"Number of missing regressor values after fill: {future_val[regressors].isna().sum().sum()}")
+
+if future_val.empty or future_val[regressors].isna().all().all():
+    raise ValueError("Future dataframe for validation period is empty or missing regressors. Check your data.")
+
+# Predict with model on manual future_val dataframe
+forecast = model.predict(future_val)
+
+# Filter actual for validation period and set index on 'ds'
+actual = df.set_index('ds')
+
+print(f"Actual data length in validation period: {len(actual)}")
+
+if actual.empty:
+    raise ValueError("Actual data for validation period is empty. Check your dataset and val_start/val_end.")
+
+# Join actual and predicted data on 'ds', drop NA rows
+merged = actual.join(forecast.set_index('ds')[['yhat']], how='inner').dropna().reset_index()
+
+print(f"Merged dataframe length: {len(merged)}")
 
 if merged.empty:
-    logger.warning("❌ No overlapping rows between actual and predicted data in the specified date range.")
-else:
-    # Evaluate
-    mae = mean_absolute_error(merged['y'], merged['yhat'])
-    mse = mean_squared_error(merged['y'], merged['yhat'])
-    rmse = np.sqrt(mse)
-    r2 = r2_score(merged['y'], merged['yhat'])
+    raise ValueError("No overlapping rows between actual and predicted data in the validation period.")
 
-    logger.info(f"📊 Validation from {val_start} to {val_end}:")
-    logger.info(f"MAE  : {mae:.2f}")
-    logger.info(f"MSE  : {mse:.2f}")
-    logger.info(f"RMSE : {rmse:.2f}")
-    logger.info(f"R²   : {r2:.4f}")
+# Calculate evaluation metrics
+mae = mean_absolute_error(merged['y'], merged['yhat'])
+mse = mean_squared_error(merged['y'], merged['yhat'])
+rmse = mse ** 0.5
+r2 = r2_score(merged['y'], merged['yhat'])
 
-    # === Save Actual vs Predicted to CSV ===
-    output_file = f'{MODEL_RUN_RESULTS_DIR}prophet_validation_actual_vs_predicted.csv'
-    merged[['ds', 'y', 'yhat']].to_csv(output_file, index=False)
-    logger.info(f"✅ Actual vs Predicted values saved to {output_file}")
+print(f"Validation metrics from {val_start.date()} to {val_end.date()}:")
+print(f"MAE  : {mae:.2f}")
+print(f"MSE  : {mse:.2f}")
+print(f"RMSE : {rmse:.2f}")
+print(f"R²   : {r2:.4f}")
 
 
-    # === Save Results ===
-    validation_output_path = f'{MODEL_RUN_RESULTS_DIR}validation_results.csv'
-    merged.reset_index().to_csv(validation_output_path, index=False)
-    logger.info(f"💾 Forecast vs Actual saved to {validation_output_path}")
+
+
+# === Save Actual vs Predicted to CSV ===
+output_file = f'{MODEL_RUN_RESULTS_DIR}prophet_validation_actual_vs_predicted.csv'
+merged[['ds', 'y', 'yhat']].to_csv(output_file, index=False)
+logger.info(f"✅ Actual vs Predicted values saved to {output_file}")
+
+
+# === Save Results ===
+validation_output_path = f'{MODEL_RUN_RESULTS_DIR}validation_results.csv'
+merged.reset_index().to_csv(validation_output_path, index=False)
+logger.info(f"💾 Forecast vs Actual saved to {validation_output_path}")

@@ -88,7 +88,7 @@ df = df_pd_orig.sort_values(by='datetime')
 df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)  # Ensure no timezone
 
 # Step 2: Filter out negative prices and define target/features
-df = df[df['Price'] > 0].copy()  # Filter positive prices only
+# df = df[df['Price'] > 0].copy()  # Filter positive prices only
 y = df[['datetime', 'Price']]    # Target
 X = df.drop(columns=['Price'])   # Features (including datetime)
 
@@ -113,30 +113,62 @@ print("\nTest Date Range:")
 print(f"Start: {X_test['datetime'].min()}")
 print(f"End:   {X_test['datetime'].max()}")
 
+# print(X.columns.tolist())
+
+"""
+['datetime', 'hour', 'day_of_week', 'month', 'day_of_year', 'date', 'hour_sin', 'hour_cos', 
+ 'weekday_sin', 'weekday_cos', 'yearday_sin', 'yearday_cos', 'is_holiday', 'is_weekend', 
+ 'is_non_working_day', 'Load', 'Flow_BE_to_NL', 'Flow_NL_to_BE', 'Flow_DE_to_NL', 'Flow_NL_to_DE', 
+ 'Flow_GB_to_NL', 'Flow_NL_to_GB', 'Flow_DK_to_NL', 'Flow_NL_to_DK', 'Flow_NO_to_NL', 'Flow_NL_to_NO', 
+ 'Flow_BE', 'Flow_DE', 'Flow_GB', 'Flow_DK', 'Flow_NO', 'Total_Flow', 'temperature_2m', 
+ 'wind_speed_10m', 'apparent_temperature', 'cloud_cover', 'snowfall', 'diffuse_radiation', 
+ 'direct_normal_irradiance', 'shortwave_radiation', 'Wind_Vol', 'WindOffshore_Vol', 'Solar_Vol', 
+ 'Nuclear_Vol']
+
+0 All, 1 Wind, 2 Solar, 3 Biogas, 4 HeatPump, 8 Cofiring, 9 Geothermal, 10 Other, 11 Waste, 12 BioOil, 13 Biomass
+14 Wood, 17 WindOffshore, 18 FossilGasPower, 19 FossilHardCoal, 20 Nuclear, 21 WastePower, 22 WindOffshoreB, 23 NaturalGas, 24 Biomethane, 25 BiomassPower
+26 OtherPower, 27 ElectricityMix, 28 GasMix, 31 GasDistribution, 35 CHP Total, 50 SolarThermal, 51 WindOffshoreC, 53 IndustrialConsumersGasCombination
+54 IndustrialConsumersPowerGasCombination, 55 LocalDistributionCompaniesCombination, 56 AllConsumingGas
+"""
+
 # Step 6: Combine X and y for Prophet
+regressors = ['Total_Flow', 'Solar_Vol', 'Wind_Vol', 'WindOffshore_Vol', 'Nuclear_Vol', 'temperature_2m']
+
+# Sanity check: keep only regressors present in X_train
+available_regressors = [col for col in regressors if col in X_train.columns]
+
 train_prophet = pd.concat(
-    [y_train.reset_index(drop=True), X_train.drop(columns=['datetime']).reset_index(drop=True)],
+    [y_train[['datetime', 'Price']].reset_index(drop=True), 
+     X_train[available_regressors].reset_index(drop=True)],
     axis=1
 )
 test_prophet = pd.concat(
-    [y_test.reset_index(drop=True), X_test.drop(columns=['datetime']).reset_index(drop=True)],
+    [y_test[['datetime', 'Price']].reset_index(drop=True), 
+     X_test[available_regressors].reset_index(drop=True)],
     axis=1
 )
 
-# Step 7: Rename for Prophet compatibility
 train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 
-# Step 8: Final timezone cleanup
 train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
 test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
 
-# Step 9: (Optional) Inspect sample training data
 print("\nProphet Training Data Sample:")
 print(train_prophet.head())
 
-"""
+print("y_train columns:", y_train.columns.tolist())
+print("X_train columns (used regressors):", available_regressors)
 
+model_run_start_time = time.time()
+
+# Step 10: Train Prophet model with only available regressors
+horizon = 30  # forecast days
+
+
+
+
+"""
 # Parameter grid
 param_grid = {
     'changepoint_prior_scale': [0.001, 0.01, 0.1, 0.5],
@@ -147,9 +179,9 @@ param_grid = {
 
 # Best Model Param grid
 param_grid = {
-    'changepoint_prior_scale': [0.001],
-    'seasonality_mode': ['additive'],
-    'seasonality_prior_scale': [20.0]
+    'changepoint_prior_scale': [0.5],
+    'seasonality_mode': ['multiplicative'],
+    'seasonality_prior_scale': [10.0]
 }
 
 # Create list of all parameter combinations
@@ -260,7 +292,7 @@ model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
 results = []
 model_name = "Prophet"
-comments = "Saving model with hyperparameter tuning Model Run"
+comments = "Revised model with hyperparameter tuning and -ve price Run"
 print("model_name", "Prophet")
 
 model_execution_time = model_run_end_time - model_run_start_time

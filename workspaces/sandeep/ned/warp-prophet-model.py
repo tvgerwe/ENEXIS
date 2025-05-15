@@ -83,7 +83,7 @@ df = df_pd_orig.sort_values(by='datetime')
 df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)  # Ensure no timezone
 
 # Step 2: Filter out negative prices and define target/features
-df = df[df['Price'] > 0].copy()  # Filter positive prices only
+# df = df[df['Price'] > 0].copy()  # Filter positive prices only
 y = df[['datetime', 'Price']]    # Target
 X = df.drop(columns=['Price'])   # Features (including datetime)
 
@@ -108,32 +108,63 @@ print("\nTest Date Range:")
 print(f"Start: {X_test['datetime'].min()}")
 print(f"End:   {X_test['datetime'].max()}")
 
+# print(X.columns.tolist())
+
+"""
+['datetime', 'hour', 'day_of_week', 'month', 'day_of_year', 'date', 'hour_sin', 'hour_cos', 
+ 'weekday_sin', 'weekday_cos', 'yearday_sin', 'yearday_cos', 'is_holiday', 'is_weekend', 
+ 'is_non_working_day', 'Load', 'Flow_BE_to_NL', 'Flow_NL_to_BE', 'Flow_DE_to_NL', 'Flow_NL_to_DE', 
+ 'Flow_GB_to_NL', 'Flow_NL_to_GB', 'Flow_DK_to_NL', 'Flow_NL_to_DK', 'Flow_NO_to_NL', 'Flow_NL_to_NO', 
+ 'Flow_BE', 'Flow_DE', 'Flow_GB', 'Flow_DK', 'Flow_NO', 'Total_Flow', 'temperature_2m', 
+ 'wind_speed_10m', 'apparent_temperature', 'cloud_cover', 'snowfall', 'diffuse_radiation', 
+ 'direct_normal_irradiance', 'shortwave_radiation', 'Wind_Vol', 'WindOffshore_Vol', 'Solar_Vol', 
+ 'Nuclear_Vol']
+
+0 All, 1 Wind, 2 Solar, 3 Biogas, 4 HeatPump, 8 Cofiring, 9 Geothermal, 10 Other, 11 Waste, 12 BioOil, 13 Biomass
+14 Wood, 17 WindOffshore, 18 FossilGasPower, 19 FossilHardCoal, 20 Nuclear, 21 WastePower, 22 WindOffshoreB, 23 NaturalGas, 24 Biomethane, 25 BiomassPower
+26 OtherPower, 27 ElectricityMix, 28 GasMix, 31 GasDistribution, 35 CHP Total, 50 SolarThermal, 51 WindOffshoreC, 53 IndustrialConsumersGasCombination
+54 IndustrialConsumersPowerGasCombination, 55 LocalDistributionCompaniesCombination, 56 AllConsumingGas
+"""
+
 # Step 6: Combine X and y for Prophet
+regressors = ['Total_Flow', 'Solar_Vol', 'Wind_Vol', 'WindOffshore_Vol', 'Nuclear_Vol', 'temperature_2m']
+
+# Sanity check: keep only regressors present in X_train
+available_regressors = [col for col in regressors if col in X_train.columns]
+
 train_prophet = pd.concat(
-    [y_train.reset_index(drop=True), X_train.drop(columns=['datetime']).reset_index(drop=True)],
+    [y_train[['datetime', 'Price']].reset_index(drop=True), 
+     X_train[available_regressors].reset_index(drop=True)],
     axis=1
 )
 test_prophet = pd.concat(
-    [y_test.reset_index(drop=True), X_test.drop(columns=['datetime']).reset_index(drop=True)],
+    [y_test[['datetime', 'Price']].reset_index(drop=True), 
+     X_test[available_regressors].reset_index(drop=True)],
     axis=1
 )
 
-# Step 7: Rename for Prophet compatibility
 train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 
-# Step 8: Final timezone cleanup
 train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
 test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
 
-# Step 9: (Optional) Inspect sample training data
 print("\nProphet Training Data Sample:")
 print(train_prophet.head())
 
+print("y_train columns:", y_train.columns.tolist())
+print("X_train columns (used regressors):", available_regressors)
 
-# Step 4: Train Prophet model
 model_run_start_time = time.time()
+
+# Step 10: Train Prophet model with only available regressors
+horizon = 30  # forecast days
+
 model = Prophet()
+
+for reg in available_regressors:
+    model.add_regressor(reg)
+
 model.fit(train_prophet)
 print("✅ Training complete")
 
@@ -142,21 +173,49 @@ print(y_test.head(10))
 print("Zero or negative actuals:")
 #print(y_test[y_test <= 0])
 
+# Create future dataframe with 'ds' column only
+future = model.make_future_dataframe(periods=horizon, freq='D')
 
-# Step 5: Forecasting
-future = test_prophet[['ds']].copy()
+# Merge regressors from X_test keyed by 'ds'
+future = future.merge(
+    X_test[['datetime'] + available_regressors].rename(columns={'datetime': 'ds'}),
+    on='ds',
+    how='left'
+)
+
+# Fill missing values in regressors
+future[available_regressors] = future[available_regressors].ffill().bfill()
+
+# Predict
 forecast = model.predict(future)
-print("✅ Forecast complete")
+
 model_run_end_time = time.time()
+print("✅ Forecast complete")
 
+model_execution_time = model_run_end_time - model_run_start_time
 
-# Step 6: Evaluation
-y_true = test_prophet['y'].values
-y_pred = forecast['yhat'].values
-diff = y_true - y_pred
+# === Align predictions and actuals by date ===
+forecast_indexed = forecast.set_index('ds')
+test_prophet_indexed = test_prophet.set_index('ds')
 
+# Inner join to keep only common dates and drop any rows with NaNs
+merged = test_prophet_indexed[['y']].join(forecast_indexed[['yhat']], how='inner').dropna()
 
-# Step 7: Plot Forecast
+print(f"Aligned data length: {len(merged)}")
+print(f"Date range: {merged.index.min()} to {merged.index.max()}")
+
+# Calculate difference
+diff = merged['y'] - merged['yhat']
+
+# === Error metrics ===
+mae = mean_absolute_error(merged['y'], merged['yhat'])
+mse = mean_squared_error(merged['y'], merged['yhat'])
+rmse = np.sqrt(mse)
+r2 = r2_score(merged['y'], merged['yhat'])
+
+print(f"MAE: {mae:.3f}, RMSE: {rmse:.3f}, R²: {r2:.3f}")
+
+# === Plot Prophet forecast ===
 model.plot(forecast)
 plt.title("Prophet Forecast")
 plt.xlabel("Date")
@@ -164,59 +223,29 @@ plt.ylabel("Predicted Price")
 plt.tight_layout()
 plt.show()
 
-# Step 8: Plot Forecast Components
+# === Plot Prophet components ===
 model.plot_components(forecast)
 plt.tight_layout()
 plt.show()
 
-# Step 9: Create Polars DataFrame for comparison
-x_values = X_test['validto'].to_numpy() if 'validto' in X_test.columns else X_test.index.to_numpy()
-df_pred = pl.DataFrame({
-    "X_Values": x_values,
-    "Actual": y_true,
-    "Predicted": y_pred,
-    "Diff": diff
-})
+# Extract numpy arrays for plotting or further analysis
+y_true = merged['y'].values
+y_pred = merged['yhat'].values
 
-# Step 10: Optional custom visualization
-plt.figure(figsize=(10, 5))
-plt.plot(test_prophet['ds'], y_true, label='Actual Price')
-plt.plot(test_prophet['ds'], y_pred, label='Predicted Price')
-plt.xlabel('Date')
-plt.ylabel('Price')
-plt.title('Actual vs Predicted Price')
-plt.legend()
-plt.tight_layout()
-plt.show()
+# === Print execution time ===
+execution_time = model_run_end_time - model_run_start_time
+print(f"⏱️ Execution time: {execution_time:.2f} seconds")
 
-
-# Final: Print execution time
-print(f"⏱️ Execution time: {model_run_end_time - model_run_start_time:.2f} seconds")
-model_execution_time = model_run_end_time - model_run_start_time
-
-# Step 11: Evaluation Metrics
-mae = mean_absolute_error(y_true, y_pred)
-mse = mean_squared_error(y_true, y_pred)
-rmse = np.sqrt(mse)
-# mape = np.mean(np.abs((y_true - y_pred) / np.clip(y_true, a_min=1e-10, a_max=None))) * 100
-# smape = np.mean(2 * np.abs(y_true - y_pred) / (np.abs(y_true) + np.abs(y_pred))) * 100
-
+# === Summary of evaluation metrics ===
 print("\n📊 Evaluation Metrics:")
-
-r2 = r2_score(y_true, y_pred)
-
-model_name = "Prophet"
-comments = "Saving the Model Run"
-print("model_name", "Prophet")
+print(f"Model Name: Prophet")
 print(f"MAE   : {mae:.2f}")
 print(f"MSE   : {mse:.2f}")
 print(f"RMSE  : {rmse:.2f}")
 print(f"R²    : {r2:.4f}")
-
-# print(f"MAPE  : {mape:.2f}%")
-# print(f"sMAPE : {smape:.2f}%")
-
+comments = "with -ve price"
 print("Model run complete")
+
 
 # Define the filename
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
