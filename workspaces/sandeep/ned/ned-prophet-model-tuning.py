@@ -1,0 +1,221 @@
+# env - model-run-tf_env Python 3.10.16
+
+import numpy as np
+import pandas as pd
+from scipy.stats import norm, gamma
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+from matplotlib.ticker import MaxNLocator # To ensure demand axis are integer.
+
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import TimeSeriesSplit
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+from prophet import Prophet
+from prophet.diagnostics import cross_validation, performance_metrics
+from prophet.diagnostics import cross_validation
+from prophet.plot import plot_cross_validation_metric
+
+
+import polars as pl
+
+import os
+from datetime import datetime
+import time
+
+import sqlite3
+
+# Custom function for MAPE and sMAPE
+def mean_absolute_percentage_error(y_true, y_pred): 
+    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+
+def symmetric_mape(y_true, y_pred):
+    return np.mean(2 * np.abs(y_true - y_pred) / (np.abs(y_true) + np.abs(y_pred))) * 100
+
+# Function to compute AIC for regression models
+def compute_aic(y_true, y_pred, num_params):
+    residuals = y_true - y_pred
+    mse = np.mean(residuals**2)
+    n = len(y_true)
+    aic = n * np.log(mse) + 2 * num_params  # AIC formula
+    return aic
+
+
+# Connect to the SQLite database
+db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
+conn = sqlite3.connect(db_path)
+# Connect to the SQLite database using the existing db_path
+conn = sqlite3.connect(db_path)
+# Step 2: Read data from table
+df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
+
+# df_pd_orig = pd.read_sql_query("SELECT * FROM raw_entsoe_obs ORDER BY Timestamp DESC", conn)
+#df_pd_orig["datetime"] = df_pd_orig["Timestamp"]
+# Step 3: Close the connection
+conn.close()
+
+# Step 1: Convert 'validto' column to datetime
+df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
+# Step 2: Sort the DataFrame by 'validto' to avoid data leakage
+df = df_pd_orig.sort_values(by='datetime')
+
+# STEP 1: Remove outliers
+df = df[df['Price'] > 0].copy()
+
+
+# STEP 2: Define features and target
+# Exclude target and datetime from regressors
+regressors = [col for col in df.columns if col not in ['Price', 'datetime']]
+
+# STEP 3: Prepare X and y
+X = df[regressors]
+y = df[['datetime', 'Price']]
+
+
+# Step 2: Time Series Split
+tscv = TimeSeriesSplit(n_splits=5)
+for train_index, test_index in tscv.split(X):
+    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+    y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+
+print("Train Date Range:")
+# print(f"Start: {X_train['datetime'].min()}")
+# print(f"End:   {X_train['datetime'].max()}")
+
+print("\nTest Date Range:")
+# print(f"Start: {X_test['datetime'].min()}")
+# print(f"End:   {X_test['datetime'].max()}")
+
+# Step 3: Prepare data for Prophet
+# STEP 5: Create training DataFrame for Prophet
+train_prophet = pd.concat([y_train.reset_index(drop=True), X_train.reset_index(drop=True)], axis=1)
+test_prophet = pd.concat([y_test.reset_index(drop=True), X_test.reset_index(drop=True)], axis=1)
+
+train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
+test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
+
+# STEP 6: Remove timezone
+train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
+test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
+
+"""
+# Parameter grid
+param_grid = {
+    'changepoint_prior_scale': [0.001, 0.01, 0.1, 0.5],
+    'seasonality_mode': ['additive', 'multiplicative'],
+    'seasonality_prior_scale': [1.0, 10.0, 20.0]
+}
+"""
+
+# Best Model Param grid
+param_grid = {
+    'changepoint_prior_scale': [0.001],
+    'seasonality_mode': ['multiplicative'],
+    'seasonality_prior_scale': [10.0]
+}
+
+
+# Create list of all parameter combinations
+import itertools
+all_params = [dict(zip(param_grid.keys(), v)) for v in itertools.product(*param_grid.values())]
+
+best_params = None
+best_mae = float('inf')
+
+# Step 4: Train Prophet model
+model_run_start_time = time.time()
+
+for params in all_params:
+    model = Prophet(
+        changepoint_prior_scale=params['changepoint_prior_scale'],
+        seasonality_mode=params['seasonality_mode'],
+        seasonality_prior_scale=params['seasonality_prior_scale']
+    )
+    
+    model.fit(train_prophet)
+    
+    forecast = model.predict(test_prophet[['ds']])
+    
+    y_true = test_prophet['y'].values
+    y_pred = forecast['yhat'].values
+
+    mae = mean_absolute_error(y_true, y_pred)
+
+    print(f"Params: {params} → MAE: {mae:.2f}")
+    
+    if mae < best_mae:
+        best_mae = mae
+        best_params = params
+
+print("\n✅ Best Parameters Found:")
+print(best_params)
+print(f"Best MAE: {best_mae:.2f}")
+
+print("✅ Forecast complete")
+model_run_end_time = time.time()
+
+
+# Step 6: Evaluation
+y_true = test_prophet['y'].values
+y_pred = forecast['yhat'].values
+diff = y_true - y_pred
+
+# Step 7: Plot Forecast
+model.plot(forecast)
+plt.title("Prophet Forecast")
+plt.xlabel("Date")
+plt.ylabel("Predicted Price")
+plt.tight_layout()
+plt.show()
+
+# Step 8: Plot Forecast Components
+model.plot_components(forecast)
+plt.tight_layout()
+plt.show()
+
+# Step 9: Create Polars DataFrame for comparison
+x_values = X_test['validto'].to_numpy() if 'validto' in X_test.columns else X_test.index.to_numpy()
+df_pred = pl.DataFrame({
+    "X_Values": x_values,
+    "Actual": y_true,
+    "Predicted": y_pred,
+    "Diff": diff
+})
+
+# Step 10: Optional custom visualization
+plt.figure(figsize=(10, 5))
+plt.plot(test_prophet['ds'], y_true, label='Actual Price')
+plt.plot(test_prophet['ds'], y_pred, label='Predicted Price')
+plt.xlabel('Date')
+plt.ylabel('Price')
+plt.title('Actual vs Predicted Price')
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+
+# Final: Print execution time
+print(f"⏱️ Execution time: {model_run_end_time - model_run_start_time:.2f} seconds")
+
+# Step 11: Evaluation Metrics
+mae = mean_absolute_error(y_true, y_pred)
+mse = mean_squared_error(y_true, y_pred)
+rmse = np.sqrt(mse)
+# mape = np.mean(np.abs((y_true - y_pred) / np.clip(y_true, a_min=1e-10, a_max=None))) * 100
+# smape = np.mean(2 * np.abs(y_true - y_pred) / (np.abs(y_true) + np.abs(y_pred))) * 100
+
+print("\n📊 Evaluation Metrics:")
+
+r2 = r2_score(y_true, y_pred)
+
+model_name = "Prophet"
+print("model_name", "Prophet")
+print(f"MAE   : {mae:.2f}")
+print(f"MSE   : {mse:.2f}")
+print(f"RMSE  : {rmse:.2f}")
+print(f"R²    : {r2:.4f}")
+
+# print(f"MAPE  : {mape:.2f}%")
+# print(f"sMAPE : {smape:.2f}%")
+
+print("Model run complete")

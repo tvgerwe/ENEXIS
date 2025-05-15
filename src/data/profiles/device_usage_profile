@@ -1,0 +1,58 @@
+[
+  {
+    "Device": "Washing Machine",
+    "Duration_h": 1.5,
+    "kWh_per_use": 1.0,
+    "Weekly_Uses": 3,
+    "Flexibility": "Yes",
+    "Constraints": {
+      "Allowed_Hours": [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+      "Min_Block_Hours": 1.5,
+      "Max_Skip_Hours": 168,
+      "Max_Simultaneous_Use": 1
+    },
+    "Source": "https://www.bhg.com/the-best-time-to-run-your-washing-machine-to-save-money-11702075"
+  },
+  {
+    "Device": "Dishwasher",
+    "Duration_h": 2.0,
+    "kWh_per_use": 1.2,
+    "Weekly_Uses": 5,
+    "Flexibility": "Yes",
+    "Constraints": {
+      "Allowed_Hours": [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      "Min_Block_Hours": 2.0,
+      "Max_Skip_Hours": 168,
+      "Max_Simultaneous_Use": 1
+    },
+    "Source": "https://homegeargeek.com/how-much-power-does-a-dishwasher-use-per-cycle"
+  },
+  {
+    "Device": "Heat Pump",
+    "Duration_h": 1.0,
+    "kWh_per_use": 0.67,
+    "Weekly_Uses": 84,
+    "Flexibility": "Partial",
+    "Constraints": {
+      "Allowed_Hours": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+      "Min_Block_Hours": 1.0,
+      "Max_Skip_Hours": 2,
+      "Max_Simultaneous_Use": 1
+    },
+    "Source": "https://appliancemastery.com/how-much-electricity-does-a-heat-pump-use-per-day"
+  },
+  {
+    "Device": "EV Charging",
+    "Duration_h": 6.0,
+    "kWh_per_use": 15.0,
+    "Weekly_Uses": 3,
+    "Flexibility": "Yes",
+    "Constraints": {
+      "Allowed_Hours": [22, 23, 0, 1, 2, 3, 4, 5, 6],
+      "Min_Block_Hours": 2,
+      "Max_Skip_Hours": 0,
+      "Max_Simultaneous_Use": 1
+    },
+    "Source": "https://www.mdpi.com/1996-1073/17/4/925"
+  }
+]

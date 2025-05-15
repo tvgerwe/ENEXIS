@@ -1,0 +1,10 @@
+_archive/
+*.DS_Store
+*.docx
+api-call.json
+mqtt-call.json
+ned-api.js
+weather-data-config.json.cache.sqlite
+venv/
+.env/
+.venv/
