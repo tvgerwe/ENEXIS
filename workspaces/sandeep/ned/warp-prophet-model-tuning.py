@@ -16,6 +16,7 @@ from prophet.diagnostics import cross_validation, performance_metrics
 from prophet.diagnostics import cross_validation
 from prophet.plot import plot_cross_validation_metric
 
+import joblib
 
 import polars as pl
 
@@ -82,46 +83,56 @@ df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
 # Step 2: Sort the DataFrame by 'validto' to avoid data leakage
 df = df_pd_orig.sort_values(by='datetime')
 
-# Step 1: Filter out negative Price and prepare data
-# df = df[df['Price'] > 0].copy()                   # Keep only rows with positive Price
-df['datetime'] = pd.to_datetime(df['datetime'])   # Ensure datetime column is datetime type
-df['datetime'] = df['datetime'].dt.tz_localize(None)  # Remove timezone info if present
 
-# Step 2: Define target and features
-y = df[['datetime', 'Price']]                     # Target with timestamp
-X = df.drop(columns=['Price'])                    # All other features, including datetime
+# Step 1: Initial datetime formatting
+df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)  # Ensure no timezone
 
-# Step 3: Time Series Split
-tscv = TimeSeriesSplit(n_splits=5)
-for train_index, test_index in tscv.split(X):
-    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-    y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+# Step 2: Filter out negative prices and define target/features
+df = df[df['Price'] > 0].copy()  # Filter positive prices only
+y = df[['datetime', 'Price']]    # Target
+X = df.drop(columns=['Price'])   # Features (including datetime)
 
-# Print train/test datetime range
+# Step 3: Define custom date ranges for training and testing
+train_start = "2025-01-01"
+train_end   = "2025-03-14"
+test_start  = "2025-03-15"
+test_end    = "2025-04-14"
+
+# Step 4: Filter based on date ranges
+X_train = X[(X['datetime'] >= train_start) & (X['datetime'] <= train_end)].copy()
+X_test  = X[(X['datetime'] >= test_start) & (X['datetime'] <= test_end)].copy()
+
+y_train = y[(y['datetime'] >= train_start) & (y['datetime'] <= train_end)].copy()
+y_test  = y[(y['datetime'] >= test_start) & (y['datetime'] <= test_end)].copy()
+
+# Step 5: Display training and testing ranges
 print("Train Date Range:")
 print(f"Start: {X_train['datetime'].min()}")
 print(f"End:   {X_train['datetime'].max()}")
-
 print("\nTest Date Range:")
 print(f"Start: {X_test['datetime'].min()}")
 print(f"End:   {X_test['datetime'].max()}")
 
-# Step 4: Merge X and y for Prophet input
-train_prophet = pd.concat([y_train.reset_index(drop=True), 
-                           X_train.drop(columns=['datetime']).reset_index(drop=True)], axis=1)
-test_prophet = pd.concat([y_test.reset_index(drop=True), 
-                          X_test.drop(columns=['datetime']).reset_index(drop=True)], axis=1)
+# Step 6: Combine X and y for Prophet
+train_prophet = pd.concat(
+    [y_train.reset_index(drop=True), X_train.drop(columns=['datetime']).reset_index(drop=True)],
+    axis=1
+)
+test_prophet = pd.concat(
+    [y_test.reset_index(drop=True), X_test.drop(columns=['datetime']).reset_index(drop=True)],
+    axis=1
+)
 
-# Step 5: Rename for Prophet
+# Step 7: Rename for Prophet compatibility
 train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 
-# Step 6: Ensure datetime has no timezone
+# Step 8: Final timezone cleanup
 train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
 test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
 
-# (Optional) Show the head of the training DataFrame for verification
-print("\nProphet Training Data:")
+# Step 9: (Optional) Inspect sample training data
+print("\nProphet Training Data Sample:")
 print(train_prophet.head())
 
 """
@@ -249,7 +260,7 @@ model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
 results = []
 model_name = "Prophet"
-comments = "All data with hyperparameter tuning Model Run"
+comments = "Saving model with hyperparameter tuning Model Run"
 print("model_name", "Prophet")
 
 model_execution_time = model_run_end_time - model_run_start_time
@@ -275,5 +286,13 @@ if os.path.exists(model_results_file_path):
 else:
     # Create new file
     metrics_df.to_csv(model_results_file_path, index=False)
+
+print(f"✅ Model evaluation saved to {model_results_file_path}")
+
+model_file_path = f'{MODEL_RUN_RESULTS_DIR}prophet_hyper_tuned_model.pkl'
+
+# Save model
+joblib.dump(model, model_file_path)
+print("Model saved.")
 
 print(f"✅ Model evaluation saved to {model_results_file_path}")
