@@ -4,6 +4,7 @@ import pandas as pd
 import sqlite3
 import logging
 from pathlib import Path
+import re
 
 # === Logging ===
 logging.basicConfig(
@@ -15,31 +16,41 @@ logger = logging.getLogger("transform_meteo_preds_history")
 # === Config ===
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = PROJECT_ROOT / "src" / "data" / "WARP.db"
-RAW_TABLE = "raw_meteo_preds_history"
-TRANSFORM_TABLE = "transform_weather_preds_history"
-
-def get_connection(path):
-    if not path.exists():
-        raise FileNotFoundError(f"❌ Database niet gevonden: {path}")
-    return sqlite3.connect(path)
+RAW_TABLE = "raw_weather_preds"
+TRANSFORM_TABLE = "process_weather_preds"
 
 def transform():
-    logger.info(f"📦 Gebruik van database: {DB_PATH}")
-    conn = get_connection(DB_PATH)
-
+    conn = sqlite3.connect(DB_PATH)
     try:
-        logger.info(f"📥 Ophalen van data uit {RAW_TABLE}")
         df = pd.read_sql_query(f"SELECT * FROM {RAW_TABLE}", conn)
+        logger.info(f"✅ {RAW_TABLE} geladen ({len(df)} rijen)")
 
-        logger.info("🔧 Start transformatie")
-        df["date"] = pd.to_datetime(df["date"], utc=True)
-        df = df.drop_duplicates(subset="date", keep="last")
-        df = df.sort_values("date")
+        df["run_date"] = pd.to_datetime(df["date"], utc=True)
+        df = df.drop(columns=["date"])
 
-        logger.info(f"💾 Overschrijven van {TRANSFORM_TABLE}")
-        df.to_sql(TRANSFORM_TABLE, conn, if_exists="replace", index=False)
+        long_rows = []
+        pattern = re.compile(r"^(?P<variable>.+)_previous_day(?P<horizon>\d+)$")
 
-        logger.info(f"✅ {TRANSFORM_TABLE} bevat {len(df)} rijen")
+        for col in df.columns:
+            match = pattern.match(col)
+            if match:
+                variable = match.group("variable")
+                horizon = int(match.group("horizon"))
+                temp = df[["run_date", col]].copy()
+                temp["variable"] = variable
+                temp["value"] = temp[col]
+                temp["horizon"] = horizon
+                temp["target_datetime"] = temp["run_date"] - pd.to_timedelta(horizon, unit="D")
+                temp = temp[["run_date", "target_datetime", "variable", "horizon", "value"]]
+                long_rows.append(temp)
+
+        df_long = pd.concat(long_rows, axis=0)
+        df_long = df_long.dropna(subset=["value"])
+        df_long = df_long.sort_values(["target_datetime", "variable"])
+
+        logger.info(f"📊 Transformatie succesvol: {len(df_long)} rijen")
+        df_long.to_sql(TRANSFORM_TABLE, conn, if_exists="replace", index=False)
+        logger.info(f"✅ Weggeschreven naar {TRANSFORM_TABLE}")
     except Exception as e:
         logger.error(f"❌ Fout tijdens transformatie: {e}", exc_info=True)
     finally:

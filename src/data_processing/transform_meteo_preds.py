@@ -17,7 +17,7 @@ logger = logging.getLogger("transform_meteo_preds_history")
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = PROJECT_ROOT / "src" / "data" / "WARP.db"
 SOURCE_TABLE = "raw_meteo_preds_history"
-OUTPUT_TABLE = "transform_weather_preds_history"
+OUTPUT_TABLE = "process_weather_preds"
 
 def load_preds(conn):
     logger.info(f"📥 Laden van tabel: {SOURCE_TABLE}")
