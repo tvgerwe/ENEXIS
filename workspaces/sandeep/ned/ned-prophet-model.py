@@ -20,6 +20,29 @@ import time
 
 import sqlite3
 
+from pathlib import Path
+import logging
+import json
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger('model_run_prophet')
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+CONFIG_PATH = PROJECT_ROOT / "sandeep" / "config" / "config.json"
+
+# === CONFIG ===
+
+if not CONFIG_PATH.exists():
+    raise FileNotFoundError(f"❌ Config not found at : {CONFIG_PATH}")
+with open(CONFIG_PATH, "r") as f:
+    config = json.load(f)
+
+MODEL_RUN_RESULTS_DIR = config['ned']['ned_model_download_dir']
+
 # Custom function for MAPE and sMAPE
 def mean_absolute_percentage_error(y_true, y_pred): 
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
@@ -35,6 +58,7 @@ def compute_aic(y_true, y_pred, num_params):
     aic = n * np.log(mse) + 2 * num_params  # AIC formula
     return aic
 
+results = []
 
 # Connect to the SQLite database
 db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
@@ -143,6 +167,7 @@ plt.show()
 
 # Final: Print execution time
 print(f"⏱️ Execution time: {model_run_end_time - model_run_start_time:.2f} seconds")
+model_execution_time = model_run_end_time - model_run_start_time
 
 # Step 11: Evaluation Metrics
 mae = mean_absolute_error(y_true, y_pred)
@@ -156,6 +181,7 @@ print("\n📊 Evaluation Metrics:")
 r2 = r2_score(y_true, y_pred)
 
 model_name = "Prophet"
+comments = "All attributes Model Run"
 print("model_name", "Prophet")
 print(f"MAE   : {mae:.2f}")
 print(f"MSE   : {mse:.2f}")
@@ -166,3 +192,31 @@ print(f"R²    : {r2:.4f}")
 # print(f"sMAPE : {smape:.2f}%")
 
 print("Model run complete")
+
+# Define the filename
+model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+
+# Append results to results
+results.append(["Prophet", mae, mse, rmse, r2, comments, model_execution_time, model_run_timestamp])
+
+# Convert results to DataFrame
+metrics_df = pd.DataFrame(results, columns=["Model", "MAE", "MSE", "RMSE", "R2", "Comments", "Execution Time", "Run At"])
+
+# Display Table
+print(metrics_df)
+
+
+model_results_file_path = f'{MODEL_RUN_RESULTS_DIR}warp-prophet-model-results.csv'
+
+# Step 10: Check if file exists, then append or create
+if os.path.exists(model_results_file_path):
+    # Append to existing file
+    existing_results = pd.read_csv(model_results_file_path)
+    updated_results = pd.concat([existing_results, metrics_df], ignore_index=True)
+    updated_results.to_csv(model_results_file_path, index=False)
+else:
+    # Create new file
+    metrics_df.to_csv(model_results_file_path, index=False)
+
+print(f"✅ Model evaluation saved to {model_results_file_path}")

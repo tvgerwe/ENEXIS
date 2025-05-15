@@ -1,0 +1,13 @@
+{
+    "ned": {
+        "ned_api_endpoint":"https://api.ned.nl/v1/utilizations",
+        "demo-ned-api-key":"21702b116e4c72974d62853623de0adcb0f530d98591b308a41a881735267bbb",
+        "ned_download_dir": "../data/powergen_preds/",
+        "ned_test_download_dir": "../data/",
+        "ned_model_download_dir": "/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/workspaces/sandeep/ned/downloads/"
+    },
+    "settings": {
+        "download_dir": "downloads"
+    }
+}
+
