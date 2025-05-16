@@ -138,7 +138,7 @@ logger = logging.getLogger(f"End:   {X_test['datetime'].max()}")
 """
 
 # Step 7: Define regressors for Prophet
-regressors = ['Total_Flow', 'Solar_Vol', 'Wind_Vol', 'WindOffshore_Vol', 'Nuclear_Vol', 'temperature_2m']
+regressors = ['Total_Flow', 'Solar_Vol', 'temperature_2m']
 
 # Step 8 Sanity check: keep only regressors present in X_train
 available_regressors = [col for col in regressors if col in X_train.columns]
@@ -170,7 +170,6 @@ print("X_train columns (used regressors):", available_regressors)
 model_run_start_time = time.time()
 
 # Step 10: Train Prophet model with only available regressors
-horizon = 30  # forecast days
 
 model = Prophet()
 
@@ -180,30 +179,46 @@ for reg in available_regressors:
 model.fit(train_prophet)
 print("✅ Training complete")
 
-print(y_test.describe())
-print(y_test.head(10))
-print("Zero or negative actuals:")
+#print(y_test.describe())
+#print(y_test.head(10))
+#print("Zero or negative actuals:")
 
-# Step 10 Create future dataframe with 'ds' column only
-future = model.make_future_dataframe(periods=horizon, freq='D')
+# Ensure 'ds' and all regressors exist
+#assert all(col in test_prophet.columns for col in ['ds', 'y'] + available_regressors)
 
-# Merge regressors from X_test keyed by 'ds'
-future = future.merge(
-    X_test[['datetime'] + available_regressors].rename(columns={'datetime': 'ds'}),
-    on='ds',
-    how='left'
-)
-
-# Fill missing values in regressors
-future[available_regressors] = future[available_regressors].ffill().bfill()
-
-# Predict
-forecast = model.predict(future)
+# Predict directly
+forecast = model.predict(test_prophet)
 
 model_run_end_time = time.time()
 print("✅ Forecast complete")
 
+merged = test_prophet[['ds', 'y']].copy()
+merged['yhat'] = forecast['yhat']
+
 model_execution_time = model_run_end_time - model_run_start_time
+
+# Step 2: Combine actual and predicted values
+test_results = test_prophet[['ds', 'y']].copy()
+test_results['yhat'] = forecast['yhat']  # add predictions
+
+# Optional: include lower/upper uncertainty intervals
+test_results['yhat_lower'] = forecast['yhat_lower']
+test_results['yhat_upper'] = forecast['yhat_upper']
+ 
+model_test_results_file_path = f'{MODEL_RUN_RESULTS_DIR}warp_test_predictions.csv'
+
+# Step 3: Save to CSV
+test_results.to_csv(model_test_results_file_path, index=False)
+
+print("✅ Saved test predictions to model_test_results_file_path")
+
+"""
+for col in available_regressors:
+    plt.figure(figsize=(10, 2))
+    plt.plot(forecast['ds'], forecast[col])
+    plt.title(f"{col} over forecast horizon")
+    plt.show()
+"""
 
 # === Align predictions and actuals by date ===
 forecast_indexed = forecast.set_index('ds')
@@ -234,10 +249,12 @@ plt.ylabel("Predicted Price")
 plt.tight_layout()
 plt.show()
 
+"""
 # === Plot Prophet components ===
 model.plot_components(forecast)
 plt.tight_layout()
 plt.show()
+"""
 
 # Extract numpy arrays for plotting or further analysis
 y_true = merged['y'].values
@@ -247,16 +264,20 @@ y_pred = merged['yhat'].values
 execution_time = model_run_end_time - model_run_start_time
 print(f"⏱️ Execution time: {execution_time:.2f} seconds")
 
+
 # === Summary of evaluation metrics ===
 print("\n📊 Evaluation Metrics:")
 print(f"Model Name: Prophet")
+comments = "Refactor code run 5 with three parameters"
+
+"""
 print(f"MAE   : {mae:.2f}")
 print(f"MSE   : {mse:.2f}")
 print(f"RMSE  : {rmse:.2f}")
 print(f"R²    : {r2:.4f}")
-comments = "with -ve price"
-print("Model run complete")
 
+print("Model run complete")
+"""
 # Define the filename
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 

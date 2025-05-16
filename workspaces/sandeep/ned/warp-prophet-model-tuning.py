@@ -65,18 +65,13 @@ def compute_aic(y_true, y_pred, num_params):
     return aic
 
 
-# Connect to the SQLite database
-db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
-conn = sqlite3.connect(db_path)
-# Connect to the SQLite database using the existing db_path
-conn = sqlite3.connect(db_path)
-# Step 2: Read data from table
-df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
+CSV_DATA_DIR = config['ned']['ned_model_download_dir']
 
-# df_pd_orig = pd.read_sql_query("SELECT * FROM raw_entsoe_obs ORDER BY Timestamp DESC", conn)
-#df_pd_orig["datetime"] = df_pd_orig["Timestamp"]
-# Step 3: Close the connection
-conn.close()
+# Step 1: Read JSON data from a file
+csv_file_path = os.path.join(CSV_DATA_DIR, f"warp-csv-dataset.csv")
+
+with open(csv_file_path, 'rb') as csv_file:
+    df_pd_orig = pd.read_csv(csv_file)
 
 # Step 1: Convert 'validto' column to datetime
 df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
@@ -132,7 +127,7 @@ print(f"End:   {X_test['datetime'].max()}")
 """
 
 # Step 6: Combine X and y for Prophet
-regressors = ['Total_Flow', 'Solar_Vol', 'Wind_Vol', 'WindOffshore_Vol', 'Nuclear_Vol', 'temperature_2m']
+regressors = ['Total_Flow', 'Solar_Vol', 'temperature_2m']
 
 # Sanity check: keep only regressors present in X_train
 available_regressors = [col for col in regressors if col in X_train.columns]
@@ -164,10 +159,6 @@ model_run_start_time = time.time()
 
 # Step 10: Train Prophet model with only available regressors
 horizon = 30  # forecast days
-
-
-
-
 """
 # Parameter grid
 param_grid = {
@@ -179,10 +170,11 @@ param_grid = {
 
 # Best Model Param grid
 param_grid = {
-    'changepoint_prior_scale': [0.5],
-    'seasonality_mode': ['multiplicative'],
-    'seasonality_prior_scale': [10.0]
+    'changepoint_prior_scale': [0.1],
+    'seasonality_mode': ['additive'],
+    'seasonality_prior_scale': [1.0]
 }
+
 
 # Create list of all parameter combinations
 import itertools
@@ -283,9 +275,6 @@ print(f"MAE   : {mae:.2f}")
 print(f"MSE   : {mse:.2f}")
 print(f"RMSE  : {rmse:.2f}")
 print(f"R²    : {r2:.4f}")
-
-# print(f"MAPE  : {mape:.2f}%")
-# print(f"sMAPE : {smape:.2f}%")
 
 # Define the filename
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
