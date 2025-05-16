@@ -3,6 +3,7 @@ import numpy as np
 from prophet import Prophet
 import joblib
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+import os
 
 from pathlib import Path
 import logging
@@ -34,91 +35,98 @@ forecast_output_path = f"{MODEL_RUN_RESULTS_DIR}/forecast_vs_actual.csv"
 model = joblib.load(model_file_path)
 logger.info("✅ Prophet model loaded from disk.")
 
-# === Load data from SQLite ===
-db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
-conn = sqlite3.connect(db_path)
-df_raw = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
-conn.close()
+CSV_DATA_DIR = config['ned']['ned_model_download_dir']
 
-from datetime import datetime
+# Step 1: Read JSON data from a file
+csv_file_path = os.path.join(CSV_DATA_DIR, f"warp-csv-dataset.csv")
+
+with open(csv_file_path, 'rb') as csv_file:
+    df_pd_orig = pd.read_csv(csv_file)
+
+# Step 1: Convert 'validto' column to datetime
+df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
+# Step 2: Sort the DataFrame by 'validto' to avoid data leakage
+df = df_pd_orig.sort_values(by='datetime')
+# Step 3: Initial datetime formatting
+df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)  # Ensure no timezone
+
 
 # === User Input: Set forecast limit date ===
-rolling_cutoff_date = "2025-05-15"  # <-- Change this date as needed
-rolling_cutoff_date = pd.to_datetime(rolling_cutoff_date)
+rolling_cutoff_date = pd.to_datetime("2025-05-15")  # Adjust as needed
 
 # === Preprocess Data ===
-df_raw['datetime'] = pd.to_datetime(df_raw['datetime']).dt.tz_localize(None)
-df = df_raw[df_raw['Price'] > 0].copy()
-df['ds'] = df['datetime']
+df['ds'] = pd.to_datetime(df['datetime']).dt.tz_localize(None)  # Ensure tz-naive datetime
 df['y'] = df['Price']
-df = df[['ds', 'y']].sort_values(by='ds')
+
+# Define regressors you want to use
+regressors = ['Solar_Vol', 'Total_Flow', 'temperature_2m']
 
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 
-# === Rolling Forecast Parameters ===
-window_size = 365  # training days
-horizon = 30       # forecast horizon
-step_size = 30     # rolling step
+# Rolling forecast parameters
+start_date = pd.to_datetime("2025-04-15")
+num_rolling_runs = 6
+horizon = 6  # days ahead
+
 results = []
-forecast_rows = []  # To collect actual vs predicted per date
+forecast_rows = []
 
+for i in range(num_rolling_runs):
+    predict_start = start_date + pd.Timedelta(days=i)
+    predict_end = predict_start + pd.Timedelta(days=horizon - 1)
+    # Select data window for prediction (this includes regressors)
+    future = df[(df['ds'] >= predict_start) & (df['ds'] <= predict_end)].copy()
 
-logger.info("🚀 Starting rolling window validation...")
+    # Check if all regressors are present
+    missing_regs = [r for r in regressors if r not in future.columns]
+    if missing_regs:
+        raise ValueError(f"Missing regressors in prediction window: {missing_regs}")
 
-# Iterate with cutoff logic
-for start in range(0, len(df) - window_size - horizon + 1, step_size):
-    train_df = df.iloc[start:start + window_size].copy()
-    test_df = df.iloc[start + window_size:start + window_size + horizon].copy()
+    # Prepare future dataframe for prediction: must include 'ds' and all regressors
+    future_pred = future[['ds'] + regressors]
 
-    # Check if test end exceeds cutoff
-    test_end_date = test_df['ds'].max()
-    if test_end_date > rolling_cutoff_date:
-        logger.info(f"🛑 Skipping window: test end {test_end_date.date()} exceeds cutoff {rolling_cutoff_date.date()}")
-        break
+    # Make sure there are no missing values in regressors (fill or drop)
+    if future_pred[regressors].isnull().any().any():
+        future_pred[regressors] = future_pred[regressors].ffill().bfill()
 
-    # Train and forecast
-    model_rolling = Prophet()
-    model_rolling.fit(train_df)
+    # Predict using the model
+    forecast = model.predict(future_pred)
 
-    future = model_rolling.make_future_dataframe(periods=horizon, freq='D')
-    forecast = model_rolling.predict(future)
+    # Extract predicted values and merge with actuals
+    yhat = forecast[['ds', 'yhat']]
+    actual = future[['ds', 'y']]
 
-    pred = forecast[['ds', 'yhat']].set_index('ds')
-    actual = test_df.set_index('ds')
+    merged = actual.merge(yhat, on='ds', how='left')
 
-    merged = actual.join(pred, how='inner').dropna()
+    # Evaluate error only where predictions are present
+    mae = mean_absolute_error(merged['y'], merged['yhat'])
 
-    if merged.empty:
-        logger.warning(f"⚠️ Skipping window {train_df['ds'].min().date()} to {train_df['ds'].max().date()} - no overlap in prediction vs actual.")
-        continue
-
-    # Save individual prediction rows
-    for row in merged.itertuples():
-        forecast_rows.append({
-        "date": row.Index,                # the 'ds' date
-        "actual": row.y,
-        "predicted": row.yhat,
-        "train_window_start": train_df['ds'].min(),
-        "train_window_end": train_df['ds'].max()
-    })
-
-
-    # Metrics
+    # Calculate performance metrics
     mae = mean_absolute_error(merged['y'], merged['yhat'])
     mse = mean_squared_error(merged['y'], merged['yhat'])
     rmse = np.sqrt(mse)
     r2 = r2_score(merged['y'], merged['yhat'])
 
-    results.append({
-        "window_start": train_df['ds'].min(),
-        "window_end": train_df['ds'].max(),
-        "test_end": test_end_date,
-        "MAE": mae,
-        "RMSE": rmse,
-        "R2": r2
-    })
+    # Append actual and predicted rows to list with window info
+    for _, row in merged.iterrows():
+        forecast_rows.append({
+            "ds": row['ds'],
+            "actual": row['y'],
+            "predicted": row['yhat'],
+            "window_start": predict_start,
+            "window_end": predict_end
+        })
 
-    logger.info(f"✅ Window {train_df['ds'].min().date()} to {train_df['ds'].max().date()} - MAE: {mae:.2f}, RMSE: {rmse:.2f}, R2: {r2:.2f}")
+# Convert results to DataFrame
+results_df = pd.DataFrame(results)
+print(results_df)
+
+# Save actual vs predicted to CSV
+forecast_output_path = "forecast_vs_actual.csv"  # Change path as needed
+df_forecast = pd.DataFrame(forecast_rows)
+df_forecast.to_csv(forecast_output_path, index=False)
+logger.info(f"📁 Forecast vs Actual saved to: {forecast_output_path}")
+logger.info("\n" + str(df_forecast.head()))
 
 # === Save Results ===
 df_results = pd.DataFrame(results)

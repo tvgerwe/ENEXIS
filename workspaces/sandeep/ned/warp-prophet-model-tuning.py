@@ -159,22 +159,19 @@ model_run_start_time = time.time()
 
 # Step 10: Train Prophet model with only available regressors
 horizon = 30  # forecast days
-"""
-# Parameter grid
+"""# Parameter grid
 param_grid = {
     'changepoint_prior_scale': [0.001, 0.01, 0.1, 0.5],
     'seasonality_mode': ['additive', 'multiplicative'],
     'seasonality_prior_scale': [1.0, 10.0, 20.0]
 }
 """
-
 # Best Model Param grid
 param_grid = {
     'changepoint_prior_scale': [0.1],
     'seasonality_mode': ['additive'],
     'seasonality_prior_scale': [1.0]
 }
-
 
 # Create list of all parameter combinations
 import itertools
