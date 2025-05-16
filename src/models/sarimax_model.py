@@ -2,65 +2,72 @@
 
 import pandas as pd
 import sqlite3
-from typing import Tuple, Optional
+import logging
+from pathlib import Path
+from typing import Optional, Tuple
 from statsmodels.tsa.statespace.sarimax import SARIMAX
-from pmdarima.arima import auto_arima
-from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.metrics import root_mean_squared_error
 
-LOG_DB = "src/data/logs.db"
-TABLE_NAME = "model_performance_log"
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - sarimax - %(levelname)s - %(message)s")
+logger = logging.getLogger("sarimax_model")
 
-def check_if_order_evaluated(order: Tuple, seasonal_order: Tuple) -> bool:
-    conn = sqlite3.connect(LOG_DB)
-    query = f"""
-        SELECT COUNT(*) FROM {TABLE_NAME}
-        WHERE order_params = ? AND seasonal_order_params = ?
-    """
-    params = (str(order), str(seasonal_order))
-    result = conn.execute(query, params).fetchone()[0]
-    conn.close()
-    return result > 0
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+LOG_DB = PROJECT_ROOT / "src" / "data" / "logs.db"
+TABLE_NAME = "sarimax_logs"
 
-def log_order_result(order: Tuple, seasonal_order: Tuple, rmse: float, mae: float) -> None:
+def ensure_log_db():
+    LOG_DB.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(LOG_DB)
     conn.execute(f"""
         CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            model_name TEXT,
             order_params TEXT,
             seasonal_order_params TEXT,
-            rmse REAL,
-            mae REAL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            rmse REAL
         )
     """)
-    conn.execute(f"""
-        INSERT INTO {TABLE_NAME} (model_name, order_params, seasonal_order_params, rmse, mae)
-        VALUES (?, ?, ?, ?, ?)
-    """, ("SARIMAX", str(order), str(seasonal_order), rmse, mae))
     conn.commit()
     conn.close()
 
-def run_sarimax(train_df: pd.DataFrame, test_df: pd.DataFrame, target_column: str, order: Tuple, seasonal_order: Tuple) -> Tuple[Optional[pd.Series], dict]:
-    if check_if_order_evaluated(order, seasonal_order):
-        print(f"✅ Skipped previously evaluated order: {order}, {seasonal_order}")
-        return None, {"rmse": None, "mae": None}
+def log_model_result(order: Tuple, seasonal_order: Tuple, rmse: float):
+    ensure_log_db()
+    conn = sqlite3.connect(LOG_DB)
+    conn.execute(
+        f"INSERT INTO {TABLE_NAME} (order_params, seasonal_order_params, rmse) VALUES (?, ?, ?)",
+        (str(order), str(seasonal_order), rmse)
+    )
+    conn.commit()
+    conn.close()
 
-    model = SARIMAX(train_df[target_column], order=order, seasonal_order=seasonal_order,
-                    enforce_stationarity=False, enforce_invertibility=False)
+def run_sarimax(
+    train_df: pd.Series,
+    X_train: Optional[pd.DataFrame],
+    X_test: Optional[pd.DataFrame],
+    order: Tuple,
+    seasonal_order: Tuple
+) -> Tuple[pd.Series, float]:
+
+    logger.info(f"📈 Fitting SARIMAX with order={order}, seasonal_order={seasonal_order}")
+    model = SARIMAX(
+        train_df,
+        exog=X_train,
+        order=order,
+        seasonal_order=seasonal_order,
+        enforce_stationarity=False,
+        enforce_invertibility=False
+    )
     results = model.fit(disp=False)
 
-    forecast = results.forecast(steps=len(test_df))
-    y_true = test_df[target_column].values
-    y_pred = forecast.values
+    forecast = results.get_forecast(steps=len(X_test), exog=X_test)
+    y_pred = forecast.predicted_mean
 
-    rmse = mean_squared_error(y_true, y_pred, squared=False)
-    mae = mean_absolute_error(y_true, y_pred)
+    try:
+        y_true = train_df.iloc[-len(y_pred):]
+        rmse = root_mean_squared_error(y_true, y_pred)
+        logger.info(f"📊 RMSE: {rmse:.2f}")
+        log_model_result(order, seasonal_order, rmse)
+    except Exception as e:
+        logger.warning(f"⚠️ Geen RMSE gelogd: {e}")
+        rmse = None
 
-    log_order_result(order, seasonal_order, rmse, mae)
-
-    return pd.Series(y_pred, index=test_df.index), {"rmse": rmse, "mae": mae}
-
-def auto_arima_order(train_df: pd.DataFrame, target_column: str, seasonal: bool = True, m: int = 24) -> Tuple[Tuple, Tuple]:
-    model = auto_arima(train_df[target_column], seasonal=seasonal, m=m, suppress_warnings=True, stepwise=True)
-    return model.order, model.seasonal_order
+    return y_pred, rmse
