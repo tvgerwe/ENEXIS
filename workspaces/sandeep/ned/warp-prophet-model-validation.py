@@ -8,6 +8,7 @@ from pathlib import Path
 import logging
 import json
 import sqlite3
+import os
 
 # === Logging Setup ===
 logging.basicConfig(
@@ -33,21 +34,23 @@ rolling_window_file_path = f'{MODEL_RUN_RESULTS_DIR}rolling_validation_results.c
 model = joblib.load(model_file_path)
 logger.info("✅ Prophet model loaded from disk.")
 
-# === Load data from SQLite ===
-db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
-conn = sqlite3.connect(db_path)
-df_raw = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
-conn.close()
+CSV_DATA_DIR = config['ned']['ned_model_download_dir']
+
+# Step 1: Read JSON data from a file
+csv_file_path = os.path.join(CSV_DATA_DIR, f"warp-csv-dataset.csv")
+
+with open(csv_file_path, 'rb') as csv_file:
+    df_pd_orig = pd.read_csv(csv_file)
 
 
 # Prepare data
-df_raw['datetime'] = pd.to_datetime(df_raw['datetime']).dt.tz_localize(None)
+df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime']).dt.tz_localize(None)
 
 val_start = pd.to_datetime("2025-04-15")
 val_end = pd.to_datetime("2025-05-14")
 
 # Filter raw data for validation period
-df_filtered = df_raw[(df_raw['datetime'] >= val_start) & (df_raw['datetime'] <= val_end)].copy()
+df_filtered = df_pd_orig[(df_pd_orig['datetime'] >= val_start) & (df_pd_orig['datetime'] <= val_end)].copy()
 
 # Filter positive Price and prepare target
 # df = df_filtered[df_filtered['Price'] > 0].copy()
