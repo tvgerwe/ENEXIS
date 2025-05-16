@@ -29,8 +29,19 @@ def ensure_log_db():
     conn.commit()
     conn.close()
 
-def log_model_result(order: Tuple, seasonal_order: Tuple, rmse: float):
+def check_if_order_evaluated(order: Tuple, seasonal_order: Tuple) -> bool:
     ensure_log_db()
+    conn = sqlite3.connect(LOG_DB)
+    query = f"""
+        SELECT COUNT(*) FROM {TABLE_NAME}
+        WHERE order_params = ? AND seasonal_order_params = ?
+    """
+    params = (str(order), str(seasonal_order))
+    result = conn.execute(query, params).fetchone()[0]
+    conn.close()
+    return result > 0
+
+def log_model_result(order: Tuple, seasonal_order: Tuple, rmse: float):
     conn = sqlite3.connect(LOG_DB)
     conn.execute(
         f"INSERT INTO {TABLE_NAME} (order_params, seasonal_order_params, rmse) VALUES (?, ?, ?)",
@@ -45,9 +56,10 @@ def run_sarimax(
     X_test: Optional[pd.DataFrame],
     order: Tuple,
     seasonal_order: Tuple
-) -> Tuple[pd.Series, float]:
+) -> Tuple[Optional[pd.Series], Optional[float]]:
 
     logger.info(f"📈 Fitting SARIMAX with order={order}, seasonal_order={seasonal_order}")
+    
     model = SARIMAX(
         train_df,
         exog=X_train,
@@ -58,16 +70,23 @@ def run_sarimax(
     )
     results = model.fit(disp=False)
 
-    forecast = results.get_forecast(steps=len(X_test), exog=X_test)
+    steps = len(X_test) if X_test is not None else 168  # fallback
+    forecast = results.get_forecast(steps=steps, exog=X_test)
     y_pred = forecast.predicted_mean
 
+    if X_test is not None:
+        y_pred.index = X_test.index
+    else:
+        start = train_df.index[-1] + pd.Timedelta(hours=1)
+        y_pred.index = pd.date_range(start=start, periods=steps, freq="H")
+
     try:
-        y_true = train_df.iloc[-len(y_pred):]
+        y_true = train_df.iloc[-steps:]
         rmse = root_mean_squared_error(y_true, y_pred)
         logger.info(f"📊 RMSE: {rmse:.2f}")
         log_model_result(order, seasonal_order, rmse)
     except Exception as e:
-        logger.warning(f"⚠️ Geen RMSE gelogd: {e}")
         rmse = None
+        logger.warning(f"⚠️ Geen RMSE gelogd: {e}")
 
     return y_pred, rmse

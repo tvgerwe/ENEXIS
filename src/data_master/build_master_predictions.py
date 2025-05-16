@@ -46,7 +46,7 @@ def build_master():
                 df_now = df_now.rename(columns={"date": "target_datetime"})
                 df_now["target_datetime"] = pd.to_datetime(df_now["target_datetime"], utc=True)
 
-        df_ned = df_ned.sort_values("fetch_moment").drop_duplicates("validto", keep="last")
+        df_ned = df_ned.sort_values("fetch_moment").drop_duplicates("validto", keep="last")#Checken!!!
         df_ned = df_ned.rename(columns={"validto": "target_datetime"})
 
         df = df_time.drop(columns=["datetime", "date"], errors="ignore")
