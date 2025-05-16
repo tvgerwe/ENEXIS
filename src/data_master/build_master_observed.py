@@ -1,80 +1,64 @@
 #!/usr/bin/env python3
 
-import sqlite3
 import pandas as pd
+import sqlite3
 import logging
 from pathlib import Path
 
-# === Logging ===
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - master_warp - %(levelname)s - %(message)s'
+    format="%(asctime)s - build_master_observed - %(levelname)s - %(message)s"
 )
-logger = logging.getLogger("master_warp")
+logger = logging.getLogger("build_master_observed")
 
-# === Config ===
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = PROJECT_ROOT / "src" / "data" / "WARP.db"
 MASTER_TABLE = "master_warp"
 
-# === Helpers ===
 def safe_load_table(conn, table_name):
     try:
         df = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
-        logger.info(f"✅ '{table_name}' geladen met kolommen: {list(df.columns)}")
+        logger.info(f"✅ '{table_name}' geladen met {len(df)} rijen")
         return df
     except Exception as e:
-        logger.error(f"❌ Kan tabel '{table_name}' niet laden: {e}")
+        logger.error(f"❌ Kan '{table_name}' niet laden: {e}")
         return pd.DataFrame()
 
-def build_master_table():
-    logger.info(f"📦 Using database: {DB_PATH}")
-    if not DB_PATH.exists():
-        raise FileNotFoundError(f"❌ Database not found: {DB_PATH}")
-
+def build_master():
+    logger.info(f"📦 Start build voor {MASTER_TABLE}")
     conn = sqlite3.connect(DB_PATH)
 
     try:
-        logger.info("📅 Laden van alle observatie-tabellen")
         df_time = safe_load_table(conn, "dim_datetime")
         df_entsoe = safe_load_table(conn, "transform_entsoe_obs")
         df_weather = safe_load_table(conn, "transform_weather_obs")
         df_ned = safe_load_table(conn, "transform_ned_obs_2")
 
-        # Kolomnamen normaliseren
-        df_entsoe.rename(columns={"Timestamp": "datetime"}, inplace=True)
-        df_weather.rename(columns={"date": "datetime"}, inplace=True)
-        df_ned.rename(columns={"validto": "datetime"}, inplace=True)
+        df_time["target_datetime"] = pd.to_datetime(df_time["datetime"], utc=True)
+        df_entsoe["target_datetime"] = pd.to_datetime(df_entsoe["Timestamp"], utc=True)
+        df_weather["target_datetime"] = pd.to_datetime(df_weather["date"], utc=True)
+        df_ned["target_datetime"] = pd.to_datetime(df_ned["validto"], utc=True)
 
-        for df_name, df in zip([
-            "dim_datetime", "transform_entsoe_obs", "transform_weather_obs", "transform_ned_obs_2"
-        ], [df_time, df_entsoe, df_weather, df_ned]):
-            if "datetime" in df.columns:
-                df["datetime"] = pd.to_datetime(df["datetime"], utc=True)
-            else:
-                logger.warning(f"⚠️ Tabel '{df_name}' mist kolom 'datetime'.")
+        df_entsoe = df_entsoe.drop(columns=["Timestamp"], errors="ignore")
+        df_weather = df_weather.drop(columns=["date"], errors="ignore")
+        df_ned = df_ned.drop(columns=["validto"], errors="ignore")
 
-        logger.info("🔗 Joinen van observaties op datetime")
-        df = df_time \
-            .merge(df_entsoe, on="datetime", how="left") \
-            .merge(df_weather, on="datetime", how="left") \
-            .merge(df_ned, on="datetime", how="left")
-
-        logger.info(f"✅ Gekoppeld resultaat: {df.shape[0]} rijen, {df.shape[1]} kolommen")
-
-        logger.info(f"📊 Nulls vóór imputatie:\n{df.isna().sum()[df.isna().sum() > 0]}")
+        df = df_time.drop(columns=["datetime", "date"], errors="ignore")
+        df = df.merge(df_entsoe, on="target_datetime", how="left")
+        df = df.merge(df_weather, on="target_datetime", how="left")
+        df = df.merge(df_ned, on="target_datetime", how="left")
 
         df = df.fillna(0)
+        logger.info(f"📊 Samengevoegd: {df.shape[0]} rijen, {df.shape[1]} kolommen")
+        logger.info(f"🧾 Kolommen: {df.columns.tolist()}")
 
-        logger.info(f"📆 Wegschrijven naar {MASTER_TABLE}")
         df.to_sql(MASTER_TABLE, conn, if_exists="replace", index=False)
-
-        logger.info("🎉 master_warp succesvol opgebouwd en opgeslagen (alleen observaties).")
+        logger.info(f"✅ {MASTER_TABLE} succesvol opgeslagen")
     except Exception as e:
-        logger.error(f"❌ Fout bij bouwen van master_warp: {e}", exc_info=True)
+        logger.error(f"❌ Fout bij bouwen van {MASTER_TABLE}: {e}", exc_info=True)
     finally:
         conn.close()
         logger.info("🔒 Verbinding gesloten")
 
 if __name__ == "__main__":
-    build_master_table()
+    build_master()
