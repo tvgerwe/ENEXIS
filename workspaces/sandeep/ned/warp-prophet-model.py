@@ -61,6 +61,7 @@ def compute_aic(y_true, y_pred, num_params):
 
 results = []
 
+"""
 # Connect to the SQLite database
 db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
 conn = sqlite3.connect(db_path)
@@ -73,40 +74,50 @@ df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC
 #df_pd_orig["datetime"] = df_pd_orig["Timestamp"]
 # Step 3: Close the connection
 conn.close()
+"""
+
+CSV_DATA_DIR = config['ned']['ned_model_download_dir']
+
+# Step 1: Read JSON data from a file
+csv_file_path = os.path.join(CSV_DATA_DIR, f"warp-csv-dataset.csv")
+
+with open(csv_file_path, 'rb') as csv_file:
+    df_pd_orig = pd.read_csv(csv_file)
 
 # Step 1: Convert 'validto' column to datetime
 df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
 # Step 2: Sort the DataFrame by 'validto' to avoid data leakage
 df = df_pd_orig.sort_values(by='datetime')
-
-# Step 1: Initial datetime formatting
+# Step 3: Initial datetime formatting
 df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)  # Ensure no timezone
 
-# Step 2: Filter out negative prices and define target/features
 # df = df[df['Price'] > 0].copy()  # Filter positive prices only
+
+# Step 4 - Define X and y variables
 y = df[['datetime', 'Price']]    # Target
 X = df.drop(columns=['Price'])   # Features (including datetime)
 
-# Step 3: Define custom date ranges for training and testing
+# Step 5: Define custom date ranges for training and testing
 train_start = "2025-01-01"
 train_end   = "2025-03-14"
 test_start  = "2025-03-15"
 test_end    = "2025-04-14"
 
-# Step 4: Filter based on date ranges
+# Step 6: Filter based on date ranges
 X_train = X[(X['datetime'] >= train_start) & (X['datetime'] <= train_end)].copy()
 X_test  = X[(X['datetime'] >= test_start) & (X['datetime'] <= test_end)].copy()
 
 y_train = y[(y['datetime'] >= train_start) & (y['datetime'] <= train_end)].copy()
 y_test  = y[(y['datetime'] >= test_start) & (y['datetime'] <= test_end)].copy()
 
-# Step 5: Display training and testing ranges
-print("Train Date Range:")
-print(f"Start: {X_train['datetime'].min()}")
-print(f"End:   {X_train['datetime'].max()}")
-print("\nTest Date Range:")
-print(f"Start: {X_test['datetime'].min()}")
-print(f"End:   {X_test['datetime'].max()}")
+
+# Display training and testing ranges
+logger = logging.getLogger('Train Date Range:')
+logger = logging.getLogger(f"Start: {X_train['datetime'].min()}")
+logger = logging.getLogger(f"End:   {X_train['datetime'].max()}")
+logger = logging.getLogger("\nTest Date Range:")
+logger = logging.getLogger(f"Start: {X_test['datetime'].min()}")
+logger = logging.getLogger(f"End:   {X_test['datetime'].max()}")
 
 # print(X.columns.tolist())
 
@@ -126,10 +137,10 @@ print(f"End:   {X_test['datetime'].max()}")
 54 IndustrialConsumersPowerGasCombination, 55 LocalDistributionCompaniesCombination, 56 AllConsumingGas
 """
 
-# Step 6: Combine X and y for Prophet
+# Step 7: Define regressors for Prophet
 regressors = ['Total_Flow', 'Solar_Vol', 'Wind_Vol', 'WindOffshore_Vol', 'Nuclear_Vol', 'temperature_2m']
 
-# Sanity check: keep only regressors present in X_train
+# Step 8 Sanity check: keep only regressors present in X_train
 available_regressors = [col for col in regressors if col in X_train.columns]
 
 train_prophet = pd.concat(
@@ -143,6 +154,7 @@ test_prophet = pd.concat(
     axis=1
 )
 
+# Step 9 Providing ds and y columns
 train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 
@@ -171,9 +183,8 @@ print("✅ Training complete")
 print(y_test.describe())
 print(y_test.head(10))
 print("Zero or negative actuals:")
-#print(y_test[y_test <= 0])
 
-# Create future dataframe with 'ds' column only
+# Step 10 Create future dataframe with 'ds' column only
 future = model.make_future_dataframe(periods=horizon, freq='D')
 
 # Merge regressors from X_test keyed by 'ds'
@@ -246,10 +257,8 @@ print(f"R²    : {r2:.4f}")
 comments = "with -ve price"
 print("Model run complete")
 
-
 # Define the filename
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-
 
 # Append results to results
 results.append(["Prophet", mae, mse, rmse, r2, comments, model_execution_time, model_run_timestamp])
@@ -258,8 +267,7 @@ results.append(["Prophet", mae, mse, rmse, r2, comments, model_execution_time, m
 metrics_df = pd.DataFrame(results, columns=["Model", "MAE", "MSE", "RMSE", "R2", "Comments", "Execution Time", "Run At"])
 
 # Display Table
-print(metrics_df)
-
+# print(metrics_df)
 
 model_results_file_path = f'{MODEL_RUN_RESULTS_DIR}warp-prophet-model-results.csv'
 
