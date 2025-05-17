@@ -61,21 +61,6 @@ def compute_aic(y_true, y_pred, num_params):
 
 results = []
 
-"""
-# Connect to the SQLite database
-db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
-conn = sqlite3.connect(db_path)
-# Connect to the SQLite database using the existing db_path
-conn = sqlite3.connect(db_path)
-# Step 2: Read data from table
-df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
-
-# df_pd_orig = pd.read_sql_query("SELECT * FROM raw_entsoe_obs ORDER BY Timestamp DESC", conn)
-#df_pd_orig["datetime"] = df_pd_orig["Timestamp"]
-# Step 3: Close the connection
-conn.close()
-"""
-
 CSV_DATA_DIR = config['ned']['ned_model_download_dir']
 
 # Step 1: Read JSON data from a file
@@ -131,6 +116,8 @@ logger = logging.getLogger(f"End:   {X_test['datetime'].max()}")
  'direct_normal_irradiance', 'shortwave_radiation', 'Wind_Vol', 'WindOffshore_Vol', 'Solar_Vol', 
  'Nuclear_Vol']
 
+
+
 0 All, 1 Wind, 2 Solar, 3 Biogas, 4 HeatPump, 8 Cofiring, 9 Geothermal, 10 Other, 11 Waste, 12 BioOil, 13 Biomass
 14 Wood, 17 WindOffshore, 18 FossilGasPower, 19 FossilHardCoal, 20 Nuclear, 21 WastePower, 22 WindOffshoreB, 23 NaturalGas, 24 Biomethane, 25 BiomassPower
 26 OtherPower, 27 ElectricityMix, 28 GasMix, 31 GasDistribution, 35 CHP Total, 50 SolarThermal, 51 WindOffshoreC, 53 IndustrialConsumersGasCombination
@@ -138,7 +125,10 @@ logger = logging.getLogger(f"End:   {X_test['datetime'].max()}")
 """
 
 # Step 7: Define regressors for Prophet
-regressors = ['Total_Flow', 'Solar_Vol', 'temperature_2m']
+regressors = ['month','shortwave_radiation','apparent_temperature','temperature_2m','direct_normal_irradiance','diffuse_radiation','yearday_sin',
+              'Flow_BE','hour_sin','is_non_working_day','is_weekend','is_holiday','weekday_cos','wind_speed_10m','hour_cos','weekday_sin',
+              'cloud_cover','Flow_GB','Nuclear_Vol','yearday_cos','Flow_NO','Load']
+
 
 # Step 8 Sanity check: keep only regressors present in X_train
 available_regressors = [col for col in regressors if col in X_train.columns]
@@ -212,14 +202,6 @@ test_results.to_csv(model_test_results_file_path, index=False)
 
 print("✅ Saved test predictions to model_test_results_file_path")
 
-"""
-for col in available_regressors:
-    plt.figure(figsize=(10, 2))
-    plt.plot(forecast['ds'], forecast[col])
-    plt.title(f"{col} over forecast horizon")
-    plt.show()
-"""
-
 # === Align predictions and actuals by date ===
 forecast_indexed = forecast.set_index('ds')
 test_prophet_indexed = test_prophet.set_index('ds')
@@ -249,13 +231,6 @@ plt.ylabel("Predicted Price")
 plt.tight_layout()
 plt.show()
 
-"""
-# === Plot Prophet components ===
-model.plot_components(forecast)
-plt.tight_layout()
-plt.show()
-"""
-
 # Extract numpy arrays for plotting or further analysis
 y_true = merged['y'].values
 y_pred = merged['yhat'].values
@@ -270,14 +245,6 @@ print("\n📊 Evaluation Metrics:")
 print(f"Model Name: Prophet")
 comments = "Refactor code run 5 with three parameters"
 
-"""
-print(f"MAE   : {mae:.2f}")
-print(f"MSE   : {mse:.2f}")
-print(f"RMSE  : {rmse:.2f}")
-print(f"R²    : {r2:.4f}")
-
-print("Model run complete")
-"""
 # Define the filename
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 

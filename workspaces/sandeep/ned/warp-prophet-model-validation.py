@@ -62,7 +62,10 @@ df = df[['ds', 'y']].sort_values('ds')
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 
 # Prepare regressors DataFrame (make sure columns exist and are cleaned)
-regressors = ['Total_Flow', 'Solar_Vol', 'Wind_Vol', 'WindOffshore_Vol', 'Nuclear_Vol', 'temperature_2m']
+regressors = ['month','shortwave_radiation','apparent_temperature','temperature_2m','direct_normal_irradiance','diffuse_radiation','yearday_sin',
+              'Flow_BE','hour_sin','is_non_working_day','is_weekend','is_holiday','weekday_cos','wind_speed_10m','hour_cos','weekday_sin',
+              'cloud_cover','Flow_GB','Nuclear_Vol','yearday_cos','Flow_NO','Load']
+
 X = df_filtered[['datetime'] + regressors].copy()
 X['ds'] = pd.to_datetime(X['datetime']).dt.tz_localize(None)
 X.drop(columns=['datetime'], inplace=True)

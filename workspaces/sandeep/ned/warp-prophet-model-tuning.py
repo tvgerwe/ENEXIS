@@ -127,7 +127,11 @@ print(f"End:   {X_test['datetime'].max()}")
 """
 
 # Step 6: Combine X and y for Prophet
-regressors = ['Total_Flow', 'Solar_Vol', 'temperature_2m']
+# regressors = ['Total_Flow', 'Solar_Vol', 'temperature_2m']
+regressors = ['month','shortwave_radiation','apparent_temperature','temperature_2m','direct_normal_irradiance','diffuse_radiation','yearday_sin',
+              'Flow_BE','hour_sin','is_non_working_day','is_weekend,','is_holiday','weekday_cos','wind_speed_10m','hour_cos','weekday_sin',
+              'cloud_cover','Flow_GB','Nuclear_Vol','yearday_cos','Flow_NO','Load']
+
 
 # Sanity check: keep only regressors present in X_train
 available_regressors = [col for col in regressors if col in X_train.columns]
@@ -159,19 +163,23 @@ model_run_start_time = time.time()
 
 # Step 10: Train Prophet model with only available regressors
 horizon = 30  # forecast days
-"""# Parameter grid
+
+'''
+# Parameter grid
 param_grid = {
     'changepoint_prior_scale': [0.001, 0.01, 0.1, 0.5],
     'seasonality_mode': ['additive', 'multiplicative'],
     'seasonality_prior_scale': [1.0, 10.0, 20.0]
 }
-"""
+'''
+
 # Best Model Param grid
 param_grid = {
     'changepoint_prior_scale': [0.1],
     'seasonality_mode': ['additive'],
     'seasonality_prior_scale': [1.0]
 }
+
 
 # Create list of all parameter combinations
 import itertools

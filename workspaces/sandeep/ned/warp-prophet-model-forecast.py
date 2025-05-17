@@ -4,6 +4,8 @@ from prophet import Prophet
 import joblib
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import os
+from datetime import timedelta
+
 
 from pathlib import Path
 import logging
@@ -15,7 +17,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
-logger = logging.getLogger('prophet_rolling_validation')
+logger = logging.getLogger('prophet_forecast_tuned_model')
 
 # === Config Setup ===
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -27,9 +29,9 @@ with open(CONFIG_PATH, "r") as f:
     config = json.load(f)
 
 MODEL_RUN_RESULTS_DIR = config['ned']['ned_model_download_dir']
-model_file_path = f'{MODEL_RUN_RESULTS_DIR}prophet_model.pkl'
-rolling_window_file_path = f'{MODEL_RUN_RESULTS_DIR}rolling_validation_results.csv'
+model_file_path = f'{MODEL_RUN_RESULTS_DIR}prophet_hyper_tuned_model.pkl'
 forecast_output_path = f"{MODEL_RUN_RESULTS_DIR}/forecast_vs_actual.csv"
+model_metrics_results_path = f"{MODEL_RUN_RESULTS_DIR}/model_run_metrics.csv"
 
 # === Load model (Optional, not reused in rolling window) ===
 model = joblib.load(model_file_path)
@@ -59,17 +61,22 @@ df['ds'] = pd.to_datetime(df['datetime']).dt.tz_localize(None)  # Ensure tz-naiv
 df['y'] = df['Price']
 
 # Define regressors you want to use
-regressors = ['Solar_Vol', 'Total_Flow', 'temperature_2m']
+# regressors = ['Solar_Vol', 'Total_Flow', 'temperature_2m']
+regressors = ['month','shortwave_radiation','apparent_temperature','temperature_2m','direct_normal_irradiance','diffuse_radiation','yearday_sin',
+              'Flow_BE','hour_sin','is_non_working_day','is_weekend','is_holiday','weekday_cos','wind_speed_10m','hour_cos','weekday_sin',
+              'cloud_cover','Flow_GB','Nuclear_Vol','yearday_cos','Flow_NO','Load']
+
 
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 
-# Rolling forecast parameters
-start_date = pd.to_datetime("2025-04-15")
+start_date = pd.to_datetime("2025-04-17") + timedelta(hours=36)
 num_rolling_runs = 6
 horizon = 6  # days ahead
+step = 1     # step forward by 1 day for each rolling prediction
 
 results = []
 forecast_rows = []
+model_run_metrics = []
 
 for i in range(num_rolling_runs):
     predict_start = start_date + pd.Timedelta(days=i)
@@ -117,27 +124,22 @@ for i in range(num_rolling_runs):
             "window_end": predict_end
         })
 
-# Convert results to DataFrame
-results_df = pd.DataFrame(results)
-print(results_df)
+    model_run_metrics.append({
+        "run": i + 1,
+        "start": predict_start,
+        "end": predict_end,
+        "mae": mae,
+        "mse": mse,
+        "rmse": rmse,
+        "r2": r2
+    })    
 
 # Save actual vs predicted to CSV
-forecast_output_path = "forecast_vs_actual.csv"  # Change path as needed
 df_forecast = pd.DataFrame(forecast_rows)
 df_forecast.to_csv(forecast_output_path, index=False)
 logger.info(f"📁 Forecast vs Actual saved to: {forecast_output_path}")
 logger.info("\n" + str(df_forecast.head()))
 
 # === Save Results ===
-df_results = pd.DataFrame(results)
-df_results.to_csv(rolling_window_file_path, index=False)
-
-# === Save Actual vs Predicted CSV ===
-df_forecast = pd.DataFrame(forecast_rows)
-
-df_forecast.to_csv(forecast_output_path, index=False)
-logger.info(f"📁 Forecast vs Actual saved to: {forecast_output_path}")
-logger.info("\n" + str(df_forecast.head()))
-
-logger.info(f"📊 Rolling validation results saved to: {rolling_window_file_path}")
-logger.info("\n" + str(df_results.head()))
+df_model_metrics = pd.DataFrame(model_run_metrics)
+df_model_metrics.to_csv(model_metrics_results_path, index=False)
