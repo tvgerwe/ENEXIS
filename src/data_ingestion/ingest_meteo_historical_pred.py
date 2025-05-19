@@ -19,7 +19,7 @@ logger = logging.getLogger("ingest_meteo_historical_pred")
 # === Config ===
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = PROJECT_ROOT / "src" / "data" / "WARP.db"
-TABLE_NAME = "raw_weather_preds"
+TABLE_NAME = "raw_weather_preds_test"
 CSV_PATH = PROJECT_ROOT / "src" / "data" / "weather" /"Weather_pred_past_3m_DeBilt_2025-03-25.csv"
 
 # === Open-Meteo API setup ===

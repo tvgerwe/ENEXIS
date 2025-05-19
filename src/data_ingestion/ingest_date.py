@@ -61,7 +61,9 @@ def create_datetime_rows(start_date, end_date):
     df["weekday_cos"] = np.cos(2 * np.pi * df["day_of_week"] / 7)
     df["yearday_sin"] = np.sin(2 * np.pi * df["day_of_year"] / 365.25)
     df["yearday_cos"] = np.cos(2 * np.pi * df["day_of_year"] / 365.25)
-
+    # Convert from UTC to a local timezone (e.g., Europe/Amsterdam) to capture DST changes
+    df["local_datetime"] = df["datetime"].dt.tz_convert("Europe/Amsterdam")
+    df["is_dst"] = df["local_datetime"].apply(lambda x: int(x.dst() != pd.Timedelta(0))).astype('bool')
     years = set(df["datetime"].dt.year)
     nl_holidays = holidays.country_holidays("NL", years=list(years))
     df["is_holiday"] = df["date"].isin(nl_holidays).astype(bool)
