@@ -16,6 +16,9 @@ def cross_validate_model_core(
     horizon
 ):
     try:
+        import os
+        print('Attempting to read CSV from:', csv_path)
+        print('File exists?', os.path.exists(csv_path))
         df = pd.read_csv(csv_path)
         print("Loaded DataFrame shape:", df.shape)
         print("Loaded DataFrame head:\n", df.head())
