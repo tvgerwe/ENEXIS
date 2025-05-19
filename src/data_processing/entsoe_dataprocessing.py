@@ -23,27 +23,25 @@ conn.close()
 df['Timestamp'] = pd.to_datetime(df['Timestamp'], errors='coerce')
 df.set_index('Timestamp', inplace=True)
 
-# Shift timestamps back by 1 hour (aligns with end-of-hour timestamps)
-df.index = df.index - pd.Timedelta(hours=1)
-
 # Resample the data to hourly frequency and calculate the mean for each hour
-
 df_hourly = df.resample('h').mean()
 print("Data resampled to hourly frequency based on the past hour!")
 
-df_hourly['Price'] = df_hourly['Price'] / 1000  # Convert price to kWh
+# Shift timestamps by +1 hour (aligns with end-of-hour timestamps)
+df_hourly.index = df_hourly.index + pd.Timedelta(hours=1)
+
+# Convert price to kWh
+df_hourly['Price'] = df_hourly['Price'] / 1000
 
 # Add the timestamps as a column
 df_hourly.reset_index(inplace=True)
 print("Timestamps added to the final DataFrame!")
 
-# Shift timestamps by 1 hour to calculate the mean for the past hour
-df.index = df.index - pd.Timedelta(hours=-1)
-
 neighboring_countries = ['BE', 'DE', 'GB', 'DK', 'NO']
 
 for neighbor in neighboring_countries:
     df_hourly[f'Flow_{neighbor}'] = df_hourly[f'Flow_{neighbor}_to_NL'] - df_hourly[f'Flow_NL_to_{neighbor}']
+    df_hourly.drop([f'Flow_{neighbor}_to_NL', f'Flow_NL_to_{neighbor}'], axis=1, inplace=True)
 
 df_hourly['Total_Flow'] = sum(df_hourly[f'Flow_{n}'] for n in neighboring_countries)
 
