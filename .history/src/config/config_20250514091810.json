@@ -1,0 +1,37 @@
+{
+    "api": {
+        "ned": {
+            "endpoint": "https://api.ned.nl/v1/utilizations",
+            "api_key": "21702b116e4c72974d62853623de0adcb0f530d98591b308a41a881735267bbb",
+            "types": [1,2,17,20]PRED_1' 'PRED_17' 'PRED_2' 'PRED_20' 'PRED_21' '
+        },
+        "entsoe": {
+            "api_key": "82aa28d4-59f3-4e3a-b144-6659aa9415b5",
+            "country": "NL", 
+            "neighbors": ["BE", "DE", "GB", "DK", "NO"],
+            "default_start": "2025-01-01T00:00:00Z"
+        },
+        "open_meteo": {
+            "coordinates": {
+                "latitude": 52.12949,
+                "longitude": 5.20514
+            },
+            "default_start": "2025-01-01"
+        }
+    },
+    "database": {
+        "main_db": "WARP.db",
+        "logs_db": "logs.db",
+        "data_dir": "data"
+    },
+    "ml_settings": {
+        "time_splits": {
+            "train_start": "2025-01-01",
+            "train_end": "2025-04-15",
+            "validation_start": "2025-04-16",
+            "validation_end": "2025-04-30",
+            "test_start": "2025-05-01",
+            "test_end": "2025-05-11"
+        }
+    }
+}
