@@ -51,6 +51,7 @@ SUMMARY: Standalone Python client for calling the Prophet forecast API endpoint.
 
 ---
 
+<<<<<<< HEAD
 **prophet_api.py**  
 SUMMARY: FastAPI microservice and core logic for Prophet model training and evaluation. Provides a core function for model build, hyperparameter tuning, and metrics, as well as an API endpoint for file upload and orchestration. Used by the unified API and orchestration layer for modular time series model building workflows.
 
@@ -58,3 +59,7 @@ SUMMARY: FastAPI microservice and core logic for Prophet model training and eval
 
 **prophet_api_forecast.py**  
 SUMMARY: FastAPI microservice and core logic for Prophet-based forecasting using saved models. Provides a core function for generating forecasts from trained Prophet models, handling file uploads, regressor management, and robust time range logic. Used by the unified API and orchestration layer for modular time series forecasting workflows.
+=======
+**langchain_pipeline_flow.py**  
+SUMMARY: Provides LLM-powered natural language querying and summarization over the AI agent pipeline flow logs. Tracks each API call (build, forecast, cross-validation) and enables conversational visibility into pipeline execution using LangChain. Integrates with the orchestration layer to log each step for later analysis or Q&A.
+>>>>>>> 818561ac198fc8a1926317f8a23cf60714cd4b65
