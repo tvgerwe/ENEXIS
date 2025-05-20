@@ -243,7 +243,7 @@ print(f"⏱️ Execution time: {execution_time:.2f} seconds")
 # === Summary of evaluation metrics ===
 print("\n📊 Evaluation Metrics:")
 print(f"Model Name: Prophet")
-comments = "Refactor code run 5 with three parameters"
+comments = "Refactor code run 5 with modified regressors parameters"
 
 # Define the filename
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
