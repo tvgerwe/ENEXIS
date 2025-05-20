@@ -4,68 +4,79 @@ import pandas as pd
 import sqlite3
 import logging
 from pathlib import Path
-from datetime import datetime
 
-# === Logging configuratie ===
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - build_training_set - %(levelname)s - %(message)s"
+    format="%(asctime)s - build_master_predictions - %(levelname)s - %(message)s"
 )
-logger = logging.getLogger("build_training_set")
+logger = logging.getLogger("build_master_predictions")
 
-# === Config ===
-DB_PATH = Path(__file__).resolve().parents[1] / "data" / "WARP.db"
-OUTPUT_TABLE = "training_set"
-ACTUALS_TABLE = "master_warp"
-PREDICTIONS_TABLE = "master_predictions"
-HORIZON = 168  # 7 dagen
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DB_PATH = PROJECT_ROOT / "src" / "data" / "WARP.db"
+MASTER_TABLE = "master_predictions"
 
-# === Handmatige datums voor deze run (later parametriseerbaar)
-train_start = pd.Timestamp("2025-01-01 00:00:00", tz="UTC")
-train_end = pd.Timestamp("2025-03-14 23:00:00", tz="UTC")
-run_date = train_end + pd.Timedelta(hours=1)
-forecast_start = run_date
-forecast_end = forecast_start + pd.Timedelta(hours=HORIZON - 1)
+def safe_load(conn, table):
+    try:
+        df = pd.read_sql_query(f"SELECT * FROM {table}", conn)
+        logger.info(f"✅ '{table}' geladen ({len(df)} rijen)")
+        return df
+    except Exception as e:
+        logger.error(f"❌ Fout bij laden '{table}': {e}")
+        return pd.DataFrame()
 
-def build_training_set():
-    logger.info("🚀 Start build van trainingset")
-    logger.info(f"🧠 Actuals van {train_start} t/m {train_end}")
-    logger.info(f"📅 Forecast van run_date {run_date}, target range: {forecast_start} → {forecast_end}")
-
+def build_master():
+    logger.info(f"📦 Start build voor {MASTER_TABLE}")
     conn = sqlite3.connect(DB_PATH)
 
     try:
-        # === Actuals inladen ===
-        df_actuals = pd.read_sql_query(f"SELECT * FROM {ACTUALS_TABLE}", conn)
-        df_actuals["target_datetime"] = pd.to_datetime(df_actuals["target_datetime"], utc=True)
-        df_actuals = df_actuals[
-            (df_actuals["target_datetime"] >= train_start) &
-            (df_actuals["target_datetime"] <= train_end)
-        ]
-        logger.info(f"✅ master_warp geladen: {df_actuals.shape[0]} rijen")
+        df_time = safe_load(conn, "dim_datetime")
+        df_ned = safe_load(conn, "processed_NED_preds")
+        df_weather = safe_load(conn, "process_weather_preds")
+        df_now = safe_load(conn, "transform_meteo_forecast_now")
 
-        # === Forecast inladen ===
-        df_preds = pd.read_sql_query(f"SELECT * FROM {PREDICTIONS_TABLE}", conn)
-        df_preds["target_datetime"] = pd.to_datetime(df_preds["target_datetime"], utc=True)
-        df_preds["run_date"] = pd.to_datetime(df_preds["run_date"], utc=True)
+        df_time["target_datetime"] = pd.to_datetime(df_time["datetime"], utc=True)
+        df_ned["validto"] = pd.to_datetime(df_ned["validto"], utc=True)
+        df_ned["fetch_moment"] = pd.to_datetime(df_ned["fetch_moment"], utc=True)
+        df_weather["target_datetime"] = pd.to_datetime(df_weather["target_datetime"], utc=True)
 
-        df_preds = df_preds[
-            (df_preds["run_date"] == run_date) &
-            (df_preds["target_datetime"] >= forecast_start) &
-            (df_preds["target_datetime"] <= forecast_end)
-        ].drop_duplicates("target_datetime")
+        if not df_now.empty:
+            if "target_datetime" in df_now.columns:
+                df_now["target_datetime"] = pd.to_datetime(df_now["target_datetime"], utc=True)
+            elif "date" in df_now.columns:
+                df_now = df_now.rename(columns={"date": "target_datetime"})
+                df_now["target_datetime"] = pd.to_datetime(df_now["target_datetime"], utc=True)
 
-        logger.info(f"✅ Forecast (run_date={run_date}) geladen: {df_preds.shape[0]} rijen")
+        df_ned = df_ned.sort_values("fetch_moment").drop_duplicates("validto", keep="last")#Checken!!!
+        df_ned = df_ned.rename(columns={"validto": "target_datetime"})
 
-        # === Samenvoegen
-        df_combined = pd.concat([df_actuals, df_preds], ignore_index=True, sort=False)
-        df_combined = df_combined.sort_values("target_datetime").drop_duplicates("target_datetime")
+        df = df_time.drop(columns=["datetime", "date"], errors="ignore")
 
-        logger.info(f"📦 Eindtabel bevat: {df_combined.shape[0]} rijen, {df_combined.shape[1]} kolommen")
-        logger.info(f"🧾 Kolommen: {df_combined.columns.tolist()}")
+        df = df.merge(df_ned, on="target_datetime", how="left")
+        df = df.merge(df_weather, on="target_datetime", how="left", suffixes=("", "_weather"))
 
-        df_combined.to_sql(OUTPUT_TABLE, conn, if_exists="replace", index=False)
-        logger.info(f"✅ Opgeslagen als {OUTPUT_TABLE} in {DB_PATH.name}")
+        if not df_now.empty:
+            df = df.merge(df_now, on="target_datetime", how="left", suffixes=("", "_now"))
+
+        # === Combineer suffix-kolommen naar originele naam ===
+        suffix_sources = ["_weather", "_now"]
+        base_cols = [col.replace("_weather", "").replace("_now", "") 
+                     for col in df.columns if any(suffix in col for suffix in suffix_sources)]
+
+        for col in set(base_cols):
+            suffix_cols = [c for c in df.columns if c.startswith(col + "_")]
+            if suffix_cols:
+                for suffix_col in suffix_cols:
+                    df[col] = df[col].combine_first(df[suffix_col])
+                df = df.drop(columns=suffix_cols)
+
+        df = df.loc[:, ~df.columns.duplicated()]
+        df = df.sort_values("target_datetime")
+
+        logger.info(f"📊 Eindtabel: {df.shape[0]} rijen, {df.shape[1]} kolommen")
+        logger.info(f"🧾 Kolommen: {df.columns.tolist()}")
+
+        df.to_sql(MASTER_TABLE, conn, if_exists="replace", index=False)
+        logger.info(f"✅ {MASTER_TABLE} succesvol opgeslagen")
 
     except Exception as e:
         logger.error(f"❌ Fout tijdens build: {e}", exc_info=True)
@@ -73,6 +84,5 @@ def build_training_set():
         conn.close()
         logger.info("🔒 Verbinding gesloten")
 
-
 if __name__ == "__main__":
-    build_training_set()
+    build_master()
