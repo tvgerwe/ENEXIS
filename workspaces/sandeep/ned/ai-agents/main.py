@@ -1,4 +1,6 @@
 # main.py
+# SUMMARY: Scheduler and CLI entry point for orchestrating the modular Prophet pipeline. Uses agent_api_calls.py to call the unified API endpoints for model build, forecast, and cross-validation. Supports scheduled and manual runs for automated time series workflows.
+
 # Purpose: Scheduler/CLI entry point for running agent orchestration pipelines.
 import schedule
 import time

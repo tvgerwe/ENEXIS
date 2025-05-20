@@ -1,4 +1,6 @@
 # agent_api_calls.py
+# SUMMARY: Python client library for programmatically calling the FastAPI endpoints in main_api.py. Provides robust, logged functions for model build, forecast, and cross-validation. Used by orchestration scripts and CLI/scheduler for API-driven workflows.
+
 # Purpose: Python client functions for calling the unified FastAPI endpoints in main_api.py
 import requests
 import logging

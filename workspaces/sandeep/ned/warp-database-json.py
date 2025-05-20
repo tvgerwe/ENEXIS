@@ -57,4 +57,4 @@ else:
     # Create new file
     df_pd_orig.to_csv(db_results_file_path, index=False)
 
-logger = logging.getLogger('csv save complete')
+logger = logging.getLogger('csv save complete at : ', db_results_file_path)

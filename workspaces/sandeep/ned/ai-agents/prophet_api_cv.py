@@ -1,3 +1,6 @@
+# prophet_api_cv.py
+# SUMMARY: FastAPI microservice and core logic for Prophet cross-validation and performance metrics. Provides a core function for running Prophet's cross-validation and metrics, handling file uploads, column normalization, and robust error/debug logging. Used by the unified API and orchestration layer for modular time series validation workflows.
+
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 import pandas as pd

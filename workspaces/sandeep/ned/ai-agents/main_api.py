@@ -1,3 +1,6 @@
+# main_api.py
+# SUMMARY: Unified FastAPI server for the modular Prophet pipeline. Exposes endpoints for model build, forecast, and cross-validation, delegating to agent_orchestration.py for business logic. Supports file upload, robust logging, and error handling. Entry point for API-driven workflows and integration with external systems.
+
 import logging
 from fastapi import FastAPI, File, UploadFile, Form
 import os

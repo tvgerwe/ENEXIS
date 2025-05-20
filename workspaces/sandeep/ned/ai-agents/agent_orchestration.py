@@ -1,4 +1,5 @@
 # agent_orchestration.py
+# SUMMARY: Orchestration and business logic layer for the modular Prophet pipeline. Provides functions for model build, forecast, and cross-validation by calling the core logic directly. Used by main_api.py (API server) and main.py (scheduler/CLI) for unified, non-HTTP orchestration.
 # Purpose: Orchestration/business logic for model build, forecast, and cross-validation.
 # This module should call the core logic directly, not via HTTP. If you want to orchestrate via API, import agent_api_calls.py.
 import logging

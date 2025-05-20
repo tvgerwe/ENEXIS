@@ -1,3 +1,6 @@
+# prophet_api.py
+# SUMMARY: FastAPI microservice and core logic for Prophet model build and training. Provides a core function for model training, hyperparameter tuning, and artifact saving, as well as an API endpoint for file upload and model build. Used by the unified API and orchestration layer for modular time series workflows.
+
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 import pandas as pd

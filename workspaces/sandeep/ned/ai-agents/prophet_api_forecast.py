@@ -1,3 +1,6 @@
+# prophet_api_forecast.py
+# SUMMARY: FastAPI microservice and core logic for Prophet-based forecasting using saved models. Provides a core function for generating forecasts from trained Prophet models, handling file uploads, regressor management, and robust time range logic. Used by the unified API and orchestration layer for modular time series forecasting workflows.
+
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 import pandas as pd
