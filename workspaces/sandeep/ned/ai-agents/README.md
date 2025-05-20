@@ -26,6 +26,31 @@ SUMMARY: Scheduler and CLI entry point for orchestrating the modular Prophet pip
 
 ---
 
+**prophet_build_model_core.py**  
+SUMMARY: Core logic for Prophet model build and training. Provides a function for model training, hyperparameter tuning, and artifact saving. Used by the orchestration and API layers for modular time series workflows.
+
+---
+
+**prophet_forecast_core.py**  
+SUMMARY: Core logic for Prophet-based forecasting using saved models. Provides a function for generating forecasts from trained Prophet models, handling regressor management and robust time range logic. Used by the orchestration and API layers for modular time series forecasting workflows.
+
+---
+
+**prophet_crossvalidation_core.py**  
+SUMMARY: Core logic and FastAPI microservice for Prophet cross-validation and performance metrics. Provides a function for running Prophet's cross-validation and metrics, handling file uploads, column normalization, and robust error/debug logging. Used by the unified API and orchestration layer for modular time series validation workflows.
+
+---
+
+**prophet_api_client.py**  
+SUMMARY: Standalone Python client for calling the Prophet model build API endpoint. Useful for testing, scripting, or integrating Prophet model training into other Python workflows.
+
+---
+
+**prophet_api_forecast_client.py**  
+SUMMARY: Standalone Python client for calling the Prophet forecast API endpoint. Useful for testing, scripting, or integrating Prophet-based forecasting into other Python workflows.
+
+---
+
 **prophet_api.py**  
 SUMMARY: FastAPI microservice and core logic for Prophet model training and evaluation. Provides a core function for model build, hyperparameter tuning, and metrics, as well as an API endpoint for file upload and orchestration. Used by the unified API and orchestration layer for modular time series model building workflows.
 
@@ -33,8 +58,3 @@ SUMMARY: FastAPI microservice and core logic for Prophet model training and eval
 
 **prophet_api_forecast.py**  
 SUMMARY: FastAPI microservice and core logic for Prophet-based forecasting using saved models. Provides a core function for generating forecasts from trained Prophet models, handling file uploads, regressor management, and robust time range logic. Used by the unified API and orchestration layer for modular time series forecasting workflows.
-
----
-
-**prophet_crossvalidation_core.py**  
-SUMMARY: FastAPI microservice and core logic for Prophet cross-validation and performance metrics. Provides a core function for running Prophet's cross-validation and metrics, handling file uploads, column normalization, and robust error/debug logging. Used by the unified API and orchestration layer for modular time series validation workflows.
