@@ -6,6 +6,7 @@ import logging
 from prophet_api import build_and_save_prophet_model_core
 from prophet_api_forecast import forecast_with_saved_model_core
 from prophet_crossvalidation_core import cross_validate_model_core
+from langchain_pipeline_flow import log_pipeline_step
 
 # Configure logger
 logger = logging.getLogger("agent_orchestration")
@@ -35,6 +36,19 @@ def build_and_save_prophet_model(csv_path, train_start, train_end, test_start, t
     logger.info("--- Running Prophet Model Training (core logic) ---")
     result = build_and_save_prophet_model_core(csv_path, train_start, train_end, test_start, test_end, regressors)
     logger.info(f"Prophet Model Result: {result}")
+    # Log the pipeline step for LLM visibility
+    log_pipeline_step(
+        step="build_model",
+        input_data={
+            "csv_path": csv_path,
+            "train_start": train_start,
+            "train_end": train_end,
+            "test_start": test_start,
+            "test_end": test_end,
+            "regressors": regressors
+        },
+        output_data=result
+    )
     return result
 
 def forecast_with_saved_model(csv_path, regressors, periods, freq="D"):
