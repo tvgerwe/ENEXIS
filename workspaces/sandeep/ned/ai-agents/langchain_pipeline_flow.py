@@ -27,6 +27,9 @@ with open(CONFIG_PATH, "r") as f:
     config = json.load(f)
 
 HUGGINGFACE_API_TOKEN = config['ned']['huggingface_key']
+# HUGGINGFACE_API_TOKEN = config['ned']['huggingface_key']
+
+
 
 def log_pipeline_step(step=None, input_data=None, output_data=None, log_path=LOG_PATH):
     """Log a pipeline step with input/output for later LLM analysis. Defaults to safe values if not provided."""
@@ -54,38 +57,64 @@ def load_pipeline_logs(log_path=LOG_PATH):
     return pd.DataFrame(logs)
 
 # Example LangChain-powered query function
-def query_pipeline_flow(question=None, log_path=None, huggingfacehub_api_token=None, model_name=None):
+def query_pipeline_flow(question=None, log_path=None, model_name=None):
     """
-    Minimal: Query the pipeline flow logs using a supported HuggingFace text-generation model (default: tiiuae/falcon-7b-instruct).
-    Uses direct requests to the HuggingFace Inference API for maximum compatibility.
+    Query the pipeline flow logs using a local HuggingFace text-generation model (default: gpt2).
+    No API key or internet required after model download.
     """
-    import requests
+    # Recommended local models (context window in tokens):
+    # - gpt2: 1024
+    # - bigscience/bloom-560m: 2048
+    # - facebook/opt-1.3b: 2048
+    # - facebook/opt-2.7b: 2048
+    # - mistralai/Mistral-7B-Instruct-v0.2: 32768 (requires lots of RAM/GPU)
+    # - meta-llama/Llama-2-7b-hf: 4096 (requires lots of RAM/GPU)
+    # - tiiuae/falcon-7b-instruct: 2048 (requires lots of RAM/GPU)
     if question is None:
         question = "Summarize the pipeline flow."
     if log_path is None:
         log_path = LOG_PATH
-    if huggingfacehub_api_token is None:
-        huggingfacehub_api_token = HUGGINGFACE_API_TOKEN
     if model_name is None:
-        model_name = "tiiuae/falcon-7b-instruct"
+        model_name = "gpt2"  # Default to gpt2 for local inference
     logger.info(f"Querying pipeline flow with question: {question}")
     df = load_pipeline_logs(log_path)
     if df.empty:
         logger.warning("No pipeline flow logs found.")
         return "No pipeline flow logs found."
-    logs_text = df.to_string(index=False)
-    prompt = f"Given the following pipeline logs:\n{logs_text}\n\nAnswer this question: {question}"
-    api_url = f"https://api-inference.huggingface.co/models/{model_name}"
-    headers = {"Authorization": f"Bearer {huggingfacehub_api_token}"}
-    payload = {"inputs": prompt}
-    response = requests.post(api_url, headers=headers, json=payload)
-    if response.status_code != 200:
-        logger.error(f"HuggingFace API error: {response.status_code} {response.text}")
-        return f"HuggingFace API error: {response.status_code} {response.text}"
-    result = response.json()
-    if isinstance(result, list) and 'generated_text' in result[0]:
-        return result[0]['generated_text']
-    return str(result)
+    from transformers import pipeline
+    pipe = pipeline("text-generation", model=model_name)
+    # Only summarize the first three log lines
+    summaries = []
+    for idx, row in df.head(3).iterrows():
+        log_text = row.to_string()
+        prompt = f"Given the following pipeline log entry:\n{log_text}\n\nSummarize this log entry."
+        try:
+            output = pipe(prompt, max_new_tokens=128)
+            if isinstance(output, list) and len(output) > 0:
+                first = output[0]
+                if isinstance(first, dict) and 'generated_text' in first:
+                    summaries.append(first['generated_text'].strip())
+                else:
+                    summaries.append(str(first))
+            else:
+                summaries.append("Text generation returned no output.")
+        except Exception as e:
+            logger.error(f"Text generation failed for log {idx}: {e}")
+            summaries.append(f"Text generation failed for log {idx}: {e}")
+    # Combine all summaries and answer the user's question
+    combined_summary = "\n".join(summaries)
+    final_prompt = f"Given the following summarized pipeline logs:\n{combined_summary}\n\nAnswer this question: {question}"
+    try:
+        output = pipe(final_prompt, max_new_tokens=256)
+        if isinstance(output, list) and len(output) > 0:
+            first = output[0]
+            if isinstance(first, dict) and 'generated_text' in first:
+                return first['generated_text']
+            return str(first)
+        return "Text generation returned no output."
+    except Exception as e:
+        logger.error(f"Text generation failed for final summary: {e}")
+        return f"Text generation failed for final summary: {e}"
 
 # Example usage (for testing)
 if __name__ == "__main__":
