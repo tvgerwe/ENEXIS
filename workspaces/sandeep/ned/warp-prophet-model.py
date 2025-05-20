@@ -84,9 +84,9 @@ X = df.drop(columns=['Price'])   # Features (including datetime)
 
 # Step 5: Define custom date ranges for training and testing
 train_start = "2025-01-01"
-train_end   = "2025-03-14"
-test_start  = "2025-03-15"
-test_end    = "2025-04-14"
+train_end   = "2025-04-30"
+test_start  = "2025-05-01"
+test_end    = "2025-05-19"
 
 # Step 6: Filter based on date ranges
 X_train = X[(X['datetime'] >= train_start) & (X['datetime'] <= train_end)].copy()
@@ -243,7 +243,7 @@ print(f"⏱️ Execution time: {execution_time:.2f} seconds")
 # === Summary of evaluation metrics ===
 print("\n📊 Evaluation Metrics:")
 print(f"Model Name: Prophet")
-comments = "Refactor code run 5 with modified regressors parameters"
+comments = "run on 20 May with revised data set"
 
 # Define the filename
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')

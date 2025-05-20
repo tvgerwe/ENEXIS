@@ -164,14 +164,14 @@ model_run_start_time = time.time()
 # Step 10: Train Prophet model with only available regressors
 horizon = 30  # forecast days
 
-'''
+"""
 # Parameter grid
 param_grid = {
     'changepoint_prior_scale': [0.001, 0.01, 0.1, 0.5],
     'seasonality_mode': ['additive', 'multiplicative'],
     'seasonality_prior_scale': [1.0, 10.0, 20.0]
 }
-'''
+"""
 
 # Best Model Param grid
 param_grid = {
@@ -286,7 +286,7 @@ model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
 results = []
 model_name = "Prophet"
-comments = "Revised model with hyperparameter tuning and -ve price Run"
+comments = "run on 20 May for tuning with revised data set"
 print("model_name", "Prophet")
 
 model_execution_time = model_run_end_time - model_run_start_time

@@ -36,7 +36,7 @@ conn = sqlite3.connect(db_path)
 # Connect to the SQLite database using the existing db_path
 conn = sqlite3.connect(db_path)
 # Step 2: Read data from table
-df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY datetime DESC", conn)
+df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY target_datetime DESC", conn)
 
 # df_pd_orig = pd.read_sql_query("SELECT * FROM raw_entsoe_obs ORDER BY Timestamp DESC", conn)
 #df_pd_orig["datetime"] = df_pd_orig["Timestamp"]
@@ -57,4 +57,4 @@ else:
     # Create new file
     df_pd_orig.to_csv(db_results_file_path, index=False)
 
-logger = logging.getLogger('csv save complete at : ', db_results_file_path)
+logger = logging.getLogger('csv save complete at : ' + db_results_file_path)
