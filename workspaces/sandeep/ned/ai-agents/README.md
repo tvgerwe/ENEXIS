@@ -6,14 +6,6 @@ This folder contains a modular, API-driven pipeline for Prophet time series mode
 
 ---
 
-**ai-agents.py**  
-SUMMARY: Deprecated monolithic script. All logic has been modularized into agent_api_calls.py (Python client functions), agent_orchestration.py (orchestration/business logic), and main.py (scheduler/CLI entry point). This file is retained for reference only and will be removed in future cleanup.
-If you need to run the scheduler, use main.py.  
-If you need to call the API endpoints, use agent_api_calls.py.  
-If you need orchestration logic, use agent_orchestration.py.
-
----
-
 **agent_api_calls.py**  
 SUMMARY: Python client library for programmatically calling the FastAPI endpoints in main_api.py. Provides robust, logged functions for model build, forecast, and cross-validation. Used by orchestration scripts and CLI/scheduler for API-driven workflows.
 
