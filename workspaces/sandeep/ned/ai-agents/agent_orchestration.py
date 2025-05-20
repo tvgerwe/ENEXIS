@@ -5,7 +5,7 @@
 import logging
 from prophet_api import build_and_save_prophet_model_core
 from prophet_api_forecast import forecast_with_saved_model_core
-from prophet_api_cv import cross_validate_model_core
+from prophet_crossvalidation_core import cross_validate_model_core
 
 # Configure logger
 logger = logging.getLogger("agent_orchestration")

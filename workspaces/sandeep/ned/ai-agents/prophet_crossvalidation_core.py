@@ -1,4 +1,4 @@
-# prophet_api_cv.py
+# prophet_crossvalidation_core.py
 # SUMMARY: FastAPI microservice and core logic for Prophet cross-validation and performance metrics. Provides a core function for running Prophet's cross-validation and metrics, handling file uploads, column normalization, and robust error/debug logging. Used by the unified API and orchestration layer for modular time series validation workflows.
 
 from fastapi import FastAPI, File, UploadFile, Form
@@ -65,7 +65,7 @@ def cross_validate_model_core(
         horizon = ensure_timedelta_str(horizon)
         df_cv = cross_validation(model, initial=initial, period=period, horizon=horizon)
         df_p = performance_metrics(df_cv)
-        cv_csv_path = "prophet_api_cv_results.csv"
+        cv_csv_path = "prophet_crossvalidation_core_results.csv"
         df_p.to_csv(cv_csv_path, index=False)
         return {
             "success": True,
@@ -128,7 +128,7 @@ def cross_validate_prophet(
         horizon = ensure_timedelta_str(horizon)
         df_cv = cross_validation(model, initial=initial, period=period, horizon=horizon)
         df_p = performance_metrics(df_cv)
-        cv_csv_path = "prophet_api_cv_results.csv"
+        cv_csv_path = "prophet_crossvalidation_core_results.csv"
         df_p.to_csv(cv_csv_path, index=False)
         return JSONResponse({
             "success": True,
@@ -140,4 +140,4 @@ def cross_validate_prophet(
             "error_code": type(e).__name__,
             "error_message": str(e)
         }, status_code=500)
-# To run: uvicorn prophet_api_cv:app --reload
+# To run: uvicorn prophet_crossvalidation_core:app --reload

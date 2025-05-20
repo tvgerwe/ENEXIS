@@ -36,5 +36,5 @@ SUMMARY: FastAPI microservice and core logic for Prophet-based forecasting using
 
 ---
 
-**prophet_api_cv.py**  
+**prophet_crossvalidation_core.py**  
 SUMMARY: FastAPI microservice and core logic for Prophet cross-validation and performance metrics. Provides a core function for running Prophet's cross-validation and metrics, handling file uploads, column normalization, and robust error/debug logging. Used by the unified API and orchestration layer for modular time series validation workflows.
