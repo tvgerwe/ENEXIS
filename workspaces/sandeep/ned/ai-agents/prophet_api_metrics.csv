@@ -1,2 +1,0 @@
-RMSE,BestParams
-0.06265859993077856,"{'changepoint_prior_scale': 0.01, 'holidays_prior_scale': 1.0, 'seasonality_prior_scale': 10.0}"
