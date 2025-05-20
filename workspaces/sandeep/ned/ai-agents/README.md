@@ -48,3 +48,8 @@ SUMMARY: Standalone Python client for calling the Prophet model build API endpoi
 
 **prophet_api_forecast_client.py**  
 SUMMARY: Standalone Python client for calling the Prophet forecast API endpoint. Useful for testing, scripting, or integrating Prophet-based forecasting into other Python workflows.
+
+---
+
+**langchain_pipeline_flow.py**  
+SUMMARY: Provides LLM-powered natural language querying and summarization over the AI agent pipeline flow logs. Tracks each API call (build, forecast, cross-validation) and enables conversational visibility into pipeline execution using LangChain. Integrates with the orchestration layer to log each step for later analysis or Q&A.

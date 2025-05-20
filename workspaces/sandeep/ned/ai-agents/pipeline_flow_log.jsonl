@@ -1,0 +1,2 @@
+{"timestamp": "2025-05-20T10:46:57.120236", "step": "build_model", "input": {"csv_path": "data.csv", "train_start": "2025-01-01"}, "output": {"success": true, "model_path": "model.pkl"}}
+{"timestamp": "2025-05-20T10:48:25.915961", "step": "build_model", "input": {"csv_path": "data.csv", "train_start": "2025-01-01"}, "output": {"success": true, "model_path": "model.pkl"}}
