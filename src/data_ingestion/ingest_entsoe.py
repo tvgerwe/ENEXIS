@@ -72,7 +72,7 @@ def ingest_entsoe():
 
     if table_exists(conn, TABLE_RAW):
         last = pd.read_sql_query(
-            f"SELECT MAX(datetime) AS dt FROM {TABLE_RAW}", conn
+            f"SELECT MAX(Timestamp) AS dt FROM {TABLE_RAW}", conn
         )['dt'][0]
         start = last or start
 

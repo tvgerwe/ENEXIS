@@ -107,7 +107,7 @@ print(f"Removed {removed_rows} duplicate rows")
 merged_df = merged_df.sort_values('date')
 
 # Write the merged dataframe back to the database
-merged_df.to_sql('raw_weather_obs', conn, if_exists='replace', index=False)
+merged_df.to_sql('raw_weather_obs_test', conn, if_exists='replace', index=False)
 
 # Close the connection
 conn.close()

@@ -5,10 +5,8 @@ import numpy as np
 import holidays
 import sqlite3
 import logging
-import os
-import sys
-from datetime import timedelta
 from pathlib import Path
+from datetime import timedelta
 
 # Zet logging aan
 logging.basicConfig(
@@ -17,11 +15,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger('ingest_date')
 
-# Vast pad naar originele .db in repo
+# Pad naar database
 DB_PATH = Path(__file__).resolve().parents[1] / "data" / "WARP.db"
-# Vervang dit door onderstaande regel als je terug wil naar src/data/
-# DB_PATH = Path(__file__).resolve().parents[1] / "src" / "data" / "WARP.db"
-
 TABLE_NAME = 'dim_datetime'
 
 def get_connection(db_path):
@@ -66,7 +61,9 @@ def create_datetime_rows(start_date, end_date):
     df["weekday_cos"] = np.cos(2 * np.pi * df["day_of_week"] / 7)
     df["yearday_sin"] = np.sin(2 * np.pi * df["day_of_year"] / 365.25)
     df["yearday_cos"] = np.cos(2 * np.pi * df["day_of_year"] / 365.25)
-
+    # Convert from UTC to a local timezone (e.g., Europe/Amsterdam) to capture DST changes
+    df["local_datetime"] = df["datetime"].dt.tz_convert("Europe/Amsterdam")
+    df["is_dst"] = df["local_datetime"].apply(lambda x: int(x.dst() != pd.Timedelta(0))).astype('bool')
     years = set(df["datetime"].dt.year)
     nl_holidays = holidays.country_holidays("NL", years=list(years))
     df["is_holiday"] = df["date"].isin(nl_holidays).astype(bool)
@@ -82,7 +79,7 @@ def main():
         conn = get_connection(DB_PATH)
 
         current_date = pd.Timestamp.now(tz='UTC').floor('h')
-        forecast_end = current_date + pd.Timedelta(days=7)
+        forecast_end = (current_date + pd.Timedelta(days=14)).normalize() + pd.Timedelta(hours=24)
 
         max_date = get_max_date(conn, TABLE_NAME)
 
