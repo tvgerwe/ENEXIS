@@ -48,13 +48,46 @@ def build_training_set():
         df_preds = pd.read_sql_query(f"SELECT * FROM {PREDICTIONS_TABLE}", conn)
         df_preds["target_datetime"] = pd.to_datetime(df_preds["target_datetime"], utc=True)
         df_preds["run_date"] = pd.to_datetime(df_preds["run_date"], utc=True)
-
-        df_preds = df_preds[
-            (df_preds["run_date"] == run_date) &
-            (df_preds["target_datetime"] >= forecast_start) &
-            (df_preds["target_datetime"] <= forecast_end)
+        
+        # DEBUG: Check available run_dates before filtering
+        available_run_dates = df_preds["run_date"].unique()
+        logger.info(f"📊 Available run_dates: {[str(d) for d in available_run_dates[:5]]}... (showing first 5)")
+        logger.info(f"🔍 Looking for run_date: {run_date}")
+        
+        # SOLUTION 1: Use date() method to compare only the date part if timestamps don't match exactly
+        run_date_only = run_date.date()
+        df_preds_with_date = df_preds.copy()
+        df_preds_with_date["run_date_only"] = df_preds["run_date"].dt.date
+        df_preds = df_preds_with_date[
+            (df_preds_with_date["run_date_only"] == run_date_only) &
+            (df_preds_with_date["target_datetime"] >= forecast_start) &
+            (df_preds_with_date["target_datetime"] <= forecast_end)
         ]
+        
+        # If still empty, try alternative approach with nearest run_date
+        if df_preds.empty:
+            logger.warning("⚠️ No exact matches for run_date. Trying to find the closest run_date...")
+            
+            # Find the closest run_date available (preferably before our target run_date)
+            closest_before = df_preds_with_date[df_preds_with_date["run_date"] <= run_date]
+            
+            if not closest_before.empty:
+                max_run_date = closest_before["run_date"].max()
+                logger.info(f"📅 Using closest available run_date: {max_run_date}")
+                
+                df_preds = df_preds_with_date[
+                    (df_preds_with_date["run_date"] == max_run_date) &
+                    (df_preds_with_date["target_datetime"] >= forecast_start) &
+                    (df_preds_with_date["target_datetime"] <= forecast_end)
+                ]
+        
         logger.info(f"✅ Forecast geladen: {df_preds.shape[0]} rijen voor run_date {run_date.date()}")
+
+   
+
+        # Drop the temporary column if we added it
+        if "run_date_only" in df_preds.columns:
+            df_preds = df_preds.drop(columns=["run_date_only"])
 
         # === Combineer via concat (geen merge, geen suffix!)
         df = pd.concat([df_actuals, df_preds], ignore_index=True)

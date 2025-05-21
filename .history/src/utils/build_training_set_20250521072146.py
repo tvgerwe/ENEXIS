@@ -83,7 +83,7 @@ def build_training_set():
         
         logger.info(f"✅ Forecast geladen: {df_preds.shape[0]} rijen voor run_date {run_date.date()}")
 
-        '''# === Voeg 'Price' toe aan df_preds vanuit df_actuals op basis van target_datetime ===
+        # === Voeg 'Price' toe aan df_preds vanuit df_actuals op basis van target_datetime ===
         df_actuals_forecast = pd.read_sql_query(f"""
             SELECT target_datetime, Price 
             FROM {ACTUALS_TABLE}
@@ -98,7 +98,7 @@ def build_training_set():
         df_preds["Price"] = df_preds["Price_actual"].combine_first(df_preds["Price"])
         df_preds = df_preds.drop(columns=["Price_actual"])
 
-        # Drop the temporary column if we added it'''
+        # Drop the temporary column if we added it
         if "run_date_only" in df_preds.columns:
             df_preds = df_preds.drop(columns=["run_date_only"])
 

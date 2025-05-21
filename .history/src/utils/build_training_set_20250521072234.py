@@ -98,7 +98,7 @@ def build_training_set():
         df_preds["Price"] = df_preds["Price_actual"].combine_first(df_preds["Price"])
         df_preds = df_preds.drop(columns=["Price_actual"])
 
-        # Drop the temporary column if we added it'''
+        # Drop the temporary column if we added it
         if "run_date_only" in df_preds.columns:
             df_preds = df_preds.drop(columns=["run_date_only"])
 
