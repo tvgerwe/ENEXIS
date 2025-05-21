@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# creating 'raw_ned_df'
 
 import os
 import json
@@ -21,7 +22,7 @@ LOGS_DB_PATH = os.path.join(ROOT_DIR, 'src', 'data', 'logs.db')
 DEFAULT_START_DATE = '2022-01-01'
 DEFAULT_END_DATE = '2025-01-01'
 # API types to fetch (adjust as needed)
-NED_TYPES = [2]
+NED_TYPES = [1,2,17,20] #4 relevant types: 1,2,17,20
 # Name of timestamp column (will lowercase all df columns)
 TIMESTAMP_COLUMN = 'validfrom'
 
