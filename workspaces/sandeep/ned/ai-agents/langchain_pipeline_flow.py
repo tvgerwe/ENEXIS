@@ -8,8 +8,6 @@ from datetime import datetime
 from pathlib import Path
 import logging
 
-# To use HuggingFaceEndpoint, set the HUGGINGFACEHUB_API_TOKEN environment variable or pass it as a parameter.
-
 LOG_PATH = Path(__file__).parent / "pipeline_flow_log.jsonl"
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -25,10 +23,6 @@ if not CONFIG_PATH.exists():
     raise FileNotFoundError(f"❌ Config not found at : {CONFIG_PATH}")
 with open(CONFIG_PATH, "r") as f:
     config = json.load(f)
-
-HUGGINGFACE_API_TOKEN = config['ned']['huggingface_key']
-# HUGGINGFACE_API_TOKEN = config['ned']['huggingface_key']
-
 
 
 def log_pipeline_step(step=None, input_data=None, output_data=None, log_path=LOG_PATH):
@@ -60,7 +54,7 @@ def load_pipeline_logs(log_path=LOG_PATH):
 def query_pipeline_flow(question=None, log_path=None, model_name=None):
     """
     Query the pipeline flow logs using a local HuggingFace text-generation model (default: gpt2).
-    No API key or internet required after model download.
+    No API key or internet required. Only local models are supported.
     """
     # Recommended local models (context window in tokens):
     # - gpt2: 1024
@@ -81,11 +75,19 @@ def query_pipeline_flow(question=None, log_path=None, model_name=None):
     if df.empty:
         logger.warning("No pipeline flow logs found.")
         return "No pipeline flow logs found."
-    from transformers import pipeline
-    pipe = pipeline("text-generation", model=model_name)
+    from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
+    logger.info(f"Next step for summary")
+    try:
+        # Try to load the model/tokenizer locally only
+        tokenizer = AutoTokenizer.from_pretrained(model_name, local_files_only=True)
+        model = AutoModelForCausalLM.from_pretrained(model_name, local_files_only=True)
+        pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
+    except Exception as e:
+        logger.error(f"Could not load model '{model_name}' locally: {e}")
+        return f"Model '{model_name}' is not available locally. Please download it first using transformers CLI or Python."
     # Only summarize the first three log lines
     summaries = []
-    for idx, row in df.head(3).iterrows():
+    for idx, row in df.head(2).iterrows():
         log_text = row.to_string()
         prompt = f"Given the following pipeline log entry:\n{log_text}\n\nSummarize this log entry."
         try:
