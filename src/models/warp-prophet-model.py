@@ -1,3 +1,4 @@
+# env - enexis-may-03-env-run
 import numpy as np
 import pandas as pd
 from scipy.stats import norm, gamma
@@ -190,7 +191,7 @@ logger.info(f"MSE: {mse:.3f}")
 logger.info(f"RMSE: {rmse:.3f}")
 logger.info(f"R²: {r2:.3f}")
 
-comments = "run on 21st May with merge file"
+comments = "run on 22nd May with refresh data"
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 results.append(["Prophet", mae, mse, rmse, r2, comments, execution_time, model_run_timestamp])
 metrics_df = pd.DataFrame(results, columns=["Model", "MAE", "MSE", "RMSE", "R2", "Comments", "Execution Time", "Run At"])

@@ -1,3 +1,5 @@
+# env - enexis-may-03-env-run
+
 import pandas as pd
 import os
 from datetime import datetime
@@ -31,7 +33,7 @@ logger.info(f"MODEL_RUN_RESULTS_DIR: {MODEL_RUN_RESULTS_DIR}")
 
 # Connect to the SQLite database
 try:
-    db_path = '/Users/sgawde/work/eaisi-code/main-branch-11-may/ENEXIS/src/data/WARP.db'
+    db_path = '/Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/WARP2.db'
     conn = sqlite3.connect(db_path)
     logger.info(f"Connected to database at {db_path}")
     # Step 2: Read data from table
