@@ -42,12 +42,26 @@ def build_training_set():
             (df_actuals["target_datetime"] >= train_start) &
             (df_actuals["target_datetime"] <= train_end)
         ]
+        
+        # Drop the specified columns if they exist in df_actuals
+        columns_to_drop = ['wind_direction_10m', 'direct_radiation']
+        existing_columns_to_drop = [col for col in columns_to_drop if col in df_actuals.columns]
+        if existing_columns_to_drop:
+            df_actuals = df_actuals.drop(columns=existing_columns_to_drop)
+            logger.info(f"🗑️ Dropped columns from actuals: {existing_columns_to_drop}")
+        
         logger.info(f"✅ master_warp geladen: {df_actuals.shape[0]} rijen")
 
         # === Load forecasts ===
         df_preds = pd.read_sql_query(f"SELECT * FROM {PREDICTIONS_TABLE}", conn)
         df_preds["target_datetime"] = pd.to_datetime(df_preds["target_datetime"], utc=True)
         df_preds["run_date"] = pd.to_datetime(df_preds["run_date"], utc=True)
+        
+        # Drop the specified columns if they exist in df_preds
+        existing_columns_to_drop = [col for col in columns_to_drop if col in df_preds.columns]
+        if existing_columns_to_drop:
+            df_preds = df_preds.drop(columns=existing_columns_to_drop)
+            logger.info(f"🗑️ Dropped columns from predictions: {existing_columns_to_drop}")
         
         # DEBUG: Check available run_dates before filtering
         available_run_dates = df_preds["run_date"].unique()
@@ -105,6 +119,12 @@ def build_training_set():
         # === Combineer via concat (geen merge, geen suffix!)
         df = pd.concat([df_actuals, df_preds], ignore_index=True)
         df = df.sort_values("target_datetime").drop_duplicates("target_datetime")
+
+        # Final check to make sure columns are dropped from the combined dataframe
+        existing_columns_to_drop = [col for col in columns_to_drop if col in df.columns]
+        if existing_columns_to_drop:
+            df = df.drop(columns=existing_columns_to_drop)
+            logger.info(f"🗑️ Dropped columns from combined dataframe: {existing_columns_to_drop}")
 
         logger.info(f"📦 Eindtabel bevat: {df.shape[0]} rijen, {df.shape[1]} kolommen")
         logger.info(f"🧾 Kolommen: {df.columns.tolist()}")

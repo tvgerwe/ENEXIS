@@ -30,13 +30,10 @@ def build_master():
 
     try:
         df_time = safe_load(conn, "dim_datetime")
-        df_ned = safe_load(conn, "processed_NED_preds")
         df_weather = safe_load(conn, "process_weather_preds")
         df_now = safe_load(conn, "transform_meteo_forecast_now")
 
         df_time["target_datetime"] = pd.to_datetime(df_time["datetime"], utc=True)
-        df_ned["validto"] = pd.to_datetime(df_ned["validto"], utc=True)
-        df_ned["fetch_moment"] = pd.to_datetime(df_ned["fetch_moment"], utc=True)
         df_weather["target_datetime"] = pd.to_datetime(df_weather["target_datetime"], utc=True)
 
         if not df_now.empty:
@@ -46,12 +43,8 @@ def build_master():
                 df_now = df_now.rename(columns={"date": "target_datetime"})
                 df_now["target_datetime"] = pd.to_datetime(df_now["target_datetime"], utc=True)
 
-        df_ned = df_ned.sort_values("fetch_moment").drop_duplicates("validto", keep="last")#Checken!!!
-        df_ned = df_ned.rename(columns={"validto": "target_datetime"})
-
         df = df_time.drop(columns=["datetime", "date"], errors="ignore")
 
-        df = df.merge(df_ned, on="target_datetime", how="left")
         df = df.merge(df_weather, on="target_datetime", how="left", suffixes=("", "_weather"))
 
         if not df_now.empty:

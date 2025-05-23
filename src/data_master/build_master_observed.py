@@ -32,21 +32,17 @@ def build_master():
         df_time = safe_load_table(conn, "dim_datetime")
         df_entsoe = safe_load_table(conn, "transform_entsoe_obs")
         df_weather = safe_load_table(conn, "transform_weather_obs")
-        df_ned = safe_load_table(conn, "transform_ned_obs_2")
 
         df_time["target_datetime"] = pd.to_datetime(df_time["datetime"], utc=True)
         df_entsoe["target_datetime"] = pd.to_datetime(df_entsoe["Timestamp"], utc=True)
         df_weather["target_datetime"] = pd.to_datetime(df_weather["date"], utc=True)
-        df_ned["target_datetime"] = pd.to_datetime(df_ned["validto"], utc=True)
 
         df_entsoe = df_entsoe.drop(columns=["Timestamp"], errors="ignore")
         df_weather = df_weather.drop(columns=["date"], errors="ignore")
-        df_ned = df_ned.drop(columns=["validto"], errors="ignore")
 
         df = df_time.drop(columns=["datetime", "date"], errors="ignore")
         df = df.merge(df_entsoe, on="target_datetime", how="left")
         df = df.merge(df_weather, on="target_datetime", how="left")
-        df = df.merge(df_ned, on="target_datetime", how="left")
 
         df = df.fillna(0)
         logger.info(f"📊 Samengevoegd: {df.shape[0]} rijen, {df.shape[1]} kolommen")

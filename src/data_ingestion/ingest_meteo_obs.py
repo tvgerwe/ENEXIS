@@ -19,7 +19,7 @@ logger = logging.getLogger("ingest_meteo_obs")
 # === Config ===
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = PROJECT_ROOT / "src" / "data" / "WARP.db"
-TABLE_NAME = "raw_meteo_obs_test"
+TABLE_NAME = "raw_meteo_obs"
 
 # === Open-Meteo variabelen (KNMI Seamless) ===
 VARS = [
