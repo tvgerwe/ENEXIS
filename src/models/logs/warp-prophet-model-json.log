@@ -334,3 +334,110 @@
 2025-05-23 12:11:10,135 - warp-prophet-model - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/warp-prophet-model-results.csv
 2025-05-23 12:11:10,156 - warp-prophet-model - INFO - Model saved at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/prophet_hyper_tuned_model.pkl
 2025-05-23 12:11:10,156 - warp-prophet-model - INFO - ✅ Model evaluation saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/warp-prophet-model-results.csv
+2025-05-23 16:55:30,347 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-23 16:55:30,404 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-23 16:55:30,431 - warp-prophet-model - INFO - Train Date Range: Start: 2025-01-01 00:00:00 End: 2025-04-30 00:00:00
+2025-05-23 16:55:30,431 - warp-prophet-model - INFO - Test Date Range: Start: 2025-05-01 00:00:00 End: 2025-05-19 00:00:00
+2025-05-23 16:55:30,440 - warp-prophet-model - INFO - Prophet Training Data Sample:
+2025-05-23 16:55:30,464 - warp-prophet-model - INFO - 
+                   ds        y  month  shortwave_radiation  ...  Nuclear_Vol  yearday_cos  Flow_NO      Load
+0 2025-01-01 00:00:00  0.01362      1                  0.0  ...     486250.0     0.999852   -649.0  12049.25
+1 2025-01-01 00:00:00  0.01362      1                  0.0  ...     486250.0     0.999852   -649.0  12049.25
+2 2025-01-01 01:00:00  0.00624      1                  0.0  ...     487000.0     0.999852   -649.0  11957.50
+3 2025-01-01 01:00:00  0.00624      1                  0.0  ...     487000.0     0.999852   -649.0  11957.50
+4 2025-01-01 02:00:00  0.00416      1                  0.0  ...     487000.0     0.999852   -635.0  11636.25
+
+[5 rows x 24 columns]
+2025-05-23 16:55:30,464 - warp-prophet-model - INFO - y_train columns: ['datetime', 'Price']
+2025-05-23 16:55:30,464 - warp-prophet-model - INFO - X_train columns (used regressors): ['month', 'shortwave_radiation', 'apparent_temperature', 'temperature_2m', 'direct_normal_irradiance', 'diffuse_radiation', 'yearday_sin', 'Flow_BE', 'hour_sin', 'is_non_working_day', 'is_weekend', 'is_holiday', 'weekday_cos', 'wind_speed_10m', 'hour_cos', 'weekday_sin', 'cloud_cover', 'Flow_GB', 'Nuclear_Vol', 'yearday_cos', 'Flow_NO', 'Load']
+2025-05-23 16:55:30,572 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-23 16:55:30,604 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmp3dwa77fj/3lf86ylf.json
+2025-05-23 16:55:30,782 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmp3dwa77fj/i3hessrt.json
+2025-05-23 16:55:30,783 - cmdstanpy - DEBUG - idx 0
+2025-05-23 16:55:30,783 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-23 16:55:30,783 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=43870', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmp3dwa77fj/3lf86ylf.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmp3dwa77fj/i3hessrt.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmp3dwa77fj/prophet_model5y_a5_7r/prophet_model-20250523165530.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-23 16:55:30,783 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-23 16:55:50,491 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-23 16:55:50,540 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-23 16:55:50,567 - warp-prophet-model - INFO - Train Date Range: Start: 2025-01-01 00:00:00 End: 2025-04-30 00:00:00
+2025-05-23 16:55:50,568 - warp-prophet-model - INFO - Test Date Range: Start: 2025-05-01 00:00:00 End: 2025-05-19 00:00:00
+2025-05-23 16:55:50,577 - warp-prophet-model - INFO - Prophet Training Data Sample:
+2025-05-23 16:55:50,596 - warp-prophet-model - INFO - 
+                   ds        y  month  shortwave_radiation  ...  Nuclear_Vol  yearday_cos  Flow_NO      Load
+0 2025-01-01 00:00:00  0.01362      1                  0.0  ...     486250.0     0.999852   -649.0  12049.25
+1 2025-01-01 00:00:00  0.01362      1                  0.0  ...     486250.0     0.999852   -649.0  12049.25
+2 2025-01-01 01:00:00  0.00624      1                  0.0  ...     487000.0     0.999852   -649.0  11957.50
+3 2025-01-01 01:00:00  0.00624      1                  0.0  ...     487000.0     0.999852   -649.0  11957.50
+4 2025-01-01 02:00:00  0.00416      1                  0.0  ...     487000.0     0.999852   -635.0  11636.25
+
+[5 rows x 24 columns]
+2025-05-23 16:55:50,596 - warp-prophet-model - INFO - y_train columns: ['datetime', 'Price']
+2025-05-23 16:55:50,596 - warp-prophet-model - INFO - X_train columns (used regressors): ['month', 'shortwave_radiation', 'apparent_temperature', 'temperature_2m', 'direct_normal_irradiance', 'diffuse_radiation', 'yearday_sin', 'Flow_BE', 'hour_sin', 'is_non_working_day', 'is_weekend', 'is_holiday', 'weekday_cos', 'wind_speed_10m', 'hour_cos', 'weekday_sin', 'cloud_cover', 'Flow_GB', 'Nuclear_Vol', 'yearday_cos', 'Flow_NO', 'Load']
+2025-05-23 16:55:50,668 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-23 16:55:50,699 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpzw18gy3x/gzeo61e7.json
+2025-05-23 16:55:50,880 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpzw18gy3x/zg0jq_0e.json
+2025-05-23 16:55:50,881 - cmdstanpy - DEBUG - idx 0
+2025-05-23 16:55:50,881 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-23 16:55:50,881 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=52128', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpzw18gy3x/gzeo61e7.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpzw18gy3x/zg0jq_0e.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpzw18gy3x/prophet_modelfdjji69_/prophet_model-20250523165550.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-23 16:55:50,881 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-23 16:55:54,749 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-23 16:55:55,020 - warp-prophet-model - INFO - Params: {'changepoint_prior_scale': 0.1, 'seasonality_mode': 'additive', 'seasonality_prior_scale': 1.0} → MAE: 0.06
+2025-05-23 16:55:55,020 - warp-prophet-model - INFO - Best Parameters Found: {'changepoint_prior_scale': 0.1, 'seasonality_mode': 'additive', 'seasonality_prior_scale': 1.0}
+2025-05-23 16:55:55,020 - warp-prophet-model - INFO - Best MAE: 0.06
+2025-05-23 16:55:55,020 - warp-prophet-model - INFO - ✅ Forecast complete
+2025-05-23 16:55:55,024 - warp-prophet-model - INFO - Aligned data length: 1732
+2025-05-23 16:55:55,024 - warp-prophet-model - INFO - Date range: 2025-05-01 00:00:00 to 2025-05-19 00:00:00
+2025-05-23 16:55:55,026 - warp-prophet-model - INFO - MAE: 0.064, RMSE: 0.090, R²: -0.960
+2025-05-23 16:56:02,762 - warp-prophet-model - INFO - Execution time: 4.42 seconds
+2025-05-23 16:56:02,768 - warp-prophet-model - INFO - 
+📊 Evaluation Metrics:
+2025-05-23 16:56:02,768 - warp-prophet-model - INFO - Model Name: Prophet
+2025-05-23 16:56:02,768 - warp-prophet-model - INFO - MAE: 0.064
+2025-05-23 16:56:02,768 - warp-prophet-model - INFO - MSE: 0.008
+2025-05-23 16:56:02,768 - warp-prophet-model - INFO - RMSE: 0.090
+2025-05-23 16:56:02,768 - warp-prophet-model - INFO - R²: -0.960
+2025-05-23 16:56:02,777 - warp-prophet-model - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/warp-prophet-model-results.csv
+2025-05-23 16:56:02,805 - warp-prophet-model - INFO - Model saved at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/prophet_hyper_tuned_model.pkl
+2025-05-23 16:56:02,805 - warp-prophet-model - INFO - ✅ Model evaluation saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/warp-prophet-model-results.csv
+2025-05-24 09:44:17,401 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-24 09:44:17,479 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-24 09:44:17,521 - warp-prophet-model - INFO - Train Date Range: Start: 2025-01-01 00:00:00 End: 2025-04-01 00:00:00
+2025-05-24 09:44:17,522 - warp-prophet-model - INFO - Test Date Range: Start: 2025-04-02 00:00:00 End: 2025-05-15 00:00:00
+2025-05-24 09:44:17,646 - warp-prophet-model - INFO - Prophet Training Data Sample:
+2025-05-24 09:44:17,680 - warp-prophet-model - INFO - 
+                   ds        y  ...  hour_sin  weekday_cos
+0 2025-01-01 00:00:00  0.01362  ...  0.000000    -0.222521
+1 2025-01-01 00:00:00  0.01362  ...  0.000000    -0.222521
+2 2025-01-01 01:00:00  0.00624  ...  0.258819    -0.222521
+3 2025-01-01 01:00:00  0.00624  ...  0.258819    -0.222521
+4 2025-01-01 02:00:00  0.00416  ...  0.500000    -0.222521
+
+[5 rows x 21 columns]
+2025-05-24 09:44:17,681 - warp-prophet-model - INFO - y_train columns: ['datetime', 'Price']
+2025-05-24 09:44:17,681 - warp-prophet-model - INFO - X_train columns (used regressors): ['Load', 'shortwave_radiation', 'temperature_2m', 'direct_normal_irradiance', 'diffuse_radiation', 'Flow_NO', 'yearday_cos', 'Flow_GB', 'month', 'is_dst', 'yearday_sin', 'wind_speed_10m', 'is_non_working_day', 'hour_cos', 'is_weekend', 'cloud_cover', 'weekday_sin', 'hour_sin', 'weekday_cos']
+2025-05-24 09:44:17,792 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-24 09:44:17,826 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpoglrpu8d/2z8f5jc2.json
+2025-05-24 09:44:17,949 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpoglrpu8d/rsnr20mh.json
+2025-05-24 09:44:17,958 - cmdstanpy - DEBUG - idx 0
+2025-05-24 09:44:17,959 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-24 09:44:17,959 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=25676', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpoglrpu8d/2z8f5jc2.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpoglrpu8d/rsnr20mh.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpoglrpu8d/prophet_modelcrew7cjb/prophet_model-20250524094417.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-24 09:44:17,959 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-24 09:44:22,881 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-24 09:44:23,331 - warp-prophet-model - INFO - Params: {'changepoint_prior_scale': 0.5, 'seasonality_mode': 'additive', 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8} → MAE: 0.06
+2025-05-24 09:44:23,331 - warp-prophet-model - INFO - Best Parameters Found: {'changepoint_prior_scale': 0.5, 'seasonality_mode': 'additive', 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8}
+2025-05-24 09:44:23,331 - warp-prophet-model - INFO - Best MAE: 0.06
+2025-05-24 09:44:23,331 - warp-prophet-model - INFO - ✅ Forecast complete
+2025-05-24 09:44:23,343 - warp-prophet-model - INFO - Aligned data length: 4132
+2025-05-24 09:44:23,344 - warp-prophet-model - INFO - Date range: 2025-04-02 00:00:00 to 2025-05-15 00:00:00
+2025-05-24 09:44:23,348 - warp-prophet-model - INFO - MAE: 0.065, RMSE: 0.079, R²: -0.919
+2025-05-24 09:44:28,211 - warp-prophet-model - INFO - Execution time: 5.65 seconds
+2025-05-24 09:44:28,213 - warp-prophet-model - INFO - 
+📊 Evaluation Metrics:
+2025-05-24 09:44:28,213 - warp-prophet-model - INFO - Model Name: Prophet
+2025-05-24 09:44:28,213 - warp-prophet-model - INFO - MAE: 0.065
+2025-05-24 09:44:28,213 - warp-prophet-model - INFO - MSE: 0.006
+2025-05-24 09:44:28,213 - warp-prophet-model - INFO - RMSE: 0.079
+2025-05-24 09:44:28,213 - warp-prophet-model - INFO - R²: -0.919
+2025-05-24 09:44:28,221 - warp-prophet-model - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/warp-prophet-model-results.csv
+2025-05-24 09:44:28,247 - warp-prophet-model - INFO - Model saved at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/prophet_hyper_tuned_model.pkl
+2025-05-24 09:44:28,247 - warp-prophet-model - INFO - ✅ Model evaluation saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/warp-prophet-model-results.csv

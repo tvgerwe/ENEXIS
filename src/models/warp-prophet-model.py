@@ -73,9 +73,9 @@ y = df[['datetime', 'Price']]
 X = df.drop(columns=['Price'])
 
 train_start = "2025-01-01"
-train_end   = "2025-04-30"
-test_start  = "2025-05-01"
-test_end    = "2025-05-19"
+train_end   = "2025-04-01"
+test_start  = "2025-04-02"
+test_end    = "2025-05-15"
 
 X_train = X[(X['datetime'] >= train_start) & (X['datetime'] <= train_end)].copy()
 X_test  = X[(X['datetime'] >= test_start) & (X['datetime'] <= test_end)].copy()
@@ -85,9 +85,9 @@ y_test  = y[(y['datetime'] >= test_start) & (y['datetime'] <= test_end)].copy()
 logger.info(f"Train Date Range: Start: {X_train['datetime'].min()} End: {X_train['datetime'].max()}")
 logger.info(f"Test Date Range: Start: {X_test['datetime'].min()} End: {X_test['datetime'].max()}")
 
-regressors = ['month','shortwave_radiation','apparent_temperature','temperature_2m','direct_normal_irradiance','diffuse_radiation','yearday_sin',
-              'Flow_BE','hour_sin','is_non_working_day','is_weekend','is_holiday','weekday_cos','wind_speed_10m','hour_cos','weekday_sin',
-              'cloud_cover','Flow_GB','Nuclear_Vol','yearday_cos','Flow_NO','Load']
+regressors = ['Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO','yearday_cos','Flow_GB','month',
+              'is_dst','yearday_sin','wind_speed_10m','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos']
+
 
 available_regressors = [col for col in regressors if col in X_train.columns]
 
@@ -113,10 +113,13 @@ logger.info(f"X_train columns (used regressors): {available_regressors}")
 
 # --- Hyperparameter tuning for Prophet ---
 param_grid = {
-    'changepoint_prior_scale': [0.1],
+    'changepoint_prior_scale': [0.5],
     'seasonality_mode': ['additive'],
-    'seasonality_prior_scale': [1.0]
+    'seasonality_prior_scale': [1.0],
+    'holidays_prior_scale': [1.0],    
+    'changepoint_range': [0.8]
 }
+
 all_params = [dict(zip(param_grid.keys(), v)) for v in itertools.product(*param_grid.values())]
 best_params = None
 best_mae = float('inf')
@@ -191,7 +194,7 @@ logger.info(f"MSE: {mse:.3f}")
 logger.info(f"RMSE: {rmse:.3f}")
 logger.info(f"R²: {r2:.3f}")
 
-comments = "run on 22nd May with refresh data"
+comments = "run on 24th May refresh data"
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 results.append(["Prophet", mae, mse, rmse, r2, comments, execution_time, model_run_timestamp])
 metrics_df = pd.DataFrame(results, columns=["Model", "MAE", "MSE", "RMSE", "R2", "Comments", "Execution Time", "Run At"])

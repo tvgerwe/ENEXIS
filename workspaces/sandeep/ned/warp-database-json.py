@@ -33,7 +33,7 @@ logger.info(f"MODEL_RUN_RESULTS_DIR: {MODEL_RUN_RESULTS_DIR}")
 
 # Connect to the SQLite database
 try:
-    db_path = '/Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/WARP2.db'
+    db_path = '/Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/WARP.db'
     conn = sqlite3.connect(db_path)
     logger.info(f"Connected to database at {db_path}")
     # Step 2: Read data from table

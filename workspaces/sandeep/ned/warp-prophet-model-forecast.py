@@ -62,14 +62,13 @@ df['y'] = df['Price']
 
 # Define regressors you want to use
 # regressors = ['Solar_Vol', 'Total_Flow', 'temperature_2m']
-regressors = ['month','shortwave_radiation','apparent_temperature','temperature_2m','direct_normal_irradiance','diffuse_radiation','yearday_sin',
-              'Flow_BE','hour_sin','is_non_working_day','is_weekend','is_holiday','weekday_cos','wind_speed_10m','hour_cos','weekday_sin',
-              'cloud_cover','Flow_GB','Nuclear_Vol','yearday_cos','Flow_NO','Load']
+regressors = ['Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO','yearday_cos','Flow_GB','month',
+              'is_dst','yearday_sin','wind_speed_10m','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos']
 
 
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 
-start_date = pd.to_datetime("2025-04-17") + timedelta(hours=36)
+start_date = pd.to_datetime("2025-05-24") + timedelta(hours=36)
 num_rolling_runs = 6
 horizon = 6  # days ahead
 step = 1     # step forward by 1 day for each rolling prediction
