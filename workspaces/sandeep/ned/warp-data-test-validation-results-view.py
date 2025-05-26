@@ -23,34 +23,49 @@ with open(CONFIG_PATH, "r") as f:
 
 CSV_DATA_DIR = config['ned']['ned_model_download_dir']
 
-# Step 1: Read JSON data from a file
-csv_file_path = os.path.join(CSV_DATA_DIR, f"validation_results.csv")
+# --- Plot for forecast_vs_actual.csv ---
+csv_file_path = os.path.join(CSV_DATA_DIR, "forecast_vs_actual.csv")
+df_normal = pd.read_csv(csv_file_path)
+df_normal['ds'] = pd.to_datetime(df_normal['ds'])
 
-with open(csv_file_path, 'rb') as csv_file:
-    df_pd_orig = pd.read_csv(csv_file)
-
-# Ensure 'ds' is datetime
-df_pd_orig['ds'] = pd.to_datetime(df_pd_orig['ds'])
-
-# Plot actual vs predicted and RMSE values in a single window with two subplots
 fig, axs = plt.subplots(2, 1, figsize=(12, 10), sharex=True)
-
-# Actual vs Predicted
-axs[0].plot(df_pd_orig['ds'], df_pd_orig['actual'], label='Actual', color='green')
-axs[0].plot(df_pd_orig['ds'], df_pd_orig['predicted'], label='Predicted', color='blue', linestyle='--')
+axs[0].plot(df_normal['ds'], df_normal['actual'], label='Actual', color='green')
+axs[0].plot(df_normal['ds'], df_normal['predicted'], label='Predicted', color='blue', linestyle='--')
 axs[0].set_ylabel('Value')
-axs[0].set_title('Actual vs Predicted')
+axs[0].set_title('Normal Forecast: Actual vs Predicted')
 axs[0].legend()
 axs[0].grid(True)
-
-# RMSE over Time (if present)
-if 'rmse' in df_pd_orig.columns:
-    axs[1].plot(df_pd_orig['ds'], df_pd_orig['rmse'], label='RMSE', color='red')
+if 'rmse' in df_normal.columns:
+    axs[1].plot(df_normal['ds'], df_normal['rmse'], label='RMSE', color='red')
     axs[1].set_xlabel('Date')
     axs[1].set_ylabel('RMSE')
-    axs[1].set_title('RMSE over Time')
+    axs[1].set_title('Normal Forecast: RMSE over Time')
     axs[1].legend()
     axs[1].grid(True)
+plt.tight_layout()
+plt.show()
 
+# --- Plot for forecast_vs_actual-rollingwindow.csv (averaged by ds) ---
+csv_file_path_rolling = os.path.join(CSV_DATA_DIR, "forecast_vs_actual-rollingwindow.csv")
+df_rolling = pd.read_csv(csv_file_path_rolling)
+df_rolling['ds'] = pd.to_datetime(df_rolling['ds'])
+
+# Group by 'ds' and calculate mean for actual, predicted, and rmse
+df_rolling_avg = df_rolling.groupby('ds')[['actual', 'predicted', 'rmse']].mean().reset_index()
+
+fig, axs = plt.subplots(2, 1, figsize=(12, 10), sharex=True)
+axs[0].plot(df_rolling_avg['ds'], df_rolling_avg['actual'], label='Actual (avg)', color='green')
+axs[0].plot(df_rolling_avg['ds'], df_rolling_avg['predicted'], label='Predicted (avg)', color='blue', linestyle='--')
+axs[0].set_ylabel('Value')
+axs[0].set_title('Rolling Window Forecast (Averaged): Actual vs Predicted')
+axs[0].legend()
+axs[0].grid(True)
+if 'rmse' in df_rolling_avg.columns:
+    axs[1].plot(df_rolling_avg['ds'], df_rolling_avg['rmse'], label='RMSE (avg)', color='red')
+    axs[1].set_xlabel('Date')
+    axs[1].set_ylabel('RMSE')
+    axs[1].set_title('Rolling Window Forecast (Averaged): RMSE over Time')
+    axs[1].legend()
+    axs[1].grid(True)
 plt.tight_layout()
 plt.show()
