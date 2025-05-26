@@ -1,0 +1,68 @@
+# ============================================================================
+# FILE: config/experiment_config.yaml (EXAMPLE)
+# ============================================================================
+
+# Database paths
+database_path: "src/data/WARP.db"
+logs_database_path: "src/data/logs.db"
+
+# Time periods
+train_start: "2025-01-01 00:00:00+00:00"
+train_end: "2025-03-14 23:00:00+00:00"
+forecast_start: "2025-03-15 00:00:00+00:00"
+horizon: 168
+
+# Data configuration
+target_column: "Price"
+feature_columns:
+  - "Load"
+  - "shortwave_radiation"
+  - "temperature_2m"
+  - "direct_normal_irradiance"
+  - "diffuse_radiation"
+  - "Flow_NO"
+  - "yearday_cos"
+  - "Flow_GB"
+  - "month"
+  - "is_dst"
+  - "yearday_sin"
+  - "is_non_working_day"
+  - "hour_cos"
+  - "is_weekend"
+  - "cloud_cover"
+  - "weekday_sin"
+  - "hour_sin"
+  - "weekday_cos"
+
+# Model configurations
+model_configs:
+  naive:
+    name: "naive"
+    enabled: true
+    lag: 168
+  
+  sarimax_no_exog:
+    name: "sarimax_no_exog"
+    enabled: true
+    order: [1, 1, 1]
+    seasonal_order: [1, 1, 1, 24]
+    max_iterations: 100
+    use_exogenous: false
+  
+  sarimax_with_exog:
+    name: "sarimax_with_exog"
+    enabled: true
+    order: [1, 1, 1]
+    seasonal_order: [1, 1, 1, 24]
+    max_iterations: 100
+    use_exogenous: true
+
+# Validation settings
+rolling_windows: 3
+parallel_execution: false
+max_workers: 4
+
+# Logging settings
+log_level: "INFO"
+save_detailed_logs: true
+save_model_summaries: true

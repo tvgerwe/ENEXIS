@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#src/data_ingestion/ingest_date.py
 
 import pandas as pd
 import numpy as np
@@ -79,7 +79,7 @@ def main():
         conn = get_connection(DB_PATH)
 
         current_date = pd.Timestamp.now(tz='UTC').floor('h')
-        forecast_end = (current_date + pd.Timedelta(days=14)).normalize() + pd.Timedelta(hours=24)
+        forecast_end = (current_date + pd.Timedelta(days=6)).normalize() + pd.Timedelta(hours=24)
 
         max_date = get_max_date(conn, TABLE_NAME)
 
