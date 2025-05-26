@@ -441,3 +441,27 @@
 2025-05-24 09:44:28,221 - warp-prophet-model - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/warp-prophet-model-results.csv
 2025-05-24 09:44:28,247 - warp-prophet-model - INFO - Model saved at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/prophet_hyper_tuned_model.pkl
 2025-05-24 09:44:28,247 - warp-prophet-model - INFO - ✅ Model evaluation saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/warp-prophet-model-results.csv
+2025-05-26 09:19:16,527 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 09:19:17,071 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 09:21:10,895 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 09:21:11,526 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:10:16,759 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:10:16,879 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:14:13,874 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:14:14,000 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:15:08,070 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:15:08,293 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:29:37,410 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:29:37,528 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:30:31,512 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:30:31,654 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:35:20,408 - warp-prophet-model - INFO - WARP_DATA_FILE_PATH: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:35:20,522 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/warp-csv-dataset.csv
+2025-05-26 13:35:20,568 - build_training_set - INFO - 🚀 Start build van trainingset
+2025-05-26 13:35:20,568 - build_training_set - INFO - 🧠 Actuals van 2025-01-01 00:00:00+00:00 t/m 2025-03-14 23:00:00+00:00
+2025-05-26 13:35:20,568 - build_training_set - INFO - 📅 Forecast van run_date 2025-03-23 00:00:00+00:00, target range: 2025-03-23 00:00:00+00:00 → 2025-03-29 23:00:00+00:00
+2025-05-26 13:35:20,603 - build_training_set - INFO - ✅ Actuals geladen: 1752 rijen
+2025-05-26 13:35:20,934 - build_training_set - INFO - 📦 Eindtabel bevat: 1920 rijen, 31 kolommen
+2025-05-26 13:35:20,934 - build_training_set - INFO - 🧾 Kolommen: ['Price', 'target_datetime', 'Load', 'shortwave_radiation', 'temperature_2m', 'direct_normal_irradiance', 'diffuse_radiation', 'Flow_NO', 'yearday_cos', 'Flow_GB', 'month', 'is_dst', 'yearday_sin', 'is_non_working_day', 'hour_cos', 'is_weekend', 'cloud_cover', 'weekday_sin', 'hour_sin', 'weekday_cos', 'hour', 'day_of_week', 'day_of_year', 'local_datetime', 'is_holiday', 'run_date', 'wind_speed_10m', 'wind_direction_10m', 'snowfall', 'apparent_temperature', 'direct_radiation']
+2025-05-26 13:35:20,983 - build_training_set - INFO - ✅ Opgeslagen als training_set in WARP.db
+2025-05-26 13:35:20,983 - build_training_set - INFO - 🔒 Verbinding gesloten

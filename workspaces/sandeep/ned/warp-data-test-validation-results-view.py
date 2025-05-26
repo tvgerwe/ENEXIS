@@ -23,19 +23,18 @@ with open(CONFIG_PATH, "r") as f:
 
 CSV_DATA_DIR = config['ned']['ned_model_download_dir']
 
-# Step 1: Read JSON data from a file
-csv_file_path = os.path.join(CSV_DATA_DIR, f"validation_results.csv")
+# Step 1: Read CSV data from a file
+csv_file_path = os.path.join(CSV_DATA_DIR, f"forecast_vs_actual.csv")
 
-with open(csv_file_path, 'rb') as csv_file:
-    df_pd_orig = pd.read_csv(csv_file)
+df_pd_orig = pd.read_csv(csv_file_path)
 
 # Ensure 'ds' is datetime
 df_pd_orig['ds'] = pd.to_datetime(df_pd_orig['ds'])
 
 # Plot actual vs predicted
 plt.figure(figsize=(12, 6))
-plt.plot(df_pd_orig['ds'], df_pd_orig['y'], label='Actual', color='black')
-plt.plot(df_pd_orig['ds'], df_pd_orig['yhat'], label='Predicted', color='dodgerblue', linestyle='--')
+plt.plot(df_pd_orig['ds'], df_pd_orig['actual'], label='Actual', color='green')
+plt.plot(df_pd_orig['ds'], df_pd_orig['predicted'], label='Predicted', color='blue', linestyle='--')
 plt.xlabel('Date')
 plt.ylabel('Value')
 plt.title('Actual vs Predicted')

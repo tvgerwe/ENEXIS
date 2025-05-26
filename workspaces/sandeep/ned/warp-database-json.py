@@ -31,6 +31,20 @@ with open(CONFIG_PATH, "r") as f:
 MODEL_RUN_RESULTS_DIR = config['ned']['ned_model_download_dir']
 logger.info(f"MODEL_RUN_RESULTS_DIR: {MODEL_RUN_RESULTS_DIR}")
 
+import sys
+from pathlib import Path
+
+# Add project root to sys.path so 'src' is importable
+sys.path.append(str(Path(__file__).resolve().parents[3]))
+
+from src.utils.build_training_set import build_training_set
+
+build_training_set(
+    train_start = "2025-01-01 00:00:00",
+    train_end = "2025-03-14 23:00:00",
+    run_date="2025-03-23 00:00:00"
+)
+
 # Connect to the SQLite database
 try:
     db_path = '/Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/WARP.db'

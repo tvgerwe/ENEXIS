@@ -43,18 +43,16 @@ CSV_DATA_DIR = config['ned']['ned_model_download_dir']
 csv_file_path = os.path.join(CSV_DATA_DIR, f"warp-csv-dataset.csv")
 
 with open(csv_file_path, 'rb') as csv_file:
-    df_pd_orig = pd.read_csv(csv_file)
+    df_pd_orig = pd.read_csv(csv_file, low_memory=False)
 
 # Step 1: Convert 'validto' column to datetime
+df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['target_datetime'])
 df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
 # Step 2: Sort the DataFrame by 'validto' to avoid data leakage
 df = df_pd_orig.sort_values(by='datetime')
 # Step 3: Initial datetime formatting
 df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)  # Ensure no timezone
 
-
-# === User Input: Set forecast limit date ===
-rolling_cutoff_date = pd.to_datetime("2025-05-15")  # Adjust as needed
 
 # === Preprocess Data ===
 df['ds'] = pd.to_datetime(df['datetime']).dt.tz_localize(None)  # Ensure tz-naive datetime
@@ -68,7 +66,7 @@ regressors = ['Load','shortwave_radiation','temperature_2m','direct_normal_irrad
 
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 
-start_date = pd.to_datetime("2025-05-24") + timedelta(hours=36)
+start_date = pd.to_datetime("2025-05-01") + timedelta(hours=36)
 num_rolling_runs = 6
 horizon = 6  # days ahead
 step = 1     # step forward by 1 day for each rolling prediction
@@ -89,11 +87,10 @@ for i in range(num_rolling_runs):
         raise ValueError(f"Missing regressors in prediction window: {missing_regs}")
 
     # Prepare future dataframe for prediction: must include 'ds' and all regressors
-    future_pred = future[['ds'] + regressors]
+    future_pred = future[['ds'] + regressors].copy()  # <-- add .copy() here
 
     # Make sure there are no missing values in regressors (fill or drop)
-    if future_pred[regressors].isnull().any().any():
-        future_pred[regressors] = future_pred[regressors].ffill().bfill()
+    future_pred[regressors] = future_pred[regressors].ffill().bfill()
 
     # Predict using the model
     forecast = model.predict(future_pred)

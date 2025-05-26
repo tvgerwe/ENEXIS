@@ -43,7 +43,7 @@ logger.info("✅ Prophet model loaded from disk.")
 csv_file_path = PROJECT_ROOT / "src" / "data" / "warp-csv-dataset.csv"
 
 with open(csv_file_path, 'rb') as csv_file:
-    df_pd_orig = pd.read_csv(csv_file)
+    df_pd_orig = pd.read_csv(csv_file, low_memory=False)
 
 # Step 1: Convert 'validto' column to datetime
 df_pd_orig['datetime'] = df_pd_orig['target_datetime']
@@ -55,7 +55,7 @@ df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)  
 
 
 # === User Input: Set forecast limit date ===
-rolling_cutoff_date = pd.to_datetime("2025-05-15")  # Adjust as needed
+rolling_cutoff_date = pd.to_datetime("2025-05-26")  # Adjust as needed
 
 # === Preprocess Data ===
 df['ds'] = pd.to_datetime(df['datetime']).dt.tz_localize(None)  # Ensure tz-naive datetime
@@ -64,8 +64,9 @@ df['y'] = df['Price']
 # Define regressors you want to use
 # regressors = ['Solar_Vol', 'Total_Flow', 'temperature_2m']
 regressors = ['Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO','yearday_cos','Flow_GB','month',
-              'is_dst','yearday_sin','wind_speed_10m','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos']
+              'is_dst','yearday_sin','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos']
 
+# removed wind_speed_10m as NaN values were causing issues
 
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 

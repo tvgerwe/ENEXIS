@@ -56,3 +56,23 @@
 2025-05-24 06:28:14,453 - warp-database-json - INFO - Database fetch complete
 2025-05-24 06:28:14,453 - warp-database-json - INFO - Database connection closed
 2025-05-24 06:28:14,932 - warp-database-json - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv
+2025-05-26 13:08:43,255 - warp-database-json - INFO - MODEL_RUN_RESULTS_DIR: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/
+2025-05-26 13:08:43,261 - warp-database-json - INFO - Connected to database at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/WARP.db
+2025-05-26 13:08:43,294 - warp-database-json - INFO - Database fetch complete
+2025-05-26 13:08:43,295 - warp-database-json - INFO - Database connection closed
+2025-05-26 13:08:43,796 - warp-database-json - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv
+2025-05-26 13:52:08,062 - warp-database-json - INFO - MODEL_RUN_RESULTS_DIR: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/
+2025-05-26 13:53:09,191 - warp-database-json - INFO - MODEL_RUN_RESULTS_DIR: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/
+2025-05-26 13:53:18,800 - warp-database-json - INFO - MODEL_RUN_RESULTS_DIR: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/
+2025-05-26 13:53:18,801 - build_training_set - INFO - 🚀 Start build van trainingset
+2025-05-26 13:53:18,802 - build_training_set - INFO - 🧠 Actuals van 2025-01-01 00:00:00+00:00 t/m 2025-03-14 23:00:00+00:00
+2025-05-26 13:53:18,802 - build_training_set - INFO - 📅 Forecast van run_date 2025-03-23 00:00:00+00:00, target range: 2025-03-23 00:00:00+00:00 → 2025-03-29 23:00:00+00:00
+2025-05-26 13:53:18,833 - build_training_set - INFO - ✅ Actuals geladen: 1752 rijen
+2025-05-26 13:53:19,120 - build_training_set - INFO - 📦 Eindtabel bevat: 1920 rijen, 31 kolommen
+2025-05-26 13:53:19,120 - build_training_set - INFO - 🧾 Kolommen: ['Price', 'target_datetime', 'Load', 'shortwave_radiation', 'temperature_2m', 'direct_normal_irradiance', 'diffuse_radiation', 'Flow_NO', 'yearday_cos', 'Flow_GB', 'month', 'is_dst', 'yearday_sin', 'is_non_working_day', 'hour_cos', 'is_weekend', 'cloud_cover', 'weekday_sin', 'hour_sin', 'weekday_cos', 'hour', 'day_of_week', 'day_of_year', 'local_datetime', 'is_holiday', 'run_date', 'wind_speed_10m', 'wind_direction_10m', 'snowfall', 'apparent_temperature', 'direct_radiation']
+2025-05-26 13:53:19,159 - build_training_set - INFO - ✅ Opgeslagen als training_set in WARP.db
+2025-05-26 13:53:19,159 - build_training_set - INFO - 🔒 Verbinding gesloten
+2025-05-26 13:53:19,160 - warp-database-json - INFO - Connected to database at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/WARP.db
+2025-05-26 13:53:19,187 - warp-database-json - INFO - Database fetch complete
+2025-05-26 13:53:19,187 - warp-database-json - INFO - Database connection closed
+2025-05-26 13:53:20,081 - warp-database-json - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv

@@ -18,6 +18,15 @@ import logging
 import json
 import joblib
 import itertools
+from typing import Optional, Tuple
+
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parents[2]))
+
+
+from src.utils.build_training_set import build_training_set
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -35,6 +44,49 @@ if not CONFIG_PATH.exists():
     raise FileNotFoundError(f"❌ Config not found at : {CONFIG_PATH}")
 with open(CONFIG_PATH, "r") as f:
     config = json.load(f)
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+LOG_DB = PROJECT_ROOT / "src" / "data" / "logs.db"
+TABLE_NAME = "prophet_logs"
+
+# Ensure the log database and table exist
+def ensure_log_db():
+    LOG_DB.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(LOG_DB)
+    conn.execute(f"""
+        CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_params TEXT,
+            seasonal_order_params TEXT,
+            rmse REAL
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def check_if_order_evaluated(order: Tuple, seasonal_order: Tuple) -> bool:
+    ensure_log_db()
+    conn = sqlite3.connect(LOG_DB)
+    query = f"""
+        SELECT COUNT(*) FROM {TABLE_NAME}
+        WHERE order_params = ? AND seasonal_order_params = ?
+    """
+    params = (str(order), str(seasonal_order))
+    result = conn.execute(query, params).fetchone()[0]
+    conn.close()
+    return result > 0
+
+def log_model_result(order: Tuple, seasonal_order: Tuple, rmse: float):
+    check_if_order_evaluated(order, seasonal_order)
+    conn = sqlite3.connect(LOG_DB)
+    conn.execute(
+        f"INSERT INTO {TABLE_NAME} (order_params, seasonal_order_params, rmse) VALUES (?, ?, ?)",
+        (str(order), str(seasonal_order), rmse)
+    )
+    conn.commit()
+    conn.close()
+
 
 # Custom function for MAPE and sMAPE
 def mean_absolute_percentage_error(y_true, y_pred):
@@ -72,33 +124,40 @@ df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)
 y = df[['datetime', 'Price']]
 X = df.drop(columns=['Price'])
 
-train_start = "2025-01-01"
-train_end   = "2025-04-01"
-test_start  = "2025-04-02"
-test_end    = "2025-05-15"
+# Ensure train/test splits use the same mask for X and y to avoid length mismatch
+train_start = "2025-01-01 00:00:00"
+train_end = "2025-03-14 23:00:00"
+test_start = "2025-03-15 00:00:00"
+test_end = "2025-03-22 00:00:00"
 
-X_train = X[(X['datetime'] >= train_start) & (X['datetime'] <= train_end)].copy()
-X_test  = X[(X['datetime'] >= test_start) & (X['datetime'] <= test_end)].copy()
-y_train = y[(y['datetime'] >= train_start) & (y['datetime'] <= train_end)].copy()
-y_test  = y[(y['datetime'] >= test_start) & (y['datetime'] <= test_end)].copy()
+mask_train = (df['datetime'] >= train_start) & (df['datetime'] <= train_end)
+mask_test = (df['datetime'] >= test_start) & (df['datetime'] <= test_end)
+
+X_train = X[mask_train].copy().reset_index(drop=True)
+y_train = y[mask_train].copy().reset_index(drop=True)
+X_test = X[mask_test].copy().reset_index(drop=True)
+y_test = y[mask_test].copy().reset_index(drop=True)
 
 logger.info(f"Train Date Range: Start: {X_train['datetime'].min()} End: {X_train['datetime'].max()}")
 logger.info(f"Test Date Range: Start: {X_test['datetime'].min()} End: {X_test['datetime'].max()}")
 
-regressors = ['Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO','yearday_cos','Flow_GB','month',
-              'is_dst','yearday_sin','wind_speed_10m','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos']
+regressors = [
+    'Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO','yearday_cos','Flow_GB','month',
+    'is_dst','yearday_sin','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos'
+]
 
+# removed wind_speed_10m as NaN values were causing issues
 
 available_regressors = [col for col in regressors if col in X_train.columns]
 
 train_prophet = pd.concat([
-    y_train[['datetime', 'Price']].reset_index(drop=True),
-    X_train[available_regressors].reset_index(drop=True)
-], axis=1)
+    y_train[['datetime', 'Price']],
+    X_train[available_regressors]
+], axis=1).reset_index(drop=True)
 test_prophet = pd.concat([
-    y_test[['datetime', 'Price']].reset_index(drop=True),
-    X_test[available_regressors].reset_index(drop=True)
-], axis=1)
+    y_test[['datetime', 'Price']],
+    X_test[available_regressors]
+], axis=1).reset_index(drop=True)
 
 train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
 test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
@@ -194,7 +253,11 @@ logger.info(f"MSE: {mse:.3f}")
 logger.info(f"RMSE: {rmse:.3f}")
 logger.info(f"R²: {r2:.3f}")
 
-comments = "run on 24th May refresh data"
+
+
+comments = "run on 26th May refresh data"
+log_model_result(str(best_params), str(regressors), rmse)
+
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 results.append(["Prophet", mae, mse, rmse, r2, comments, execution_time, model_run_timestamp])
 metrics_df = pd.DataFrame(results, columns=["Model", "MAE", "MSE", "RMSE", "R2", "Comments", "Execution Time", "Run At"])
