@@ -113,14 +113,15 @@ for i in range(num_rolling_runs):
     rmse = np.sqrt(mse)
     r2 = r2_score(merged['y'], merged['yhat'])
 
-    # Append actual and predicted rows to list with window info
+    # Append actual and predicted rows to list with window info and RMSE for this window
     for _, row in merged.iterrows():
         forecast_rows.append({
             "ds": row['ds'],
             "actual": row['y'],
             "predicted": row['yhat'],
             "window_start": predict_start,
-            "window_end": predict_end
+            "window_end": predict_end,
+            "rmse": rmse  # Add RMSE for this rolling window
         })
 
     model_run_metrics.append({
