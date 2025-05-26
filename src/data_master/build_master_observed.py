@@ -13,13 +13,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = PROJECT_ROOT / "src" / "data" / "WARP.db"
 MASTER_TABLE = "master_warp"
 
-# Definitieve kolomvolgorde (met Price als target)
+# Definitieve kolomvolgorde (met Price als target) - UPDATED with missing columns
 desired_order = [
     'Price', 'target_datetime', 'Load', 'shortwave_radiation', 'temperature_2m',
     'direct_normal_irradiance', 'diffuse_radiation', 'Flow_NO', 'yearday_cos',
     'Flow_GB', 'month', 'is_dst', 'yearday_sin', 'is_non_working_day',
     'hour_cos', 'is_weekend', 'cloud_cover', 'weekday_sin', 'hour_sin',
-    'weekday_cos'
+    'weekday_cos', 'hour', 'day_of_week', 'day_of_year', 'is_holiday'  # ADDED THESE
 ]
 
 def safe_load_table(conn, table_name):

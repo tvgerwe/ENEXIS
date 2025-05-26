@@ -68,31 +68,65 @@ def build_training_set(train_start, train_end, run_date):
             logger.warning(f"⚠️ Dubbele kolomnamen in df_preds: {dupes}")
             df_preds = df_preds.loc[:, ~df_preds.columns.duplicated()]
 
-        # Merge target 'Price' vanuit actuals
-        df_price = df_actuals[["target_datetime", "Price"]].copy()
-        df_price.columns = ["target_datetime", "Price_actual"]
+        # === Get actual prices for forecast period from master_warp
+        df_forecast_prices = pd.read_sql_query(f"""
+            SELECT target_datetime, Price 
+            FROM {ACTUALS_TABLE} 
+            WHERE target_datetime >= '{forecast_start}' 
+            AND target_datetime <= '{forecast_end}'
+        """, conn)
+        
+        if not df_forecast_prices.empty:
+            df_forecast_prices["target_datetime"] = pd.to_datetime(df_forecast_prices["target_datetime"], utc=True)
+            
+            # Merge actual prices into forecast features
+            df_preds = df_preds.merge(df_forecast_prices, on="target_datetime", how="left")
+            logger.info(f"✅ Added actual prices to {len(df_forecast_prices)} forecast rows")
+        else:
+            # Add Price column as NaN if no actuals found
+            df_preds['Price'] = pd.NA
+            logger.warning(f"⚠️ No actual prices found for forecast period")
 
-        df_preds = df_preds.merge(df_price, on="target_datetime", how="left")
-        df_preds["Price"] = df_preds["Price_actual"]
-        df_preds = df_preds.drop(columns=["Price_actual"])
+        # Ensure both dataframes have the same columns
+        all_columns = set(df_actuals.columns) | set(df_preds.columns)
+        
+        # Add missing columns to both dataframes
+        for col in all_columns:
+            if col not in df_actuals.columns:
+                df_actuals[col] = pd.NA
+            if col not in df_preds.columns:
+                df_preds[col] = pd.NA
 
-        # Combineer actuals + forecasts
+        # Reorder columns to match
+        common_columns = sorted(all_columns)
+        df_actuals = df_actuals[common_columns]
+        df_preds = df_preds[common_columns]
+
+        # Combine actuals + forecasts
         df_combined = pd.concat([df_actuals, df_preds], ignore_index=True)
         df_combined = df_combined.sort_values("target_datetime").drop_duplicates("target_datetime")
 
-        # Forceer kolomvolgorde
+        # Force column order
         available_cols = [col for col in desired_order if col in df_combined.columns]
         remaining_cols = [col for col in df_combined.columns if col not in desired_order]
         df_combined = df_combined[available_cols + remaining_cols]
 
         logger.info(f"📦 Eindtabel bevat: {df_combined.shape[0]} rijen, {df_combined.shape[1]} kolommen")
         logger.info(f"🧾 Kolommen: {df_combined.columns.tolist()}")
+        
+        # Show Price distribution
+        nan_count = df_combined['Price'].isna().sum()
+        logger.info(f"❓ Price NaN count: {nan_count}/{len(df_combined)} ({100*nan_count/len(df_combined):.1f}%)")
 
+        # Save to database AND return DataFrame
         df_combined.to_sql(OUTPUT_TABLE, conn, if_exists="replace", index=False)
         logger.info(f"✅ Opgeslagen als {OUTPUT_TABLE} in {DB_PATH.name}")
+        
+        return df_combined
 
     except Exception as e:
         logger.error(f"❌ Fout tijdens build: {e}", exc_info=True)
+        return None
     finally:
         conn.close()
         logger.info("🔒 Verbinding gesloten")
