@@ -45,6 +45,7 @@ csv_file_path = PROJECT_ROOT / "src" / "data" / "warp-csv-dataset.csv"
 with open(csv_file_path, 'rb') as csv_file:
     df_pd_orig = pd.read_csv(csv_file)
 
+'''
 # Ensure 'target_datetime' is parsed as timezone-naive datetime
 df_pd_orig['target_datetime'] = pd.to_datetime(df_pd_orig['target_datetime'], errors='coerce')
 df_pd_orig['target_datetime'] = df_pd_orig['target_datetime'].dt.tz_localize(None)
@@ -66,6 +67,7 @@ nonzero_price_rows = df_pd_orig[
 ]
 print("Nonzero prices after 2025-05-10:")
 print(nonzero_price_rows[['target_datetime', 'Price']])
+'''
 
 # === Prepare DataFrame for Prophet ===
 df_pd_orig['datetime'] = df_pd_orig['target_datetime']
@@ -84,9 +86,12 @@ regressors = [
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 
 # === 1. Normal Forecast (single window) ===
+# User-defined start date for the forecast window
+user_forecast_start = pd.to_datetime("2025-05-10")  # <-- Set your desired start date here
 forecast_horizon_days = 6
-forecast_start = df['ds'].max() - pd.Timedelta(days=forecast_horizon_days-1)
-forecast_end = df['ds'].max()
+forecast_start = user_forecast_start
+forecast_end = forecast_start + pd.Timedelta(days=forecast_horizon_days - 1)
+
 
 future = df[(df['ds'] >= forecast_start) & (df['ds'] <= forecast_end)].copy()
 future_pred = future[['ds'] + regressors].copy()
@@ -128,9 +133,11 @@ start_date = pd.to_datetime("2025-05-10") + timedelta(hours=36)
 num_rolling_runs = 6
 horizon = 6  # days ahead
 
+'''
 # Print dates where Price is not 0.0 and date is after 25 May 2025
 nonzero_price_rows = df[(df['Price'] != 0.0) & (df['ds'] > pd.to_datetime('2025-05-25'))]
 print(nonzero_price_rows[['ds', 'Price']])
+'''
 
 forecast_rows = []
 model_run_metrics = []
@@ -183,9 +190,10 @@ for i in range(num_rolling_runs):
         "rmse": rmse,
         "r2": r2
     })
-
+    '''
     print(future[['ds', 'Price']])
     print(f"Nonzero prices: {future['Price'][future['Price'] != 0]}")
+    '''
 
 # Save rolling window forecast results
 try:
