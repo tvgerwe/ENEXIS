@@ -45,29 +45,34 @@ csv_file_path = PROJECT_ROOT / "src" / "data" / "warp-csv-dataset.csv"
 with open(csv_file_path, 'rb') as csv_file:
     df_pd_orig = pd.read_csv(csv_file)
 
-'''
+"""
+# Step 1: Read data
+prediction_csv_file_path = PROJECT_ROOT / "src" / "data" / "warp-csv-prediction-dataset.csv"
+with open(prediction_csv_file_path, 'rb') as csv_file:
+    df_pd_prediction_orig = pd.read_csv(prediction_csv_file_path)
+
 # Ensure 'target_datetime' is parsed as timezone-naive datetime
-df_pd_orig['target_datetime'] = pd.to_datetime(df_pd_orig['target_datetime'], errors='coerce')
-df_pd_orig['target_datetime'] = df_pd_orig['target_datetime'].dt.tz_localize(None)
+df_pd_prediction_orig['target_datetime'] = pd.to_datetime(df_pd_prediction_orig['target_datetime'], errors='coerce')
+df_pd_prediction_orig['target_datetime'] = df_pd_prediction_orig['target_datetime'].dt.tz_localize(None)
 
 print("Loaded data sample:")
-print(df_pd_orig[['target_datetime', 'Price']].head(20))
+print(df_pd_prediction_orig[['target_datetime', 'Price']].head(20))
 # Get all rows with nonzero Price values, sorted by Price and date
-all_nonzero_prices = df_pd_orig[df_pd_orig['Price'] != 0.0][['target_datetime', 'Price']].sort_values(['Price', 'target_datetime'])
+all_nonzero_prices = df_pd_prediction_orig[df_pd_prediction_orig['Price'] != 0.0][['target_datetime', 'Price']].sort_values(['Price', 'target_datetime'])
 
 print("All dates for each unique nonzero Price value:")
 print(all_nonzero_prices)
 
-print("Unique Price values:", df_pd_orig['Price'].unique())
+print("Unique Price values:", df_pd_prediction_orig['Price'].unique())
 
 # Print dates where Price is not 0.0 and date is after 25 May 2025
-nonzero_price_rows = df_pd_orig[
-    (df_pd_orig['Price'] != 0.0) & 
-    (df_pd_orig['target_datetime'] > pd.to_datetime('2025-05-10'))
+nonzero_price_rows = df_pd_prediction_orig[
+    (df_pd_prediction_orig['Price'] != 0.0) & 
+    (df_pd_prediction_orig['target_datetime'] > pd.to_datetime('2025-05-27'))
 ]
-print("Nonzero prices after 2025-05-10:")
+print("Nonzero prices after 2025-05-27:")
 print(nonzero_price_rows[['target_datetime', 'Price']])
-'''
+"""
 
 # === Prepare DataFrame for Prophet ===
 df_pd_orig['datetime'] = df_pd_orig['target_datetime']
@@ -80,8 +85,10 @@ df['y'] = df['Price']
 
 regressors = [
     'Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO','yearday_cos','Flow_GB','month',
-    'is_dst','yearday_sin','wind_speed_10m','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos'
+    'is_dst','yearday_sin','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos'
 ]
+
+# wind_speed_10m  removed due as it was not in model build
 
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 

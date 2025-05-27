@@ -4,6 +4,8 @@ import os
 import json
 from pathlib import Path
 import logging
+from sklearn.metrics import mean_squared_error
+import numpy as np
 
 # === Logging Setup ===
 logging.basicConfig(
@@ -30,11 +32,20 @@ model_metrics_results_path_rolling = PROJECT_ROOT / "models" / "model_run_result
 df_normal = pd.read_csv(forecast_output_path)
 df_normal['ds'] = pd.to_datetime(df_normal['ds'])
 
+# Calculate overall RMSE for normal forecast
+if 'actual' in df_normal.columns and 'predicted' in df_normal.columns:
+    overall_rmse = np.sqrt(mean_squared_error(df_normal['actual'], df_normal['predicted']))
+else:
+    overall_rmse = None
+
 fig, axs = plt.subplots(2, 1, figsize=(12, 10), sharex=True)
 axs[0].plot(df_normal['ds'], df_normal['actual'], label='Actual', color='green')
 axs[0].plot(df_normal['ds'], df_normal['predicted'], label='Predicted', color='blue', linestyle='--')
 axs[0].set_ylabel('Value')
-axs[0].set_title('Normal Forecast: Actual vs Predicted')
+title_str = 'Normal Forecast: Actual vs Predicted'
+if overall_rmse is not None:
+    title_str += f' (RMSE={overall_rmse:.3f})'
+axs[0].set_title(title_str)
 axs[0].legend()
 axs[0].grid(True)
 if 'rmse' in df_normal.columns:
@@ -55,11 +66,20 @@ df_rolling['ds'] = pd.to_datetime(df_rolling['ds'])
 # Group by 'ds' and calculate mean for actual, predicted, and rmse
 df_rolling_avg = df_rolling.groupby('ds')[['actual', 'predicted', 'rmse']].mean().reset_index()
 
+# Calculate overall RMSE for rolling forecast
+if 'actual' in df_rolling_avg.columns and 'predicted' in df_rolling_avg.columns:
+    overall_rmse_rolling = np.sqrt(mean_squared_error(df_rolling_avg['actual'], df_rolling_avg['predicted']))
+else:
+    overall_rmse_rolling = None
+
 fig, axs = plt.subplots(2, 1, figsize=(12, 10), sharex=True)
 axs[0].plot(df_rolling_avg['ds'], df_rolling_avg['actual'], label='Actual (avg)', color='green')
 axs[0].plot(df_rolling_avg['ds'], df_rolling_avg['predicted'], label='Predicted (avg)', color='blue', linestyle='--')
 axs[0].set_ylabel('Value')
-axs[0].set_title('Rolling Window Forecast (Averaged): Actual vs Predicted')
+title_str = 'Rolling Window Forecast (Averaged): Actual vs Predicted'
+if overall_rmse_rolling is not None:
+    title_str += f' (RMSE={overall_rmse_rolling:.3f})'
+axs[0].set_title(title_str)
 axs[0].legend()
 axs[0].grid(True)
 if 'rmse' in df_rolling_avg.columns:

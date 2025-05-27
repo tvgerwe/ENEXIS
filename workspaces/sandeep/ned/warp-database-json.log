@@ -61,3 +61,21 @@
 2025-05-27 10:02:57,830 - warp-database-json - INFO - Database fetch complete
 2025-05-27 10:02:57,831 - warp-database-json - INFO - Database connection closed
 2025-05-27 10:02:58,344 - warp-database-json - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv
+2025-05-27 14:00:23,411 - warp-database-json - INFO - MODEL_RUN_RESULTS_DIR: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/
+2025-05-27 14:00:23,412 - warp-database-json - INFO - Connected to database at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/WARP.db
+2025-05-27 14:00:23,764 - warp-database-json - INFO - Database fetch complete
+2025-05-27 14:00:23,764 - warp-database-json - INFO - Database connection closed
+2025-05-27 14:00:24,351 - warp-database-json - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv
+2025-05-27 14:00:25,608 - warp-database-json - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv
+2025-05-27 14:07:49,816 - warp-database-json - INFO - MODEL_RUN_RESULTS_DIR: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/
+2025-05-27 14:07:49,817 - warp-database-json - INFO - Connected to database at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/WARP.db
+2025-05-27 14:07:50,190 - warp-database-json - INFO - Database fetch complete
+2025-05-27 14:07:50,191 - warp-database-json - INFO - Database connection closed
+2025-05-27 14:07:51,697 - warp-database-json - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv
+2025-05-27 14:07:54,042 - warp-database-json - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv
+2025-05-27 14:08:51,800 - warp-database-json - INFO - MODEL_RUN_RESULTS_DIR: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/
+2025-05-27 14:08:51,801 - warp-database-json - INFO - Connected to database at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/data/WARP.db
+2025-05-27 14:08:52,413 - warp-database-json - INFO - Database fetch complete
+2025-05-27 14:08:52,413 - warp-database-json - INFO - Database connection closed
+2025-05-27 14:08:52,490 - warp-database-json - INFO - Created new CSV at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv
+2025-05-27 14:08:53,514 - warp-database-json - INFO - Created new CSV at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-prediction-dataset.csv

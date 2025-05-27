@@ -38,6 +38,7 @@ try:
     logger.info(f"Connected to database at {db_path}")
     # Step 2: Read data from table
     df_pd_orig = pd.read_sql_query("SELECT * FROM master_warp ORDER BY target_datetime DESC", conn)
+    df_pd_orig_pred = pd.read_sql_query("SELECT * FROM master_predictions ORDER BY target_datetime DESC", conn)
     logger.info("Database fetch complete")
 except Exception as e:
     logger.error(f"Database connection or fetch failed: {e}")
@@ -47,6 +48,8 @@ finally:
     logger.info("Database connection closed")
 
 db_results_file_path = f'{MODEL_RUN_RESULTS_DIR}warp-csv-dataset.csv'
+db_pred_results_file_path = f'{MODEL_RUN_RESULTS_DIR}warp-csv-prediction-dataset.csv'
+
 
 # Step 10: Check if file exists, then append or create
 try:
@@ -63,3 +66,20 @@ try:
 except Exception as e:
     logger.error(f"CSV save failed: {e}")
     raise
+
+# Step 10: Check if file exists, then append or create
+try:
+    if os.path.exists(db_pred_results_file_path):
+        # Append to existing file
+        existing_results = pd.read_csv(db_pred_results_file_path, low_memory=False)
+        updated_results = pd.concat([existing_results, df_pd_orig_pred], ignore_index=True)
+        updated_results.to_csv(db_pred_results_file_path, index=False)
+        logger.info(f"Appended and saved to {db_pred_results_file_path}")
+    else:
+        # Create new file
+        df_pd_orig_pred.to_csv(db_pred_results_file_path, index=False)
+        logger.info(f"Created new CSV at {db_pred_results_file_path}")
+except Exception as e:
+    logger.error(f"CSV save failed: {e}")
+    raise
+

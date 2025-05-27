@@ -54,8 +54,10 @@ df['y'] = df['Price']
 
 regressors = [
     'Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO','yearday_cos','Flow_GB','month',
-    'is_dst','yearday_sin','wind_speed_10m','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos'
+    'is_dst','yearday_sin','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos'
 ]
+
+# wind_speed_10m removed.
 
 logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 
