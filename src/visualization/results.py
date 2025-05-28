@@ -5,9 +5,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import plotly.graph_objects as go
-import plotly.express as px
-from plotly.subplots import make_subplots
 import logging
 from typing import Dict, List, Optional, Any, Tuple
 from IPython.display import display, HTML
@@ -22,6 +19,31 @@ class ResultsVisualizer:
         self.use_plotly = use_plotly
         self.logger = logging.getLogger(self.__class__.__name__)
         self.metrics_calculator = MetricsCalculator()
+        
+        # Try to import plotly only if needed
+        self.plotly_available = False
+        if self.use_plotly:
+            try:
+                import plotly.graph_objects as go
+                import plotly.express as px
+                from plotly.subplots import make_subplots
+                
+                self.go = go
+                self.px = px
+                self.make_subplots = make_subplots
+                self.plotly_available = True
+                self.logger.info("✅ Plotly loaded successfully")
+                
+            except ImportError as e:
+                self.logger.warning(f"⚠️ Plotly import failed: {e}")
+                self.logger.info("🔄 Falling back to matplotlib")
+                self.use_plotly = False
+                self.plotly_available = False
+            except AttributeError as e:
+                self.logger.warning(f"⚠️ Plotly compatibility issue: {e}")
+                self.logger.info("🔄 Falling back to matplotlib")
+                self.use_plotly = False
+                self.plotly_available = False
         
         # Color palette for consistent model colors
         self.model_colors = {
@@ -50,10 +72,10 @@ class ResultsVisualizer:
                              model_results: Dict[str, ModelResult],
                              training_data: Optional[pd.Series] = None,
                              title: str = "Model Comparison",
-                             show_training: bool = True) -> go.Figure:
+                             show_training: bool = True):
         """Create interactive comparison plot of model predictions"""
         
-        if self.use_plotly:
+        if self.use_plotly and self.plotly_available:
             return self._create_plotly_comparison(
                 actual_values, model_results, training_data, title, show_training
             )
@@ -67,14 +89,19 @@ class ResultsVisualizer:
                                 model_results: Dict[str, ModelResult], 
                                 training_data: Optional[pd.Series] = None,
                                 title: str = "Model Comparison",
-                                show_training: bool = True) -> go.Figure:
+                                show_training: bool = True):
         """Create Plotly comparison plot"""
         
-        fig = go.Figure()
+        if not self.plotly_available:
+            return self._create_matplotlib_comparison(
+                actual_values, model_results, training_data, title, show_training
+            )
+        
+        fig = self.go.Figure()
         
         # Add training data if provided
         if show_training and training_data is not None:
-            fig.add_trace(go.Scatter(
+            fig.add_trace(self.go.Scatter(
                 x=training_data.index,
                 y=training_data.values,
                 mode='lines',
@@ -84,7 +111,7 @@ class ResultsVisualizer:
             ))
         
         # Add actual values
-        fig.add_trace(go.Scatter(
+        fig.add_trace(self.go.Scatter(
             x=actual_values.index,
             y=actual_values.values,
             mode='lines',
@@ -102,7 +129,7 @@ class ResultsVisualizer:
                 color = self.model_colors.get(model_name, f'hsl({i * 360 / len(model_results)}, 70%, 50%)')
                 dash = self.line_styles.get(model_name, 'solid')
                 
-                fig.add_trace(go.Scatter(
+                fig.add_trace(self.go.Scatter(
                     x=result.predictions.index,
                     y=result.predictions.values,
                     mode='lines',
@@ -134,7 +161,7 @@ class ResultsVisualizer:
                                     model_results: Dict[str, ModelResult],
                                     training_data: Optional[pd.Series] = None,
                                     title: str = "Model Comparison",
-                                    show_training: bool = True) -> plt.Figure:
+                                    show_training: bool = True):
         """Create Matplotlib comparison plot"""
         
         fig, ax = plt.subplots(figsize=(15, 8))
@@ -219,20 +246,33 @@ class ResultsVisualizer:
         
         return pd.DataFrame()
     
-    def create_rolling_validation_plot(self, rolling_results: pd.DataFrame) -> go.Figure:
+    def create_rolling_validation_plot(self, rolling_results: pd.DataFrame):
         """Create rolling window validation visualization"""
         
         if rolling_results.empty:
-            return go.Figure().add_annotation(text="No rolling validation data available")
+            if self.plotly_available:
+                return self.go.Figure().add_annotation(text="No rolling validation data available")
+            else:
+                fig, ax = plt.subplots(figsize=(10, 6))
+                ax.text(0.5, 0.5, "No rolling validation data available", 
+                       ha='center', va='center', transform=ax.transAxes)
+                return fig
         
+        if self.use_plotly and self.plotly_available:
+            return self._create_plotly_rolling_validation(rolling_results)
+        else:
+            return self._create_matplotlib_rolling_validation(rolling_results)
+    
+    def _create_plotly_rolling_validation(self, rolling_results: pd.DataFrame):
+        """Create Plotly rolling validation plot"""
         # Create subplots for different metrics
         metrics = ['rmse', 'mae', 'mape']
         available_metrics = [m for m in metrics if m in rolling_results.columns]
         
         if not available_metrics:
-            return go.Figure().add_annotation(text="No metrics data available")
+            return self.go.Figure().add_annotation(text="No metrics data available")
         
-        fig = make_subplots(
+        fig = self.make_subplots(
             rows=len(available_metrics), cols=1,
             subplot_titles=[f'{m.upper()} Across Rolling Windows' for m in available_metrics],
             vertical_spacing=0.08
@@ -249,7 +289,7 @@ class ResultsVisualizer:
                     color = self.model_colors.get(model, f'hsl({hash(model) % 360}, 70%, 50%)')
                     
                     fig.add_trace(
-                        go.Scatter(
+                        self.go.Scatter(
                             x=successful_data['window_id'],
                             y=successful_data[metric],
                             mode='lines+markers',
@@ -272,7 +312,46 @@ class ResultsVisualizer:
         
         return fig
     
-    def create_model_diagnostics_plot(self, model_results: Dict[str, ModelResult]) -> go.Figure:
+    def _create_matplotlib_rolling_validation(self, rolling_results: pd.DataFrame):
+        """Create matplotlib rolling validation plot"""
+        metrics = ['rmse', 'mae', 'mape']
+        available_metrics = [m for m in metrics if m in rolling_results.columns]
+        
+        if not available_metrics:
+            fig, ax = plt.subplots(figsize=(10, 6))
+            ax.text(0.5, 0.5, "No metrics data available", 
+                   ha='center', va='center', transform=ax.transAxes)
+            return fig
+        
+        fig, axes = plt.subplots(len(available_metrics), 1, figsize=(12, 4 * len(available_metrics)))
+        if len(available_metrics) == 1:
+            axes = [axes]
+        
+        models = rolling_results['model_name'].unique()
+        
+        for i, metric in enumerate(available_metrics):
+            ax = axes[i]
+            
+            for model in models:
+                model_data = rolling_results[rolling_results['model_name'] == model]
+                successful_data = model_data[model_data['status'] == 'completed']
+                
+                if not successful_data.empty:
+                    color = self.model_colors.get(model, None)
+                    ax.plot(successful_data['window_id'], successful_data[metric], 
+                           marker='o', color=color, 
+                           label=f'{model.replace("_", " ").title()}')
+            
+            ax.set_title(f'{metric.upper()} Across Rolling Windows')
+            ax.set_xlabel('Window ID')
+            ax.set_ylabel(metric.upper())
+            ax.legend()
+            ax.grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        return fig
+    
+    def create_model_diagnostics_plot(self, model_results: Dict[str, ModelResult]):
         """Create model diagnostics visualization"""
         
         # Collect diagnostic data
@@ -292,46 +371,97 @@ class ResultsVisualizer:
                         })
         
         if not diagnostic_data:
-            return go.Figure().add_annotation(text="No diagnostic data available")
+            if self.plotly_available:
+                return self.go.Figure().add_annotation(text="No diagnostic data available")
+            else:
+                fig, ax = plt.subplots(figsize=(10, 6))
+                ax.text(0.5, 0.5, "No diagnostic data available", 
+                       ha='center', va='center', transform=ax.transAxes)
+                return fig
         
         df_diag = pd.DataFrame(diagnostic_data)
         
-        # Create separate plots for different metric types
-        unique_metrics = df_diag['metric'].unique()
-        
-        if len(unique_metrics) == 1:
-            # Single metric - simple bar chart
-            fig = px.bar(df_diag, x='model', y='value', color='model',
-                        title=f'Model {unique_metrics[0]} Comparison')
+        if self.use_plotly and self.plotly_available:
+            # Create separate plots for different metric types
+            unique_metrics = df_diag['metric'].unique()
+            
+            if len(unique_metrics) == 1:
+                # Single metric - simple bar chart
+                fig = self.px.bar(df_diag, x='model', y='value', color='model',
+                            title=f'Model {unique_metrics[0]} Comparison')
+            else:
+                # Multiple metrics - grouped bar chart
+                fig = self.px.bar(df_diag, x='model', y='value', color='metric', barmode='group',
+                            title='Model Diagnostics Comparison')
+            
+            fig.update_layout(template='plotly_white')
+            return fig
         else:
-            # Multiple metrics - grouped bar chart
-            fig = px.bar(df_diag, x='model', y='value', color='metric', barmode='group',
-                        title='Model Diagnostics Comparison')
-        
-        fig.update_layout(template='plotly_white')
-        return fig
+            # Matplotlib version
+            fig, ax = plt.subplots(figsize=(12, 6))
+            
+            unique_metrics = df_diag['metric'].unique()
+            models = df_diag['model'].unique()
+            
+            if len(unique_metrics) == 1:
+                values = [df_diag[df_diag['model'] == model]['value'].iloc[0] for model in models]
+                ax.bar(models, values)
+                ax.set_title(f'Model {unique_metrics[0]} Comparison')
+            else:
+                # Grouped bar chart
+                x = np.arange(len(models))
+                width = 0.8 / len(unique_metrics)
+                
+                for i, metric in enumerate(unique_metrics):
+                    values = []
+                    for model in models:
+                        model_data = df_diag[(df_diag['model'] == model) & (df_diag['metric'] == metric)]
+                        values.append(model_data['value'].iloc[0] if not model_data.empty else 0)
+                    
+                    ax.bar(x + i * width, values, width, label=metric)
+                
+                ax.set_xlabel('Models')
+                ax.set_ylabel('Value')
+                ax.set_title('Model Diagnostics Comparison')
+                ax.set_xticks(x + width * (len(unique_metrics) - 1) / 2)
+                ax.set_xticklabels(models)
+                ax.legend()
+            
+            ax.grid(True, alpha=0.3)
+            plt.tight_layout()
+            return fig
     
     def create_residuals_analysis(self, 
                                 actual_values: pd.Series,
-                                model_results: Dict[str, ModelResult]) -> go.Figure:
+                                model_results: Dict[str, ModelResult]):
         """Create residuals analysis plots"""
         
         # Create subplots for each model
         n_models = sum(1 for result in model_results.values() if result.success)
         if n_models == 0:
-            return go.Figure().add_annotation(text="No successful models to analyze")
+            if self.plotly_available:
+                return self.go.Figure().add_annotation(text="No successful models to analyze")
+            else:
+                fig, ax = plt.subplots(figsize=(10, 6))
+                ax.text(0.5, 0.5, "No successful models to analyze", 
+                       ha='center', va='center', transform=ax.transAxes)
+                return fig
         
+        # Use matplotlib for residuals analysis as it's more straightforward
         cols = min(2, n_models)
         rows = (n_models + cols - 1) // cols
         
-        fig = make_subplots(
-            rows=rows, cols=cols,
-            subplot_titles=[f'{name.replace("_", " ").title()} Residuals' 
-                           for name, result in model_results.items() if result.success],
-            vertical_spacing=0.1
-        )
+        fig, axes = plt.subplots(rows, cols, figsize=(15, 5 * rows))
         
-        plot_idx = 1
+        # Handle different subplot configurations
+        if n_models == 1:
+            axes = [axes]  # Single plot
+        elif rows == 1:
+            axes = axes.flatten()  # Single row, multiple columns
+        else:
+            axes = axes.flatten()  # Multiple rows and columns - flatten to 1D
+        
+        plot_idx = 0
         for model_name, result in model_results.items():
             if result.success and result.predictions is not None:
                 # Calculate residuals
@@ -340,3 +470,25 @@ class ResultsVisualizer:
                     actual_aligned = actual_values.loc[common_idx]
                     pred_aligned = result.predictions.loc[common_idx]
                     residuals = actual_aligned - pred_aligned
+                    
+                    # Get the correct axis
+                    ax = axes[plot_idx]
+                    
+                    # Residuals plot
+                    ax.scatter(pred_aligned, residuals, alpha=0.6, 
+                              color=self.model_colors.get(model_name, 'blue'))
+                    ax.axhline(y=0, color='red', linestyle='--')
+                    ax.set_xlabel('Predicted Values')
+                    ax.set_ylabel('Residuals')
+                    ax.set_title(f'{model_name.replace("_", " ").title()} Residuals')
+                    ax.grid(True, alpha=0.3)
+                    
+                    plot_idx += 1
+        
+        # Remove empty subplots
+        if plot_idx < len(axes):
+            for i in range(plot_idx, len(axes)):
+                axes[i].remove()
+        
+        plt.tight_layout()
+        return fig
