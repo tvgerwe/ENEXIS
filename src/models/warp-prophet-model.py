@@ -72,10 +72,10 @@ df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)
 y = df[['datetime', 'Price']]
 X = df.drop(columns=['Price'])
 
-train_start = "2025-01-01"
-train_end   = "2025-04-01"
-test_start  = "2025-04-02"
-test_end    = "2025-05-15"
+train_start = "2025-03-01"
+train_end   = "2025-03-07"
+test_start  = "2025-03-08"
+test_end    = "2025-03-14"
 
 X_train = X[(X['datetime'] >= train_start) & (X['datetime'] <= train_end)].copy()
 X_test  = X[(X['datetime'] >= test_start) & (X['datetime'] <= test_end)].copy()
@@ -86,8 +86,9 @@ logger.info(f"Train Date Range: Start: {X_train['datetime'].min()} End: {X_train
 logger.info(f"Test Date Range: Start: {X_test['datetime'].min()} End: {X_test['datetime'].max()}")
 
 regressors = ['Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO','yearday_cos','Flow_GB','month',
-              'is_dst','yearday_sin','wind_speed_10m','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos']
+              'is_dst','yearday_sin','is_non_working_day','hour_cos','is_weekend','cloud_cover','weekday_sin','hour_sin','weekday_cos']
 
+# wind_speed_10m removed.
 
 available_regressors = [col for col in regressors if col in X_train.columns]
 
@@ -121,6 +122,9 @@ param_grid = {
 }
 
 all_params = [dict(zip(param_grid.keys(), v)) for v in itertools.product(*param_grid.values())]
+
+# all_params = param_grid
+
 best_params = None
 best_mae = float('inf')
 best_model = None
@@ -131,7 +135,9 @@ for params in all_params:
     model = Prophet(
         changepoint_prior_scale=params['changepoint_prior_scale'],
         seasonality_mode=params['seasonality_mode'],
-        seasonality_prior_scale=params['seasonality_prior_scale']
+        seasonality_prior_scale=params['seasonality_prior_scale'],
+        holidays_prior_scale=params['holidays_prior_scale'],
+        changepoint_range=params['changepoint_range']
     )
     for reg in available_regressors:
         model.add_regressor(reg)
@@ -194,7 +200,7 @@ logger.info(f"MSE: {mse:.3f}")
 logger.info(f"RMSE: {rmse:.3f}")
 logger.info(f"R²: {r2:.3f}")
 
-comments = "run on 24th May refresh data"
+comments = "run on 28th May with rolling window"
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 results.append(["Prophet", mae, mse, rmse, r2, comments, execution_time, model_run_timestamp])
 metrics_df = pd.DataFrame(results, columns=["Model", "MAE", "MSE", "RMSE", "R2", "Comments", "Execution Time", "Run At"])
@@ -222,3 +228,156 @@ except Exception as e:
     logger.error(f"Model save failed: {e}")
     raise
 logger.info(f"✅ Model evaluation saved to {model_results_file_path}")
+
+# --- Rolling Window Prophet Evaluation ---
+# Controleer kolommen
+print(df.columns)
+all_preds = []
+all_actuals = []
+all_timestamps = []
+all_horizons = []
+
+# Stel een jaartal in (bijvoorbeeld 2025)
+year = 2025
+
+# Feature engineering
+df = df.dropna()
+
+# Parameters
+window_size = 7  # days in training set
+test_size = 7    # days in test set
+step_size = 1    # days to roll forward
+
+
+# Prepare
+df = df.sort_values('datetime').reset_index(drop=True)
+start_date = pd.Timestamp('2025-01-01')
+end_date = pd.Timestamp.today().normalize() - pd.Timedelta(days=window_size + test_size - 1)
+
+rmses = []
+maes = []
+importances = []
+
+current_start = start_date
+
+print("Starting rolling window evaluation...")
+while current_start <= end_date:
+    train_start = current_start
+    train_end = train_start + pd.Timedelta(days=window_size - 1, hours=23)
+    test_start = train_end + pd.Timedelta(hours=1)
+    test_end = test_start + pd.Timedelta(days=test_size - 1, hours=23)
+    
+    train = df[(df['datetime'] >= train_start) & (df['datetime'] <= train_end)]
+    test = df[(df['datetime'] >= test_start) & (df['datetime'] <= test_end)]
+    
+    if len(train) == 0 or len(test) == 0:
+        current_start += pd.Timedelta(days=step_size)
+        continue
+    
+    train_prophet = pd.concat([
+    y_train[['datetime', 'Price']].reset_index(drop=True),
+    X_train[available_regressors].reset_index(drop=True)
+    ], axis=1)
+    test_prophet = pd.concat([
+        y_test[['datetime', 'Price']].reset_index(drop=True),
+        X_test[available_regressors].reset_index(drop=True)
+    ], axis=1)
+
+    train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
+    test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
+
+    train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
+    test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
+    
+    print(f"Training from {train_start.date()} to {train_end.date()}, Testing from {test_start.date()} to {test_end.date()}")
+    for params in all_params:
+        model = Prophet(
+            changepoint_prior_scale=params['changepoint_prior_scale'],
+            seasonality_mode=params['seasonality_mode'],
+            seasonality_prior_scale=params['seasonality_prior_scale']
+        )
+        for reg in available_regressors:
+            model.add_regressor(reg)
+        model.fit(train_prophet)
+        forecast = model.predict(test_prophet)
+        y_true = test_prophet['y'].values
+        y_pred = forecast['yhat'].values
+        mae = mean_absolute_error(y_true, y_pred)
+        logger.info(f"Params: {params} → MAE: {mae:.2f}")
+        if mae < best_mae:
+            best_mae = mae
+            best_params = params
+            best_model = model
+            best_forecast = forecast
+    
+    print(f"Best Parameters Found: {best_params}")
+
+    # Calculate horizon (days ahead) for each prediction in this test set
+    horizons = ((test['datetime'] - test_start).dt.days).values
+    
+    all_preds.extend(y_pred)
+    all_actuals.extend(y_test.values)
+    all_timestamps.extend(test['datetime'].values)
+    all_horizons.extend(horizons)
+
+    print(f"Predictions for {len(y_pred)} timestamps from {test_start.date()} to {test_end.date()}")
+    #Evaluation
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    mae = mean_absolute_error(y_true, y_pred)
+    rmses.append(rmse)
+    maes.append(mae)
+    #importances.append(model.feature_importances_)
+    
+    print(f"Train: {train_start.date()} to {train_end.date()}, Test: {test_start.date()} to {test_end.date()}, RMSE: {rmse:.2f}")
+    current_start += pd.Timedelta(days=step_size)
+
+print("Rolling window evaluation complete.")
+print(f"Total predictions made: {len(all_preds)}")
+print(f"Total actuals: {len(all_actuals)}")
+print(f"Total timestamps: {len(all_timestamps)}")
+print(f"Total horizons: {len(all_horizons)}")
+assert len(all_preds) == len(all_actuals) == len(all_timestamps) == len(all_horizons), "Result arrays are not the same length!"
+
+# Convert all lists to numpy arrays for consistency
+
+# Now, build a DataFrame with the horizon included
+#rolling_window_result_df = pd.DataFrame({
+#    'Timestamp': all_timestamps,
+#    'Actual': all_actuals,
+#    'Predicted': all_preds,
+#    'Horizon': all_horizons
+#})
+
+#print(rolling_window_result_df.head())
+
+
+"""
+# Pivot so each horizon is a column
+pivot_df = rolling_window_result_df.pivot_table(index='Timestamp', columns='Horizon', values='Predicted', aggfunc='first')
+pivot_df.columns = [f'Predicted_{int(h+1)}d_ahead' for h in pivot_df.columns]  # 1-based
+pivot_df = pivot_df.reset_index()
+
+print(pivot_df.head())
+
+# Add actuals
+actuals = rolling_window_result_df.drop_duplicates('Timestamp')[['Timestamp', 'Actual']]
+#pivot_df = pd.merge(pivot_df, actuals, on='Timestamp', how='left')
+
+print(pivot_df.head())
+
+# Gemiddelde RMSE, MAE en feature importance
+print(f"\nAverage RMSE: {np.mean(rmses):.2f}")
+print(f"Average MAE: {np.mean(maes):.2f}")
+
+#avg_importance = np.mean(importances, axis=0)
+#for name, imp in zip(features, avg_importance):
+#    print(f"{name}: {imp:.3f}")
+
+# Visualiseer gemiddelde feature importance
+#import matplotlib.pyplot as plt
+#plt.figure(figsize=(8, 4))
+#plt.barh(features, avg_importance)
+#plt.xlabel("Average Feature Importance")
+#plt.title("Average Random Forest Feature Importances (Rolling Window)")
+#plt.show()
+"""
