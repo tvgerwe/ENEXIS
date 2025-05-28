@@ -20150,3 +20150,894 @@
 2025-05-28 07:31:10,503 - warp-prophet-model - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-prophet-model-results.csv
 2025-05-28 07:31:10,518 - warp-prophet-model - INFO - Model saved at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/prophet_hyper_tuned_model.pkl
 2025-05-28 07:31:10,519 - warp-prophet-model - INFO - ✅ Model evaluation saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-prophet-model-results.csv
+2025-05-28 09:46:25,959 - warp-prophet-model - INFO - MODEL_RUN_RESULTS_DIR: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/
+2025-05-28 09:46:26,165 - warp-prophet-model - INFO - Loaded data from /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-csv-dataset.csv
+2025-05-28 09:46:26,231 - warp-prophet-model - INFO - Train Date Range: Start: 2025-01-01 00:00:00 End: 2025-03-14 00:00:00
+2025-05-28 09:46:26,232 - warp-prophet-model - INFO - Test Date Range: Start: 2025-03-15 00:00:00 End: 2025-03-21 00:00:00
+2025-05-28 09:46:26,249 - warp-prophet-model - INFO - Prophet Training Data Sample:
+2025-05-28 09:46:26,323 - warp-prophet-model - INFO - 
+                   ds        y      Load  ...  weekday_sin  hour_sin  weekday_cos
+0 2025-01-01 00:00:00  0.01362  12049.25  ...     0.974928  0.000000    -0.222521
+1 2025-01-01 01:00:00  0.00624  11957.50  ...     0.974928  0.258819    -0.222521
+2 2025-01-01 02:00:00  0.00416  11636.25  ...     0.974928  0.500000    -0.222521
+3 2025-01-01 03:00:00  0.00328  11310.50  ...     0.974928  0.707107    -0.222521
+4 2025-01-01 04:00:00  0.00068  11135.25  ...     0.974928  0.866025    -0.222521
+
+[5 rows x 20 columns]
+2025-05-28 09:46:26,323 - warp-prophet-model - INFO - y_train columns: ['datetime', 'Price']
+2025-05-28 09:46:26,324 - warp-prophet-model - INFO - X_train columns (used regressors): ['Load', 'shortwave_radiation', 'temperature_2m', 'direct_normal_irradiance', 'diffuse_radiation', 'Flow_NO', 'yearday_cos', 'Flow_GB', 'month', 'is_dst', 'yearday_sin', 'is_non_working_day', 'hour_cos', 'is_weekend', 'cloud_cover', 'weekday_sin', 'hour_sin', 'weekday_cos']
+2025-05-28 09:46:26,324 - warp-prophet-model - INFO - Starting grid search with 18 regressors and expanded param_grid.
+2025-05-28 09:46:26,626 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:26,709 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4h7rarpk.json
+2025-05-28 09:46:26,857 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mzn53f79.json
+2025-05-28 09:46:26,858 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:26,858 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:26,858 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=29879', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4h7rarpk.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mzn53f79.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelftplxaou/prophet_model-20250528094626.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:26,858 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:27,728 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:28,484 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.03156817987824205
+2025-05-28 09:46:28,623 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:28,700 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ejmqvp8w.json
+2025-05-28 09:46:28,946 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/e01vx7us.json
+2025-05-28 09:46:28,950 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:28,951 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:28,951 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=98523', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ejmqvp8w.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/e01vx7us.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeliycrponm/prophet_model-20250528094628.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:28,951 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:29,621 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:29,983 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.031078187362475012
+2025-05-28 09:46:30,029 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:30,099 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/83wawi0o.json
+2025-05-28 09:46:30,253 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/p59utozh.json
+2025-05-28 09:46:30,254 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:30,255 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:30,256 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=98801', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/83wawi0o.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/p59utozh.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeljrcbbqmq/prophet_model-20250528094630.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:30,256 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:30,605 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:30,895 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.03135359611917905
+2025-05-28 09:46:30,976 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:31,023 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0ott6tb6.json
+2025-05-28 09:46:31,335 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/iiy5oh55.json
+2025-05-28 09:46:31,338 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:31,338 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:31,338 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=81769', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0ott6tb6.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/iiy5oh55.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelxhdtxv1m/prophet_model-20250528094631.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:31,338 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:31,758 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:32,090 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.03206663421112336
+2025-05-28 09:46:32,401 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:32,775 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/i826sk2j.json
+2025-05-28 09:46:32,994 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/yguua_st.json
+2025-05-28 09:46:32,995 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:32,995 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:32,996 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=90592', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/i826sk2j.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/yguua_st.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelysxh_x0m/prophet_model-20250528094632.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:32,997 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:33,650 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:33,918 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.031388373922658884
+2025-05-28 09:46:34,158 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:34,883 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/30_g5d26.json
+2025-05-28 09:46:35,360 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mr8v3rje.json
+2025-05-28 09:46:35,366 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:35,366 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:35,367 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=89922', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/30_g5d26.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mr8v3rje.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelkxuhbtvt/prophet_model-20250528094635.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:35,367 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:36,336 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:36,750 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.030917433321395103
+2025-05-28 09:46:36,819 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:37,176 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/pezi0gb4.json
+2025-05-28 09:46:37,403 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qnlrg28k.json
+2025-05-28 09:46:37,404 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:37,407 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:37,407 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=99269', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/pezi0gb4.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qnlrg28k.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelidow0f43/prophet_model-20250528094637.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:37,407 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:38,279 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:38,634 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.03169982290946334
+2025-05-28 09:46:38,776 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:38,880 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/we1lk27f.json
+2025-05-28 09:46:39,071 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/zk1wday5.json
+2025-05-28 09:46:39,073 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:39,073 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:39,073 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=66903', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/we1lk27f.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/zk1wday5.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelz7ol647g/prophet_model-20250528094639.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:39,073 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:39,840 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:40,209 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.030872163567567855
+2025-05-28 09:46:40,496 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:40,644 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/8xmehdwx.json
+2025-05-28 09:46:40,930 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/isut3cat.json
+2025-05-28 09:46:40,941 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:40,945 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:40,947 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=18464', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/8xmehdwx.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/isut3cat.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelh7ninjim/prophet_model-20250528094640.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:40,947 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:41,512 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:42,127 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.03094175174379612
+2025-05-28 09:46:42,329 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:42,381 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mjopwo1q.json
+2025-05-28 09:46:42,862 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/640rhr7w.json
+2025-05-28 09:46:42,863 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:42,863 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:42,863 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=48297', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mjopwo1q.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/640rhr7w.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelgxfvslfd/prophet_model-20250528094642.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:42,863 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:44,089 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:44,996 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.032234377116537656
+2025-05-28 09:46:45,127 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:45,431 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ymmutpnt.json
+2025-05-28 09:46:45,662 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/k4p2vhj6.json
+2025-05-28 09:46:45,663 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:45,663 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:45,663 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=57640', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ymmutpnt.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/k4p2vhj6.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model70evc5qo/prophet_model-20250528094645.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:45,663 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:46,261 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:48,148 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.03134260975429305
+2025-05-28 09:46:48,549 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:48,594 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/fo71l9a9.json
+2025-05-28 09:46:48,883 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/dsjzct22.json
+2025-05-28 09:46:48,926 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:48,926 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:48,927 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=15015', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/fo71l9a9.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/dsjzct22.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeldrzk0sgx/prophet_model-20250528094648.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:48,927 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:49,654 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:50,138 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.031102843295454905
+2025-05-28 09:46:50,300 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:50,450 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/d3pm7xjw.json
+2025-05-28 09:46:50,580 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5uo_xq1f.json
+2025-05-28 09:46:50,581 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:50,581 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:50,586 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=80977', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/d3pm7xjw.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5uo_xq1f.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model3nyuyl99/prophet_model-20250528094650.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:50,603 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:51,378 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:51,801 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.03104390929784252
+2025-05-28 09:46:51,900 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:52,039 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/i953aznx.json
+2025-05-28 09:46:52,278 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/e1h3nagw.json
+2025-05-28 09:46:52,295 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:52,295 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:52,295 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=69109', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/i953aznx.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/e1h3nagw.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model8c487bcq/prophet_model-20250528094652.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:52,295 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:53,895 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:54,861 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.03158020187832918
+2025-05-28 09:46:54,937 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:55,022 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/fs42weok.json
+2025-05-28 09:46:55,322 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qrcr63jy.json
+2025-05-28 09:46:55,323 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:55,323 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:55,323 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=52168', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/fs42weok.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qrcr63jy.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelu8m54h7n/prophet_model-20250528094655.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:55,323 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:56,133 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:46:57,102 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.031533962119491124
+2025-05-28 09:46:57,196 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:46:57,323 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/2wunb_cw.json
+2025-05-28 09:46:57,480 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4mspjif0.json
+2025-05-28 09:46:57,486 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:46:57,486 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:46:57,486 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=86419', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/2wunb_cw.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4mspjif0.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelehjxflqk/prophet_model-20250528094657.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:46:57,487 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:46:59,849 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:00,476 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.03224583348079533
+2025-05-28 09:47:00,539 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:00,792 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/u9dh1mnd.json
+2025-05-28 09:47:00,983 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/p9rv3wbl.json
+2025-05-28 09:47:00,984 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:00,984 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:00,984 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=35673', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/u9dh1mnd.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/p9rv3wbl.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modellxh9pbh_/prophet_model-20250528094700.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:00,985 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:04,705 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:05,550 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.019994110904618747
+2025-05-28 09:47:06,234 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:06,539 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/w4kcaacv.json
+2025-05-28 09:47:06,878 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/smqosbmi.json
+2025-05-28 09:47:06,880 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:06,880 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:06,880 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=70156', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/w4kcaacv.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/smqosbmi.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelxf2hf198/prophet_model-20250528094706.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:06,880 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:13,442 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:13,828 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.019874332941374008
+2025-05-28 09:47:13,914 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:13,974 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/b87y3s83.json
+2025-05-28 09:47:14,112 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/s5k6c3hq.json
+2025-05-28 09:47:14,117 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:14,118 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:14,118 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=35809', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/b87y3s83.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/s5k6c3hq.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelgc6g242o/prophet_model-20250528094714.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:14,118 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:18,232 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:18,607 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.0205739544848183
+2025-05-28 09:47:18,673 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:18,741 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/3ulyjg9d.json
+2025-05-28 09:47:19,078 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/66dhlwrh.json
+2025-05-28 09:47:19,081 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:19,081 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:19,081 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=52252', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/3ulyjg9d.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/66dhlwrh.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelgrs_6yc7/prophet_model-20250528094719.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:19,081 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:23,874 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:24,171 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.020934171725847786
+2025-05-28 09:47:24,284 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:24,327 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ur714mb2.json
+2025-05-28 09:47:24,484 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/jatn_a64.json
+2025-05-28 09:47:24,486 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:24,486 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:24,489 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=30548', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ur714mb2.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/jatn_a64.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeljm8hykft/prophet_model-20250528094724.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:24,489 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:27,886 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:28,181 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.019926447368215788
+2025-05-28 09:47:28,231 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:28,302 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/oy3n1one.json
+2025-05-28 09:47:28,441 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/sciz4gjt.json
+2025-05-28 09:47:28,443 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:28,443 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:28,443 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=6284', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/oy3n1one.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/sciz4gjt.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelzor64qyc/prophet_model-20250528094728.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:28,443 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:33,994 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:34,323 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02010289550028379
+2025-05-28 09:47:34,376 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:34,413 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vrncuz0a.json
+2025-05-28 09:47:34,567 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mfd7pb7q.json
+2025-05-28 09:47:34,568 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:34,568 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:34,568 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=71480', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vrncuz0a.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mfd7pb7q.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeldxmy0h7w/prophet_model-20250528094734.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:34,568 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:38,760 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:39,029 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.020392069626855296
+2025-05-28 09:47:39,098 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:39,151 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/nuas0pns.json
+2025-05-28 09:47:39,293 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/y0dxgu5k.json
+2025-05-28 09:47:39,294 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:39,295 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:39,298 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=96696', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/nuas0pns.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/y0dxgu5k.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelmycj_wiz/prophet_model-20250528094739.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:39,298 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:43,553 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:43,809 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.021242407350095596
+2025-05-28 09:47:43,862 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:43,884 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vc4jlvb_.json
+2025-05-28 09:47:43,995 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/q8qklq0y.json
+2025-05-28 09:47:43,999 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:44,000 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:44,000 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=63313', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vc4jlvb_.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/q8qklq0y.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model60qf5app/prophet_model-20250528094743.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:44,000 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:47,216 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:47,734 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.01982949104650895
+2025-05-28 09:47:47,877 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:47,949 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/19y4asqc.json
+2025-05-28 09:47:48,095 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/6s8ks68k.json
+2025-05-28 09:47:48,101 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:48,101 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:48,101 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=71686', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/19y4asqc.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/6s8ks68k.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeleusnst5l/prophet_model-20250528094748.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:48,101 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:52,063 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:52,702 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.020064765959789718
+2025-05-28 09:47:53,828 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:53,889 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/lmmozc90.json
+2025-05-28 09:47:54,065 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/q0z3fawa.json
+2025-05-28 09:47:54,066 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:54,072 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:54,073 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=2522', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/lmmozc90.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/q0z3fawa.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelqedn6yag/prophet_model-20250528094754.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:54,085 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:47:58,405 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:47:58,959 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02042499754749704
+2025-05-28 09:47:59,078 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:47:59,174 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/g3aadwb7.json
+2025-05-28 09:47:59,358 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0gx_5oa2.json
+2025-05-28 09:47:59,361 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:47:59,361 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:47:59,362 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=11061', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/g3aadwb7.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0gx_5oa2.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelai4zhegk/prophet_model-20250528094759.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:47:59,362 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:48:07,908 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:48:08,249 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.021302266969928305
+2025-05-28 09:48:08,293 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:48:08,376 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/j3emos9x.json
+2025-05-28 09:48:08,603 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qagt7yop.json
+2025-05-28 09:48:08,605 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:48:08,606 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:48:08,606 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=74197', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/j3emos9x.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qagt7yop.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelw8qzt0cc/prophet_model-20250528094808.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:48:08,606 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:48:17,828 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:48:18,295 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02021893573236898
+2025-05-28 09:48:18,419 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:48:18,499 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/_5ogyyr1.json
+2025-05-28 09:48:18,994 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/r5dvh11d.json
+2025-05-28 09:48:19,020 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:48:19,020 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:48:19,020 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=32169', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/_5ogyyr1.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/r5dvh11d.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelj6nq0ozd/prophet_model-20250528094819.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:48:19,020 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:48:23,953 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:48:24,881 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.019969818576966676
+2025-05-28 09:48:25,043 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:48:25,252 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/bmy02xdv.json
+2025-05-28 09:48:25,535 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/sw3wbg7s.json
+2025-05-28 09:48:25,538 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:48:25,538 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:48:25,538 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=41183', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/bmy02xdv.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/sw3wbg7s.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model2bh93l26/prophet_model-20250528094825.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:48:25,539 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:48:29,774 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:48:31,421 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02066547764879261
+2025-05-28 09:48:31,580 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:48:31,657 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/jnyg0y39.json
+2025-05-28 09:48:31,776 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v3qb7uqe.json
+2025-05-28 09:48:31,778 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:48:31,778 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:48:31,778 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=26976', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/jnyg0y39.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v3qb7uqe.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model_pvi07fr/prophet_model-20250528094831.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:48:31,779 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:48:34,663 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:48:34,944 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02190989083773672
+2025-05-28 09:48:34,999 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:48:35,049 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/i89pa8o_.json
+2025-05-28 09:48:35,250 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/orck4dz5.json
+2025-05-28 09:48:35,251 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:48:35,251 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:48:35,251 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=17940', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/i89pa8o_.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/orck4dz5.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeldqi1rkx8/prophet_model-20250528094835.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:48:35,251 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:48:41,437 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:48:41,750 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.020898475980681917
+2025-05-28 09:48:41,817 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:48:42,273 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/_51oc0pz.json
+2025-05-28 09:48:42,604 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/zavyvxwx.json
+2025-05-28 09:48:42,606 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:48:42,606 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:48:42,606 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=59551', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/_51oc0pz.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/zavyvxwx.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelot2k5z73/prophet_model-20250528094842.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:48:42,606 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:48:55,540 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:48:56,061 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.021783977600634382
+2025-05-28 09:48:56,368 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:48:56,500 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/p1ggifao.json
+2025-05-28 09:48:56,750 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/tpljtkij.json
+2025-05-28 09:48:56,752 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:48:56,752 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:48:56,752 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=73404', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/p1ggifao.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/tpljtkij.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeltl3gowmb/prophet_model-20250528094856.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:48:56,753 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:49:06,150 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:49:06,470 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.021452538788400897
+2025-05-28 09:49:06,525 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:49:06,558 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/m1txbs4d.json
+2025-05-28 09:49:06,751 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/90_ebyc0.json
+2025-05-28 09:49:06,757 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:49:06,757 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:49:06,757 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=63138', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/m1txbs4d.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/90_ebyc0.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelqsv2tmpg/prophet_model-20250528094906.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:49:06,757 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:49:21,482 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:49:21,900 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02241247372740729
+2025-05-28 09:49:22,027 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:49:22,089 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/6xj9k7xh.json
+2025-05-28 09:49:22,402 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ogn61vid.json
+2025-05-28 09:49:22,404 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:49:22,404 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:49:22,404 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=41936', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/6xj9k7xh.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ogn61vid.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modellstcxw6w/prophet_model-20250528094922.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:49:22,404 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:49:35,218 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:49:35,616 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.020867973286383876
+2025-05-28 09:49:35,685 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:49:35,844 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5939o3ci.json
+2025-05-28 09:49:36,002 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/uoi0qc2d.json
+2025-05-28 09:49:36,005 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:49:36,006 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:49:36,006 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=66838', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5939o3ci.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/uoi0qc2d.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelgzwx93r0/prophet_model-20250528094936.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:49:36,007 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:49:51,830 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:49:52,208 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.021714416355377027
+2025-05-28 09:49:52,334 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:49:52,457 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mai6r9lu.json
+2025-05-28 09:49:52,700 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v7l93ed4.json
+2025-05-28 09:49:52,701 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:49:52,702 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:49:52,702 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=29978', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mai6r9lu.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v7l93ed4.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelp9s7qymp/prophet_model-20250528094952.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:49:52,702 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:50:02,970 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:50:03,250 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.021385658459095454
+2025-05-28 09:50:03,507 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:50:03,555 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/metbuy9l.json
+2025-05-28 09:50:03,707 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/gyw3cl7k.json
+2025-05-28 09:50:03,709 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:50:03,709 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:50:03,709 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=96460', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/metbuy9l.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/gyw3cl7k.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelsg_pmq12/prophet_model-20250528095003.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:50:03,709 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:50:18,651 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:50:19,010 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.022456405360532547
+2025-05-28 09:50:19,069 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:50:19,116 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/yf8mw7gz.json
+2025-05-28 09:50:19,344 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/2lounc2k.json
+2025-05-28 09:50:19,349 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:50:19,349 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:50:19,349 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=52585', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/yf8mw7gz.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/2lounc2k.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model84t1_6hw/prophet_model-20250528095019.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:50:19,350 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:50:26,636 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:50:26,957 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.020896602319212417
+2025-05-28 09:50:27,040 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:50:27,123 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/xemphmg4.json
+2025-05-28 09:50:27,357 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v3utkzzz.json
+2025-05-28 09:50:27,360 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:50:27,360 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:50:27,360 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=3582', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/xemphmg4.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v3utkzzz.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelp7ih48h2/prophet_model-20250528095027.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:50:27,360 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:50:38,765 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:50:39,066 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02178770292349266
+2025-05-28 09:50:39,154 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:50:39,335 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/h_r892pb.json
+2025-05-28 09:50:39,450 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/idaa5l2c.json
+2025-05-28 09:50:39,452 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:50:39,452 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:50:39,456 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=71172', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/h_r892pb.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/idaa5l2c.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeldpfcxssv/prophet_model-20250528095039.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:50:39,456 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:50:44,462 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:50:44,760 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.021505249224390666
+2025-05-28 09:50:44,874 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:50:44,945 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/jyyhg266.json
+2025-05-28 09:50:45,189 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/hhuebqg0.json
+2025-05-28 09:50:45,190 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:50:45,190 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:50:45,190 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=41634', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/jyyhg266.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/hhuebqg0.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modellcbdk7sa/prophet_model-20250528095045.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:50:45,190 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:50:56,079 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:50:56,402 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02255048854462194
+2025-05-28 09:50:56,999 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:50:57,422 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/z2cs25bk.json
+2025-05-28 09:50:57,885 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/an93i40i.json
+2025-05-28 09:50:57,888 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:50:57,888 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:50:57,888 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=66929', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/z2cs25bk.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/an93i40i.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelqv0ffz4r/prophet_model-20250528095057.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:50:57,888 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:51:08,307 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:51:08,649 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.020923054030695675
+2025-05-28 09:51:08,768 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:51:08,943 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/cq7kgqsz.json
+2025-05-28 09:51:09,152 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qbo4fy7p.json
+2025-05-28 09:51:09,154 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:51:09,154 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:51:09,155 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=59101', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/cq7kgqsz.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qbo4fy7p.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelrvtqxpvu/prophet_model-20250528095109.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:51:09,155 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:51:25,988 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:51:26,339 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02168146662624775
+2025-05-28 09:51:26,572 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:51:26,612 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0ubp6qql.json
+2025-05-28 09:51:26,710 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/a4lcims2.json
+2025-05-28 09:51:26,711 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:51:26,711 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:51:26,712 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=34663', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0ubp6qql.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/a4lcims2.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelw36bct8b/prophet_model-20250528095126.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:51:26,713 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:51:33,959 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:51:34,319 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.021431498668425003
+2025-05-28 09:51:34,401 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:51:34,459 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/h7i6_fr6.json
+2025-05-28 09:51:34,607 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/r788prux.json
+2025-05-28 09:51:34,609 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:51:34,609 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:51:34,609 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=20681', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/h7i6_fr6.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/r788prux.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model7ivogh9b/prophet_model-20250528095134.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:51:34,609 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:51:58,962 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:51:59,308 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'additive', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.022682230169605182
+2025-05-28 09:51:59,376 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:51:59,577 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/gaibrkwp.json
+2025-05-28 09:51:59,755 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/c4qw54ie.json
+2025-05-28 09:51:59,757 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:51:59,758 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:51:59,758 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=2718', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/gaibrkwp.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/c4qw54ie.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelja4ji5au/prophet_model-20250528095159.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:51:59,758 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:00,381 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:00,675 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.028282174704430098
+2025-05-28 09:52:00,726 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:00,757 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/s58_16hp.json
+2025-05-28 09:52:00,866 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/h7n_6ri9.json
+2025-05-28 09:52:00,866 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:00,866 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:00,867 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=396', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/s58_16hp.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/h7n_6ri9.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelkft4pc18/prophet_model-20250528095200.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:00,867 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:02,864 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:03,288 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02603877428991433
+2025-05-28 09:52:03,510 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:03,547 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/98lvxrmz.json
+2025-05-28 09:52:03,640 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/tv65raat.json
+2025-05-28 09:52:03,642 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:03,642 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:03,642 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=11259', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/98lvxrmz.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/tv65raat.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelwdce18mo/prophet_model-20250528095203.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:03,643 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:04,265 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:04,506 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.028182192601502537
+2025-05-28 09:52:04,569 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:04,841 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/nts9netu.json
+2025-05-28 09:52:04,957 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/jh4eo0q5.json
+2025-05-28 09:52:04,959 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:04,959 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:04,959 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=11396', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/nts9netu.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/jh4eo0q5.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model5wiq4ud7/prophet_model-20250528095204.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:04,959 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:05,519 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:05,759 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.026017193630644368
+2025-05-28 09:52:05,821 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:05,879 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5qcodn3w.json
+2025-05-28 09:52:06,038 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/xbd9r91u.json
+2025-05-28 09:52:06,039 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:06,039 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:06,039 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=65818', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5qcodn3w.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/xbd9r91u.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelslg8ahz2/prophet_model-20250528095206.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:06,039 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:06,543 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:06,980 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.027736746129436947
+2025-05-28 09:52:07,048 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:07,177 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0q7_37do.json
+2025-05-28 09:52:07,363 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5k9qi0c6.json
+2025-05-28 09:52:07,364 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:07,364 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:07,365 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=85901', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0q7_37do.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5k9qi0c6.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model7ssy9j6r/prophet_model-20250528095207.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:07,365 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:07,866 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:08,095 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.025939293205990754
+2025-05-28 09:52:08,153 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:08,215 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/bi06gwqp.json
+2025-05-28 09:52:08,438 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/x0w64wxa.json
+2025-05-28 09:52:08,440 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:08,440 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:08,441 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=18152', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/bi06gwqp.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/x0w64wxa.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeltqzuc5rq/prophet_model-20250528095208.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:08,441 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:08,857 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:09,077 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.0285493101354437
+2025-05-28 09:52:09,164 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:09,247 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/m1t719bz.json
+2025-05-28 09:52:09,349 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mq02v2ml.json
+2025-05-28 09:52:09,350 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:09,350 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:09,350 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=44636', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/m1t719bz.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mq02v2ml.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelnbawdaxm/prophet_model-20250528095209.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:09,350 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:09,851 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:10,305 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.027199512066682936
+2025-05-28 09:52:10,394 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:10,448 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ntcfx17i.json
+2025-05-28 09:52:10,634 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/u9_ef4c_.json
+2025-05-28 09:52:10,638 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:10,638 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:10,638 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=42783', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ntcfx17i.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/u9_ef4c_.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelflxuu5ij/prophet_model-20250528095210.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:10,638 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:11,604 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:11,947 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02801685086502778
+2025-05-28 09:52:12,012 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:12,113 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/emvvtnnd.json
+2025-05-28 09:52:12,553 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/dtt3sr6z.json
+2025-05-28 09:52:12,578 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:12,578 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:12,578 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=29022', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/emvvtnnd.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/dtt3sr6z.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model0923s502/prophet_model-20250528095212.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:12,578 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:13,081 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:13,525 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02569743187843433
+2025-05-28 09:52:14,101 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:14,160 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/1pxl5fz5.json
+2025-05-28 09:52:14,334 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/q5y60hxf.json
+2025-05-28 09:52:14,339 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:14,339 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:14,339 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=98135', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/1pxl5fz5.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/q5y60hxf.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeljam69ahl/prophet_model-20250528095214.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:14,339 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:14,873 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:15,660 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.028932874975530105
+2025-05-28 09:52:15,866 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:15,964 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v1yfvg8c.json
+2025-05-28 09:52:16,133 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/3iz7t8bj.json
+2025-05-28 09:52:16,135 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:16,135 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:16,135 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=95736', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v1yfvg8c.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/3iz7t8bj.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model8wjkp_sj/prophet_model-20250528095216.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:16,135 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:16,889 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:17,137 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.027214816725325823
+2025-05-28 09:52:17,197 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:17,281 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/7rq3zg3e.json
+2025-05-28 09:52:17,696 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/pzqije66.json
+2025-05-28 09:52:17,717 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:17,718 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:17,718 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=15547', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/7rq3zg3e.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/pzqije66.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelp1nx3hb_/prophet_model-20250528095217.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:17,718 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:18,131 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:18,407 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02803676074295443
+2025-05-28 09:52:18,512 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:18,545 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/6q2rvh8r.json
+2025-05-28 09:52:18,710 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/wuv3duqn.json
+2025-05-28 09:52:18,711 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:18,711 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:18,711 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=63290', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/6q2rvh8r.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/wuv3duqn.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelworfrki9/prophet_model-20250528095218.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:18,712 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:19,074 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:19,547 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.025659963614752965
+2025-05-28 09:52:19,591 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:19,655 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/f7m0tls4.json
+2025-05-28 09:52:19,791 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/32j3vanb.json
+2025-05-28 09:52:19,793 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:19,793 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:19,793 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=69902', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/f7m0tls4.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/32j3vanb.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeldx734uxk/prophet_model-20250528095219.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:19,794 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:20,287 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:20,657 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02867737676726658
+2025-05-28 09:52:20,738 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:20,777 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/q38p65zm.json
+2025-05-28 09:52:20,914 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vwr3473k.json
+2025-05-28 09:52:20,916 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:20,916 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:20,916 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=54499', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/q38p65zm.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vwr3473k.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelr42tzk34/prophet_model-20250528095220.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:20,916 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:21,286 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:21,585 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.01, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.025938903846120874
+2025-05-28 09:52:21,623 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:21,668 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/wkp37tzz.json
+2025-05-28 09:52:21,806 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/nwwjp0a5.json
+2025-05-28 09:52:21,808 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:21,808 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:21,808 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=49203', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/wkp37tzz.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/nwwjp0a5.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model3_0ui1sw/prophet_model-20250528095221.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:21,808 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:24,817 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:25,532 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02004689991496202
+2025-05-28 09:52:25,672 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:25,776 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/82ghvl9l.json
+2025-05-28 09:52:26,034 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mwkpepkp.json
+2025-05-28 09:52:26,034 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:26,034 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:26,035 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=39022', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/82ghvl9l.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/mwkpepkp.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_models33_1la4/prophet_model-20250528095226.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:26,035 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:30,261 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:30,886 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.020297409088695807
+2025-05-28 09:52:30,990 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:31,043 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ub94dqre.json
+2025-05-28 09:52:31,290 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5opu7z8y.json
+2025-05-28 09:52:31,291 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:31,291 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:31,291 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=78670', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ub94dqre.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5opu7z8y.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model4bsqnt29/prophet_model-20250528095231.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:31,291 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:36,969 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:37,475 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.020100569012486157
+2025-05-28 09:52:37,589 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:37,645 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/z22pyn92.json
+2025-05-28 09:52:37,838 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4etw438y.json
+2025-05-28 09:52:37,839 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:37,839 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:37,839 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=32160', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/z22pyn92.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4etw438y.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model4wvia6c4/prophet_model-20250528095237.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:37,839 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:41,413 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:41,726 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.020213358332363398
+2025-05-28 09:52:41,807 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:41,919 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/l9saz27g.json
+2025-05-28 09:52:42,364 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/kfawkv3k.json
+2025-05-28 09:52:42,365 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:42,365 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:42,366 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=38483', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/l9saz27g.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/kfawkv3k.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model83raqaa9/prophet_model-20250528095242.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:42,366 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:52:46,056 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:52:46,532 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.020284750708085084
+2025-05-28 09:52:46,600 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:52:46,691 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/b1oluyv0.json
+2025-05-28 09:52:46,891 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ox1aq6im.json
+2025-05-28 09:52:46,958 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:52:46,959 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:52:46,975 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=48373', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/b1oluyv0.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ox1aq6im.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model1r7t0rlj/prophet_model-20250528095246.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:52:46,976 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:53:05,773 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:53:06,132 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.020545546756848197
+2025-05-28 09:53:06,215 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:53:06,305 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/tum98j5c.json
+2025-05-28 09:53:06,416 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/wyg562_d.json
+2025-05-28 09:53:06,426 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:53:06,426 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:53:06,426 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=12978', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/tum98j5c.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/wyg562_d.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelk85ptz_y/prophet_model-20250528095306.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:53:06,429 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:53:11,493 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:53:11,899 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.019813222122560193
+2025-05-28 09:53:11,978 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:53:12,060 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5ff69vcp.json
+2025-05-28 09:53:12,266 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/hezvctn1.json
+2025-05-28 09:53:12,268 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:53:12,268 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:53:12,275 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=68556', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/5ff69vcp.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/hezvctn1.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeldbxsg9r3/prophet_model-20250528095312.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:53:12,276 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:53:17,862 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:53:18,336 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02058350019039818
+2025-05-28 09:53:18,400 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:53:18,465 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/c2ygl8i2.json
+2025-05-28 09:53:18,581 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ekontj0s.json
+2025-05-28 09:53:18,582 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:53:18,582 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:53:18,583 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=52761', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/c2ygl8i2.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ekontj0s.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model56s_n553/prophet_model-20250528095318.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:53:18,583 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:53:26,024 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:53:26,515 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.01994797918612262
+2025-05-28 09:53:26,769 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:53:26,825 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vbwvmm7r.json
+2025-05-28 09:53:26,998 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/g53fq66o.json
+2025-05-28 09:53:26,999 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:53:26,999 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:53:26,999 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=30645', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vbwvmm7r.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/g53fq66o.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model8d8n_nh6/prophet_model-20250528095326.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:53:26,999 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:53:29,659 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:53:30,052 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.020410810759916707
+2025-05-28 09:53:30,157 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:53:30,276 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/t71w9okp.json
+2025-05-28 09:53:30,477 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/3zb59p5p.json
+2025-05-28 09:53:30,479 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:53:30,480 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:53:30,480 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=16238', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/t71w9okp.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/3zb59p5p.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeln2bi8fv8/prophet_model-20250528095330.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:53:30,480 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:53:33,700 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:53:34,012 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.01999375894041317
+2025-05-28 09:53:34,106 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:53:34,166 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0lm43i6h.json
+2025-05-28 09:53:34,295 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/zcntp2zx.json
+2025-05-28 09:53:34,300 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:53:34,300 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:53:34,300 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=5832', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/0lm43i6h.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/zcntp2zx.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model22iyh1vu/prophet_model-20250528095334.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:53:34,300 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:53:48,523 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:53:49,146 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.020533477201775046
+2025-05-28 09:53:49,306 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:53:49,617 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/istjtgtv.json
+2025-05-28 09:53:50,097 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/gqfotsad.json
+2025-05-28 09:53:50,099 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:53:50,099 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:53:50,100 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=58692', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/istjtgtv.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/gqfotsad.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelqsfpg72h/prophet_model-20250528095350.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:53:50,100 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:53:53,747 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:53:53,997 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.020296052543690386
+2025-05-28 09:53:54,063 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:53:54,120 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/97j0fy75.json
+2025-05-28 09:53:54,396 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/znrsyvov.json
+2025-05-28 09:53:54,400 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:53:54,401 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:53:54,401 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=33381', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/97j0fy75.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/znrsyvov.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model0dlx98g8/prophet_model-20250528095354.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:53:54,401 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:53:58,181 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:53:59,034 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02027785072193631
+2025-05-28 09:53:59,183 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:53:59,351 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4pf3kx5s.json
+2025-05-28 09:53:59,444 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/y0qgluch.json
+2025-05-28 09:53:59,447 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:53:59,447 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:53:59,447 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=45252', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4pf3kx5s.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/y0qgluch.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelct7eojhw/prophet_model-20250528095359.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:53:59,447 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:54:04,063 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:54:04,593 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.019933000631919866
+2025-05-28 09:54:05,098 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:54:05,434 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/cv1pcifg.json
+2025-05-28 09:54:06,434 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/8989ddn_.json
+2025-05-28 09:54:06,436 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:54:06,436 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:54:06,436 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=19872', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/cv1pcifg.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/8989ddn_.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelj5j1hiz_/prophet_model-20250528095406.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:54:06,436 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:54:19,930 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:54:21,867 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.0201039554001664
+2025-05-28 09:54:22,324 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:54:22,870 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v8pozr_g.json
+2025-05-28 09:54:23,785 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/nyo8sja1.json
+2025-05-28 09:54:23,791 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:54:23,791 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:54:23,792 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=29713', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/v8pozr_g.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/nyo8sja1.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model5u6sngbo/prophet_model-20250528095423.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:54:23,815 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:55:07,223 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:55:08,109 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02230661093147389
+2025-05-28 09:55:08,639 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:55:08,882 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/7pw39af2.json
+2025-05-28 09:55:09,876 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/uvfx0bsq.json
+2025-05-28 09:55:09,914 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:55:10,048 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:55:10,048 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=75241', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/7pw39af2.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/uvfx0bsq.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model133jsljx/prophet_model-20250528095509.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:55:10,049 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:56:14,689 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:56:15,927 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02292521823600436
+2025-05-28 09:56:16,342 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:56:16,605 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ldn9mkr9.json
+2025-05-28 09:56:17,191 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/kgfcmx8j.json
+2025-05-28 09:56:17,351 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:56:17,351 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:56:17,351 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=63526', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ldn9mkr9.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/kgfcmx8j.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelpf95m1ex/prophet_model-20250528095617.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:56:17,351 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:56:29,889 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:56:30,339 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02197001438614659
+2025-05-28 09:56:30,885 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:56:31,308 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/8pll56tx.json
+2025-05-28 09:56:31,647 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/678g84zs.json
+2025-05-28 09:56:31,648 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:56:31,648 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:56:31,648 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=43455', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/8pll56tx.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/678g84zs.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelelza2qvd/prophet_model-20250528095631.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:56:31,648 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:56:49,337 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:56:49,779 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 0.1, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02247968556764959
+2025-05-28 09:56:49,940 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:56:50,017 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/c7jquuja.json
+2025-05-28 09:56:50,242 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4e2smzxt.json
+2025-05-28 09:56:50,244 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:56:50,259 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:56:50,260 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=12144', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/c7jquuja.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/4e2smzxt.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model3_1nigxw/prophet_model-20250528095650.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:56:50,260 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:56:57,769 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:56:58,302 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02231616440026651
+2025-05-28 09:57:00,177 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:57:00,305 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ytj6uhr0.json
+2025-05-28 09:57:00,743 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vqpilu82.json
+2025-05-28 09:57:00,745 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:57:00,745 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:57:00,745 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=5455', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ytj6uhr0.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/vqpilu82.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelzowki_75/prophet_model-20250528095700.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:57:00,745 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:57:18,036 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:57:18,635 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02290783789367133
+2025-05-28 09:57:18,704 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:57:18,775 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/x7ujqybw.json
+2025-05-28 09:57:19,209 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/57xle45m.json
+2025-05-28 09:57:19,339 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:57:19,340 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:57:19,340 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=40271', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/x7ujqybw.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/57xle45m.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelnt0ulj6w/prophet_model-20250528095719.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:57:19,340 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:57:31,380 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:57:32,108 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.022154764003313572
+2025-05-28 09:57:32,200 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:57:32,301 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/umvopfbd.json
+2025-05-28 09:57:32,441 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ljcx55zv.json
+2025-05-28 09:57:32,442 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:57:32,442 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:57:32,442 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=81849', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/umvopfbd.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ljcx55zv.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelgwmk0yzn/prophet_model-20250528095732.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:57:32,442 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:57:47,693 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:57:48,139 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.022536862640897538
+2025-05-28 09:57:48,293 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:57:48,431 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/6u1mrach.json
+2025-05-28 09:57:48,871 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/008kp15j.json
+2025-05-28 09:57:48,873 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:57:48,874 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:57:48,881 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=78974', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/6u1mrach.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/008kp15j.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelv8bwdlb_/prophet_model-20250528095748.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:57:48,881 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:57:58,327 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:57:58,962 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.022350872452186726
+2025-05-28 09:57:59,103 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:57:59,276 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/_oiz711o.json
+2025-05-28 09:57:59,803 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/p00caq6i.json
+2025-05-28 09:57:59,816 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:57:59,817 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:57:59,817 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=24961', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/_oiz711o.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/p00caq6i.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeleoszaaae/prophet_model-20250528095759.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:57:59,817 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:58:13,837 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:58:14,289 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.022904130168923932
+2025-05-28 09:58:14,435 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:58:14,493 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/i2cpqdt_.json
+2025-05-28 09:58:14,640 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qtx8rbav.json
+2025-05-28 09:58:14,641 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:58:14,641 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:58:14,641 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=68900', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/i2cpqdt_.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/qtx8rbav.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model7l3xc0z3/prophet_model-20250528095814.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:58:14,641 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:58:29,638 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:58:29,995 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.021996535500109216
+2025-05-28 09:58:30,054 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:58:30,357 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/suxd256a.json
+2025-05-28 09:58:30,699 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ng3hk18v.json
+2025-05-28 09:58:30,701 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:58:30,701 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:58:30,702 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=54572', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/suxd256a.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ng3hk18v.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modeljh9xybwu/prophet_model-20250528095830.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:58:30,702 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:58:49,311 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:58:49,757 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 5.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.022448721753909842
+2025-05-28 09:58:49,815 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:58:49,947 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ojqtveqf.json
+2025-05-28 09:58:50,188 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/oko78_wq.json
+2025-05-28 09:58:50,189 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:58:50,189 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:58:50,189 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=68976', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/ojqtveqf.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/oko78_wq.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model4two9csh/prophet_model-20250528095850.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:58:50,189 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:58:57,924 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:58:58,303 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.022388514027241894
+2025-05-28 09:58:58,414 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:58:58,483 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/yvenv3q7.json
+2025-05-28 09:58:58,626 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/9g4nybwy.json
+2025-05-28 09:58:58,628 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:58:58,629 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:58:58,629 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=82946', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/yvenv3q7.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/9g4nybwy.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_model7gvbggp9/prophet_model-20250528095858.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:58:58,629 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:59:15,741 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:59:17,411 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 0.1, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.02297856820054568
+2025-05-28 09:59:17,604 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:59:18,027 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/z_ja_bbj.json
+2025-05-28 09:59:18,525 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/y0_t_vi9.json
+2025-05-28 09:59:18,534 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:59:18,534 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:59:18,534 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=15048', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/z_ja_bbj.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/y0_t_vi9.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelb30kyd1t/prophet_model-20250528095918.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:59:18,534 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:59:26,683 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:59:27,158 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.02199966530063968
+2025-05-28 09:59:27,349 - prophet - INFO - Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.
+2025-05-28 09:59:27,424 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/38c0fz2n.json
+2025-05-28 09:59:27,573 - cmdstanpy - DEBUG - input tempfile: /var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/eu5ws0hs.json
+2025-05-28 09:59:27,579 - cmdstanpy - DEBUG - idx 0
+2025-05-28 09:59:27,579 - cmdstanpy - DEBUG - running CmdStan, num_threads: None
+2025-05-28 09:59:27,580 - cmdstanpy - DEBUG - CmdStan args: ['/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/stan_model/prophet_model.bin', 'random', 'seed=29511', 'data', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/38c0fz2n.json', 'init=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/eu5ws0hs.json', 'output', 'file=/var/folders/gy/xs43v__d0mn25qy5kzxrnkrm0000gn/T/tmpc3nkngzu/prophet_modelniv0_xn8/prophet_model-20250528095927.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-05-28 09:59:27,580 - cmdstanpy - INFO - Chain [1] start processing
+2025-05-28 09:59:51,246 - cmdstanpy - INFO - Chain [1] done processing
+2025-05-28 09:59:51,963 - warp-prophet-model - INFO - Params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 10.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 50}, RMSE: 0.022519282829088376
+2025-05-28 09:59:51,963 - warp-prophet-model - INFO - Grid search execution time: 805.64 seconds
+2025-05-28 09:59:51,966 - warp-prophet-model - INFO - Best params: {'seasonality_mode': 'multiplicative', 'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 1.0, 'holidays_prior_scale': 1.0, 'changepoint_range': 0.8, 'n_changepoints': 25}, RMSE: 0.019813222122560193
+2025-05-28 09:59:52,361 - warp-prophet-model - INFO - MAE: 0.015
+2025-05-28 09:59:52,362 - warp-prophet-model - INFO - MSE: 0.000
+2025-05-28 09:59:52,362 - warp-prophet-model - INFO - RMSE: 0.020
+2025-05-28 09:59:52,362 - warp-prophet-model - INFO - R²: 0.837
+2025-05-28 09:59:57,053 - warp-prophet-model - INFO - Best model saved to best_prophet_model.joblib
+2025-05-28 09:59:57,149 - warp-prophet-model - INFO - Appended and saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-prophet-model-results.csv
+2025-05-28 09:59:57,221 - warp-prophet-model - INFO - Model saved at /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/prophet_hyper_tuned_model.pkl
+2025-05-28 09:59:57,221 - warp-prophet-model - INFO - ✅ Model evaluation saved to /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/warp-prophet-model-results.csv

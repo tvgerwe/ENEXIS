@@ -75,9 +75,9 @@ y = df[['datetime', 'Price']]
 X = df.drop(columns=['Price'])
 
 train_start = "2025-01-01"
-train_end   = "2025-04-01"
-test_start  = "2025-04-02"
-test_end    = "2025-05-15"
+train_end   = "2025-03-14"
+test_start  = "2025-03-15"
+test_end    = "2025-03-21"
 
 X_train = X[(X['datetime'] >= train_start) & (X['datetime'] <= train_end)].copy()
 X_test  = X[(X['datetime'] >= test_start) & (X['datetime'] <= test_end)].copy()

@@ -102,7 +102,7 @@ df_model_metrics.to_csv(model_metrics_results_path, index=False)
 logger.info(f"Normal forecast metrics saved to: {model_metrics_results_path}")
 
 # === 2. Rolling Window Forecast ===
-start_date = pd.to_datetime("2025-05-24") + timedelta(hours=36)
+start_date = pd.to_datetime("2025-03-22") + timedelta(hours=36)
 num_rolling_runs = 6
 horizon = 6  # days ahead
 
