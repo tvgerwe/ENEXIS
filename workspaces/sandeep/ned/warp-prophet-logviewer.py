@@ -8,7 +8,7 @@ import time
 import os
 import re
 
-LOG_PATH = "warp-prophet-model-json.log"  # Change to your log file name
+LOG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "warp-prophet-model-json.log")
 
 app = Flask(__name__)
 

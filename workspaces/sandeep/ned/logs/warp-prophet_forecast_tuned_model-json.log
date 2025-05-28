@@ -42,3 +42,23 @@
 2025-05-26 17:22:43,176 - prophet_forecast_tuned_model - INFO - Window 6 metrics: MAE=0.173, RMSE=0.174, R2=0.000
 2025-05-26 17:22:43,356 - prophet_forecast_tuned_model - INFO - 📁 Rolling Window Forecast vs Actual saved to: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/forecast_vs_actual-rollingwindow.csv
 2025-05-26 17:22:43,358 - prophet_forecast_tuned_model - INFO - Rolling window model run metrics saved to: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/model_run_metrics-rollingwindow.csv
+2025-05-28 07:33:04,818 - prophet_forecast_tuned_model - INFO - PROJECT_ROOT/Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces
+2025-05-28 07:33:04,916 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-28 07:33:04,980 - prophet_forecast_tuned_model - INFO - ✅ Data loaded and prepared. Total records: 3624
+2025-05-28 07:33:05,122 - prophet_forecast_tuned_model - INFO - Normal Forecast metrics: MAE=0.181, RMSE=0.184, R2=0.000
+2025-05-28 07:33:05,128 - prophet_forecast_tuned_model - INFO - 📁 Normal Forecast vs Actual saved to: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/forecast_vs_actual.csv
+2025-05-28 07:33:05,132 - prophet_forecast_tuned_model - INFO - Normal forecast metrics saved to: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/model_run_metrics.csv
+2025-05-28 07:33:05,133 - prophet_forecast_tuned_model - INFO - Rolling window 1: 2025-05-25 12:00:00 to 2025-05-30 12:00:00
+2025-05-28 07:33:05,220 - prophet_forecast_tuned_model - INFO - Window 1 metrics: MAE=0.169, RMSE=0.171, R2=0.000
+2025-05-28 07:33:05,227 - prophet_forecast_tuned_model - INFO - Rolling window 2: 2025-05-26 12:00:00 to 2025-05-31 12:00:00
+2025-05-28 07:33:05,316 - prophet_forecast_tuned_model - INFO - Window 2 metrics: MAE=0.177, RMSE=0.179, R2=0.000
+2025-05-28 07:33:05,323 - prophet_forecast_tuned_model - INFO - Rolling window 3: 2025-05-27 12:00:00 to 2025-06-01 12:00:00
+2025-05-28 07:33:05,403 - prophet_forecast_tuned_model - INFO - Window 3 metrics: MAE=0.182, RMSE=0.185, R2=0.000
+2025-05-28 07:33:05,410 - prophet_forecast_tuned_model - INFO - Rolling window 4: 2025-05-28 12:00:00 to 2025-06-02 12:00:00
+2025-05-28 07:33:05,495 - prophet_forecast_tuned_model - INFO - Window 4 metrics: MAE=0.181, RMSE=0.185, R2=0.000
+2025-05-28 07:33:05,500 - prophet_forecast_tuned_model - INFO - Rolling window 5: 2025-05-29 12:00:00 to 2025-06-03 12:00:00
+2025-05-28 07:33:05,572 - prophet_forecast_tuned_model - INFO - Window 5 metrics: MAE=0.188, RMSE=0.191, R2=0.000
+2025-05-28 07:33:05,575 - prophet_forecast_tuned_model - INFO - Rolling window 6: 2025-05-30 12:00:00 to 2025-06-04 12:00:00
+2025-05-28 07:33:05,636 - prophet_forecast_tuned_model - INFO - Window 6 metrics: MAE=0.208, RMSE=0.208, R2=0.000
+2025-05-28 07:33:05,646 - prophet_forecast_tuned_model - INFO - 📁 Rolling Window Forecast vs Actual saved to: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/forecast_vs_actual-rollingwindow.csv
+2025-05-28 07:33:05,647 - prophet_forecast_tuned_model - INFO - Rolling window model run metrics saved to: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/workspaces/sandeep/ned/downloads/model_run_metrics-rollingwindow.csv
