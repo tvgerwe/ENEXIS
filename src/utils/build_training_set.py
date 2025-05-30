@@ -19,7 +19,7 @@ HORIZON = 168
 desired_order = [
     'Price', 'target_datetime', 'Load', 'shortwave_radiation', 'temperature_2m',
     'direct_normal_irradiance', 'diffuse_radiation', 'Flow_NO', 'yearday_cos',
-    'Flow_GB', 'month', 'is_dst', 'yearday_sin', 'is_non_working_day',
+    'Flow_GB', 'month', 'is_dst', 'yearday_sin','wind_speed_10m', 'is_non_working_day',
     'hour_cos', 'is_weekend', 'cloud_cover', 'weekday_sin', 'hour_sin',
     'weekday_cos'
 ]
