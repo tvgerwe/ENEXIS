@@ -13,9 +13,9 @@ DB_PATH = Path(__file__).resolve().parents[1] / "data" / "WARP.db"
 OUTPUT_TABLE = "training_set"
 ACTUALS_TABLE = "master_warp"
 PREDICTIONS_TABLE = "master_predictions"
-HORIZON = 144
+HORIZON = 168
 
-# Gewenste kolomvolgorde (Price als target vooraan)
+# YOUR ORIGINAL DESIRED COLUMN ORDER (the one that worked!)
 desired_order = [
     'Price', 'target_datetime', 'Load', 'shortwave_radiation', 'temperature_2m',
     'direct_normal_irradiance', 'diffuse_radiation', 'Flow_NO', 'yearday_cos',
@@ -42,34 +42,73 @@ def build_training_set(train_start, train_end, run_date, lag_hours=168):
         logger.warning(f"   But training starts: {train_start}")
         logger.warning(f"   Consider extending train_start or reducing forecast horizon")
     
-    # Extend training end to include data needed for lagging
-    required_train_end = max(train_end, earliest_lag_needed)
-    if required_train_end > train_end:
-        logger.info(f"📅 Extending training end from {train_end} to {required_train_end} for lagging support")
-        train_end = required_train_end
+    # Don't extend training end - keep it as specified by user
+    # We'll handle lagging data needs separately
+    original_train_end = train_end
+    
+    # Check if we have enough historical data for lagging
+    earliest_lag_needed = forecast_end - pd.Timedelta(hours=lag_hours)
+    if earliest_lag_needed < train_start:
+        logger.warning(f"⚠️ Lagging issue detected!")
+        logger.warning(f"   Latest prediction: {forecast_end}")
+        logger.warning(f"   Needs lag data from: {earliest_lag_needed} ({lag_hours}h lag)")
+        logger.warning(f"   But training starts: {train_start}")
+        logger.warning(f"   Consider extending train_start or reducing forecast horizon")
+    
+    # For lagging purposes, we need to load additional historical data
+    # but we won't include it in the final training set
+    required_data_end = max(original_train_end, earliest_lag_needed)
+    if required_data_end > original_train_end:
+        logger.info(f"📅 Loading additional historical data until {required_data_end} for lagging support")
+        extended_train_end = required_data_end
+    else:
+        extended_train_end = original_train_end
 
     logger.info("🚀 Start build van trainingset")
-    logger.info(f"🧠 Actuals van {train_start} t/m {train_end}")
+    logger.info(f"🧠 Actuals van {train_start} t/m {original_train_end} (extended to {extended_train_end} for lagging)")
     logger.info(f"📅 Forecast van run_date {run_date}, normalized to {run_date_normalized} for DB lookup, target range: {forecast_start} → {forecast_end}")
 
     conn = sqlite3.connect(DB_PATH)
 
     try:
-        # === Load actuals
-        df_actuals = pd.read_sql_query(f"SELECT * FROM {ACTUALS_TABLE}", conn)
+        # === Load actuals - BUT ONLY THE COLUMNS WE NEED ===
+        logger.info("📥 Loading actuals with selected columns only...")
+        
+        # First check which of our desired columns actually exist in the actuals table
+        all_columns_query = f"PRAGMA table_info({ACTUALS_TABLE})"
+        available_columns = pd.read_sql_query(all_columns_query, conn)['name'].tolist()
+        
+        # Filter desired_order to only include columns that exist
+        existing_desired_cols = [col for col in desired_order if col in available_columns]
+        logger.info(f"📋 Requested columns found: {len(existing_desired_cols)}/{len(desired_order)}")
+        logger.info(f"📋 Using columns: {existing_desired_cols}")
+        
+        # Missing columns
+        missing_cols = [col for col in desired_order if col not in available_columns]
+        if missing_cols:
+            logger.warning(f"⚠️ Missing columns: {missing_cols}")
+        
+        # Build the SELECT query with only the columns we want
+        columns_str = ", ".join(existing_desired_cols)
+        actuals_query = f"SELECT {columns_str} FROM {ACTUALS_TABLE}"
+        
+        df_actuals = pd.read_sql_query(actuals_query, conn)
         df_actuals["target_datetime"] = pd.to_datetime(df_actuals["target_datetime"], utc=True)
+        
+        # Load extended data for lagging purposes
+        df_actuals_extended = df_actuals[
+            (df_actuals["target_datetime"] >= train_start) &
+            (df_actuals["target_datetime"] <= extended_train_end)
+        ]
+        
+        # Keep only the original training period for final output
         df_actuals = df_actuals[
             (df_actuals["target_datetime"] >= train_start) &
-            (df_actuals["target_datetime"] <= train_end)
+            (df_actuals["target_datetime"] <= original_train_end)
         ]
 
-        # Kolommen die weg mogen
-        columns_to_exclude = ['wind_direction_10m', 'direct_radiation', 'Price_actual', 'datetime', 'date']
-        keep_columns = [col for col in df_actuals.columns if col not in columns_to_exclude]
-        df_actuals = df_actuals[keep_columns]
-        logger.info(f"✅ Actuals geladen: {df_actuals.shape[0]} rijen")
+        logger.info(f"✅ Actuals loaded: {df_actuals.shape[0]} rows with {df_actuals.shape[1]} selected columns")
 
-<<<<<<< HEAD
         # === NOW ACTUALLY LOAD AND USE THE FORECAST DATA ===
         logger.info("🔍 Loading forecast/prediction data...")
         df_predictions = None
@@ -81,36 +120,11 @@ def build_training_set(train_start, train_end, run_date, lag_hours=168):
             FROM {PREDICTIONS_TABLE} 
             WHERE run_date = '{run_date_normalized}'
             AND target_datetime >= '{forecast_start}'
-=======
-        # === Load forecast features
-        df_preds = pd.read_sql_query(f"SELECT * FROM {PREDICTIONS_TABLE}", conn)
-        df_preds["target_datetime"] = pd.to_datetime(df_preds["target_datetime"], utc=True)
-        df_preds["run_date"] = pd.to_datetime(df_preds["run_date"], utc=True)
-
-        df_preds = df_preds[
-            (df_preds["run_date"] == run_date) &
-            (df_preds["target_datetime"] >= forecast_start) &
-            (df_preds["target_datetime"] <= forecast_end)
-        ]
-
-        if df_preds.columns.duplicated().any():
-            dupes = df_preds.columns[df_preds.columns.duplicated()].tolist()
-            logger.warning(f"⚠️ Dubbele kolomnamen in df_preds: {dupes}")
-            df_preds = df_preds.loc[:, ~df_preds.columns.duplicated()]
-
-        # === Get actual prices for forecast period from master_warp
-        df_forecast_prices = pd.read_sql_query(f"""
-            SELECT target_datetime, Price 
-            FROM {ACTUALS_TABLE} 
-            WHERE target_datetime >= '{forecast_start}' 
->>>>>>> 094a45baee71a89f441de2be1919534f1350f2bd
             AND target_datetime <= '{forecast_end}'
-        """, conn)
-        
-        if not df_forecast_prices.empty:
-            df_forecast_prices["target_datetime"] = pd.to_datetime(df_forecast_prices["target_datetime"], utc=True)
+            """
+            pred_count = pd.read_sql_query(pred_count_query, conn)['count'].iloc[0]
+            logger.info(f"📊 Forecast rows available: {pred_count}")
             
-<<<<<<< HEAD
             if pred_count > 0:
                 # Check which columns exist in predictions table
                 pred_columns_query = f"PRAGMA table_info({PREDICTIONS_TABLE})"
@@ -162,14 +176,14 @@ def build_training_set(train_start, train_end, run_date, lag_hours=168):
                                     # Find the value lag_hours earlier
                                     lag_time = pred_time - pd.Timedelta(hours=lag_hours)
                                     
-                                    # Look for this timestamp in actuals
-                                    matching_actual = df_actuals[df_actuals['target_datetime'] == lag_time]
+                                    # Look for this timestamp in extended actuals (for lagging)
+                                    matching_actual = df_actuals_extended[df_actuals_extended['target_datetime'] == lag_time]
                                     
                                     if not matching_actual.empty:
                                         lagged_values.append(matching_actual[col].iloc[0])
                                     else:
                                         # If no exact match, find the closest earlier timestamp
-                                        earlier_actuals = df_actuals[df_actuals['target_datetime'] <= lag_time]
+                                        earlier_actuals = df_actuals_extended[df_actuals_extended['target_datetime'] <= lag_time]
                                         if not earlier_actuals.empty:
                                             closest_actual = earlier_actuals.iloc[-1]  # Most recent before lag_time
                                             lagged_values.append(closest_actual[col])
@@ -247,8 +261,25 @@ def build_training_set(train_start, train_end, run_date, lag_hours=168):
             logger.info("📊 No predictions to combine, using actuals only")
             df_combined = df_actuals.copy()
         
-        # Sort by datetime and remove duplicates (keep first occurrence)
-        df_combined = df_combined.sort_values("target_datetime").drop_duplicates("target_datetime", keep='first')
+        # Sort by datetime and handle overlaps properly
+        df_combined = df_combined.sort_values("target_datetime")
+        
+        # Check for overlaps between actuals and predictions
+        if df_predictions is not None and not df_predictions.empty:
+            overlap_start = max(df_actuals['target_datetime'].min(), df_predictions['target_datetime'].min())
+            overlap_end = min(df_actuals['target_datetime'].max(), df_predictions['target_datetime'].max())
+            
+            if overlap_start <= overlap_end:
+                logger.info(f"⚠️ Overlap detected between actuals and predictions: {overlap_start} → {overlap_end}")
+                logger.info("   Keeping actuals for overlapping periods, predictions for non-overlapping periods")
+                
+                # For overlapping timestamps, keep actuals; for non-overlapping, keep predictions
+                df_combined = df_combined.drop_duplicates("target_datetime", keep='first')
+            else:
+                logger.info("✅ No overlap between actuals and predictions")
+        else:
+            # Remove duplicates within actuals only
+            df_combined = df_combined.drop_duplicates("target_datetime", keep='first')
         
         # Ensure column order matches desired_order (for columns that exist)
         final_column_order = [col for col in desired_order if col in df_combined.columns]
@@ -278,59 +309,20 @@ def build_training_set(train_start, train_end, run_date, lag_hours=168):
         
         if high_nan_cols:
             logger.warning(f"⚠️ Columns with >20% NaN: {high_nan_cols}")
-=======
-            # Merge actual prices into forecast features
-            df_preds = df_preds.merge(df_forecast_prices, on="target_datetime", how="left")
-            logger.info(f"✅ Added actual prices to {len(df_forecast_prices)} forecast rows")
->>>>>>> 094a45baee71a89f441de2be1919534f1350f2bd
         else:
-            # Add Price column as NaN if no actuals found
-            df_preds['Price'] = pd.NA
-            logger.warning(f"⚠️ No actual prices found for forecast period")
+            logger.info("✅ All columns have good data quality (<20% NaN)")
 
-        # Ensure both dataframes have the same columns
-        all_columns = set(df_actuals.columns) | set(df_preds.columns)
-        
-        # Add missing columns to both dataframes
-        for col in all_columns:
-            if col not in df_actuals.columns:
-                df_actuals[col] = pd.NA
-            if col not in df_preds.columns:
-                df_preds[col] = pd.NA
-
-        # Reorder columns to match
-        common_columns = sorted(all_columns)
-        df_actuals = df_actuals[common_columns]
-        df_preds = df_preds[common_columns]
-
-        # Combine actuals + forecasts
-        df_combined = pd.concat([df_actuals, df_preds], ignore_index=True)
-        df_combined = df_combined.sort_values("target_datetime").drop_duplicates("target_datetime")
-
-        # Force column order
-        available_cols = [col for col in desired_order if col in df_combined.columns]
-        remaining_cols = [col for col in df_combined.columns if col not in desired_order]
-        df_combined = df_combined[available_cols + remaining_cols]
-
-        logger.info(f"📦 Eindtabel bevat: {df_combined.shape[0]} rijen, {df_combined.shape[1]} kolommen")
-        logger.info(f"🧾 Kolommen: {df_combined.columns.tolist()}")
-        
-        # Show Price distribution
-        nan_count = df_combined['Price'].isna().sum()
-        logger.info(f"❓ Price NaN count: {nan_count}/{len(df_combined)} ({100*nan_count/len(df_combined):.1f}%)")
-
-        # Save to database AND return DataFrame
+        # Save to database
         df_combined.to_sql(OUTPUT_TABLE, conn, if_exists="replace", index=False)
-        logger.info(f"✅ Opgeslagen als {OUTPUT_TABLE} in {DB_PATH.name}")
+        logger.info(f"✅ Saved as {OUTPUT_TABLE} in {DB_PATH.name}")
         
         return df_combined
 
     except Exception as e:
-        logger.error(f"❌ Fout tijdens build: {e}", exc_info=True)
+        logger.error(f"❌ Error during build: {e}", exc_info=True)
         return None
     finally:
         conn.close()
-<<<<<<< HEAD
         logger.info("🔒 Connection closed")
 
 
@@ -397,6 +389,3 @@ if __name__ == "__main__":
             print(f"📊 Breakdown: {actuals_count} actuals + {predictions_count} predictions")
     else:
         print("❌ FAILED to build training set")
-=======
-        logger.info("🔒 Verbinding gesloten")
->>>>>>> 094a45baee71a89f441de2be1919534f1350f2bd
