@@ -1,22 +1,31 @@
 import pandas as pd
 from entsoe import EntsoePandasClient
+import sqlite3
 import time
+from pathlib import Path
 
-# Insert your API key here once you get it
+# ─────────────────────────────────────────────
+# 📍 Projectpad en databasedefinitie
+# ─────────────────────────────────────────────
+PROJECT_ROOT = Path(__file__).resolve().parents[2]  # gaat 2 niveaus omhoog vanuit dit bestand
+DB_PATH = PROJECT_ROOT / "src" / "data" / "WARP.db"
+OUTPUT_TABLE = "raw_entsoe_obs"
+CSV_PATH = PROJECT_ROOT / "outputs" / f"{OUTPUT_TABLE}.csv"
+CSV_PATH.parent.mkdir(parents=True, exist_ok=True)  # maak outputmap aan als die niet bestaat
+
+# ─────────────────────────────────────────────
+# 🔑 API en parameters
+# ─────────────────────────────────────────────
 API_KEY = '82aa28d4-59f3-4e3a-b144-6659aa9415b5'
-
-# Initialize ENTSO-E client
 client = EntsoePandasClient(api_key=API_KEY)
 
-# Define parameters
 country_code = 'NL'
-neighboring_countries = ['BE', 'DE', 'GB', 'DK', 'NO']  # Pas dit aan op basis van de relevante buren
-year = 2025  # List of years to fetch
+neighboring_countries = ['GB', 'NO']
+year = 2025  # pas aan indien nodig
 
-# Data storage
-all_data = []
-
-# Function to fetch data with retries
+# ─────────────────────────────────────────────
+# 🔁 Retry-logica voor API-calls
+# ─────────────────────────────────────────────
 def fetch_with_retries(fetch_func, *args, retries=3, delay=5, **kwargs):
     for attempt in range(retries):
         try:
@@ -24,84 +33,54 @@ def fetch_with_retries(fetch_func, *args, retries=3, delay=5, **kwargs):
         except Exception as e:
             print(f"Error: {e}, retrying in {delay} seconds...")
             time.sleep(delay)
-    raise Exception(f"Failed to fetch data after {retries} attempts")
+    raise Exception(f"Failed after {retries} attempts")
 
-# Loop through each year and fetch data separately
+# ─────────────────────────────────────────────
+# 📥 Data ophalen
+# ─────────────────────────────────────────────
+start = pd.Timestamp(f"{year}-01-01", tz='Europe/Amsterdam')
+end = pd.Timestamp(f"{year+1}-01-01", tz='Europe/Amsterdam')
 
-start = pd.Timestamp(f'{year}-01-01', tz='Europe/Amsterdam')
-end = pd.Timestamp(f'{year+1}-01-01', tz='Europe/Amsterdam')  # Exclusive end
+print(f"Fetching ENTSO-E data for year {year}...")
 
-print(f"Fetching load data for {year}...")
-yearly_load = fetch_with_retries(client.query_load, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
+yearly_load = fetch_with_retries(client.query_load, country_code, start=start, end=end).squeeze()
+yearly_price = fetch_with_retries(client.query_day_ahead_prices, country_code, start=start, end=end).squeeze()
+yearly_forecast = fetch_with_retries(client.query_load_forecast, country_code, start=start, end=end).squeeze()
 
-print(f"Fetching load forecast for {year}...")
-yearly_load_forecast = fetch_with_retries(client.query_load_forecast, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
-
-print(f"Fetching price data for {year}...")
-yearly_price = fetch_with_retries(client.query_day_ahead_prices, country_code, start=start, end=end).squeeze()  # Convert to 1D Series
-
-# Fetch cross-border flows
 flow_data = {}
 for neighbor in neighboring_countries:
-    print(f"Fetching cross-border flow from {neighbor} to {country_code} for {year}...")
-    yearly_flow_to = fetch_with_retries(client.query_crossborder_flows, country_code_from=neighbor, 
-                                            country_code_to=country_code, start=start, end=end).squeeze()  # Convert to 1D Series
-    flow_data[f'Flow_{neighbor}_to_{country_code}'] = yearly_flow_to
+    flow_data[f'Flow_{neighbor}_to_{country_code}'] = fetch_with_retries(
+        client.query_crossborder_flows, country_code_from=neighbor, country_code_to=country_code,
+        start=start, end=end).squeeze()
 
-    print(f"Fetching cross-border flow from {country_code} to {neighbor} for {year}...")
-    yearly_flow_from = fetch_with_retries(client.query_crossborder_flows, country_code_from=country_code, 
-                                              country_code_to=neighbor, start=start, end=end).squeeze()  # Convert to 1D Series
-    flow_data[f'Flow_{country_code}_to_{neighbor}'] = yearly_flow_from
+    flow_data[f'Flow_{country_code}_to_{neighbor}'] = fetch_with_retries(
+        client.query_crossborder_flows, country_code_from=country_code, country_code_to=neighbor,
+        start=start, end=end).squeeze()
 
-# Merge all data
+# ─────────────────────────────────────────────
+# 🧱 Data structureren
+# ─────────────────────────────────────────────
 if not yearly_load.empty and not yearly_price.empty:
-    # Align all Series to the same index (timestamps)
-    common_index = yearly_load.index.union(yearly_price.index)
-    for flow_series in flow_data.values():
-        common_index = common_index.union(flow_series.index)
+    all_index = yearly_load.index.union(yearly_price.index).union(yearly_forecast.index)
+    for series in flow_data.values():
+        all_index = all_index.union(series.index)
 
-    # Reindex all Series to the common index
-    yearly_load = yearly_load.reindex(common_index)
-    yearly_price = yearly_price.reindex(common_index)
-    for col_name in flow_data:
-        flow_data[col_name] = flow_data[col_name].reindex(common_index)
+    df = pd.DataFrame({
+        "Timestamp": all_index,
+        "Load": yearly_load.reindex(all_index).values,
+        "Price": yearly_price.reindex(all_index).values,
+        "Forecast_Load": yearly_forecast.reindex(all_index).values,
+    })
 
-    # Create a DataFrame with the aligned data
-    df = pd.DataFrame({'Timestamp': common_index, 'Load': yearly_load.values, 'Price': yearly_price.values})
-    
-    # Add cross-border flow data to the DataFrame
-    for col_name, flow_series in flow_data.items():
-        df[col_name] = flow_series.values
+    for key, series in flow_data.items():
+        df[key] = series.reindex(all_index).values
 
-    # Store yearly data
-    all_data.append(df)
+    df = df.sort_values("Timestamp")
+
+    # Opslaan naar database
+    with sqlite3.connect(DB_PATH) as conn:
+        df.to_sql(OUTPUT_TABLE, conn, if_exists="replace", index=False)
+        print(f"✅ Data opgeslagen in SQLite als tabel '{OUTPUT_TABLE}'")
+
 else:
-    print(f"No data for year {year}")
-
-# Concatenate all years into one DataFrame if there is data
-if all_data:
-    raw_entsoe = pd.concat(all_data)
-else:
-    raw_entsoe = pd.DataFrame()  # Create an empty DataFrame if no data is available
-
-# Save the DataFrame to a CSV file
-raw_entsoe.to_csv('raw_entsoe.csv', index=False)
-
-# Write the DataFrame to the database table 'raw_entsoe_obs'
-if not raw_entsoe.empty:
-    import sqlite3
-
-    # Connect to the SQLite database
-    db_path = '/Users/Twan/Library/Mobile Documents/com~apple~CloudDocs/Data Science/Data Projects EASI/ENEXIS/src/data/WARP.db'
-    conn = sqlite3.connect(db_path)
-
-    # Write the DataFrame to the database table 'raw_entsoe_obs'
-    # If table exists, replace it. If not, create new table
-    raw_entsoe.to_sql('raw_entsoe_obs', conn, if_exists='replace', index=False)
-
-    # Close the connection
-    conn.close()
-
-    print("Data successfully written to database table 'raw_entsoe_obs'")
-else:
-    print("No data available to write to the database.")
+    print("⚠️ Geen bruikbare data beschikbaar om op te slaan.")

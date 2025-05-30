@@ -1,37 +1,34 @@
+# flows/full_pipeline_flow.py
 from prefect import flow, task
-from src.data_ingestion.entsoe import fetch_entsoe_data
-from src.data_ingestion.weather import fetch_weather_data
-from src.data_ingestion.sin_cos import generate_time_features
-from src.data_ingestion.merge_sources import merge_dataframes
-from src.data_processing.cleaning import clean_dataframe
-from src.data_processing.validation import validate_dataframe
-from src.data_processing.feature_eng import engineer_features
-from src.data_processing.split import split_data
+from src.data_ingestion.entsoe_load import fetch_with_retries
+from src.data_ingestion.ingest_date import main as ingest_date_main
+from src.data_processing.entsoe_dataprocessing import conn as entsoe_processing
+from src.data_master.build_master_observed import build_master as build_observed
+from src.data_master.build_master_predictions import build_master as build_predictions
 
 @task
-def fetch_all_data():
-    df_entsoe = fetch_entsoe_data()
-    df_weather = fetch_weather_data()
-    df_time = generate_time_features()
-    return df_entsoe, df_weather, df_time
+def ingest_and_process():
+    # Run date ingestion
+    ingest_date_main()
+    
+    # ENTSOE data is processed automatically when imported
+    # Weather data needs to be run manually from notebooks for now
+    print("⚠️ Run weather notebooks manually:")
+    print("1. API_open_meteo_historical.ipynb")
+    print("2. API_open_meteo_preds.ipynb") 
+    print("3. transform_weather_obs.ipynb")
+    print("4. transform_weather_preds.ipynb")
 
-@task
-def merge_and_process(df_entsoe, df_weather, df_time):
-    merged_df = merge_dataframes(df_entsoe, df_weather, df_time)
-    cleaned_df = clean_dataframe(merged_df)
-    validate_dataframe(cleaned_df)
-    final_df = engineer_features(cleaned_df)
-    return final_df
+@task  
+def build_masters():
+    master_observed = build_observed()
+    master_predictions = build_predictions()
+    return master_observed, master_predictions
 
-@task
-def split_dataset(df):
-    split_data(df)
-
-@flow(name="Electricity Price Forecasting Full Pipeline")
+@flow
 def full_pipeline_flow():
-    df_entsoe, df_weather, df_time = fetch_all_data()
-    final_df = merge_and_process(df_entsoe, df_weather, df_time)
-    split_dataset(final_df)
+    ingest_and_process()
+    return build_masters()
 
 if __name__ == "__main__":
     full_pipeline_flow()
