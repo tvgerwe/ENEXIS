@@ -15,7 +15,7 @@ ACTUALS_TABLE = "master_warp"
 PREDICTIONS_TABLE = "master_predictions"
 HORIZON = 168
 
-# YOUR ORIGINAL DESIRED COLUMN ORDER (the one that worked!)
+# Gewenste kolomvolgorde (Price als target vooraan)
 desired_order = [
     'Price', 'target_datetime', 'Load', 'shortwave_radiation', 'temperature_2m',
     'direct_normal_irradiance', 'diffuse_radiation', 'Flow_NO', 'yearday_cos',
@@ -38,158 +38,95 @@ def build_training_set(train_start, train_end, run_date):
     conn = sqlite3.connect(DB_PATH)
 
     try:
-        # === Load actuals - BUT ONLY THE COLUMNS WE NEED ===
-        logger.info("📥 Loading actuals with selected columns only...")
-        
-        # First check which of our desired columns actually exist in the actuals table
-        all_columns_query = f"PRAGMA table_info({ACTUALS_TABLE})"
-        available_columns = pd.read_sql_query(all_columns_query, conn)['name'].tolist()
-        
-        # Filter desired_order to only include columns that exist
-        existing_desired_cols = [col for col in desired_order if col in available_columns]
-        logger.info(f"📋 Requested columns found: {len(existing_desired_cols)}/{len(desired_order)}")
-        logger.info(f"📋 Using columns: {existing_desired_cols}")
-        
-        # Missing columns
-        missing_cols = [col for col in desired_order if col not in available_columns]
-        if missing_cols:
-            logger.warning(f"⚠️ Missing columns: {missing_cols}")
-        
-        # Build the SELECT query with only the columns we want
-        columns_str = ", ".join(existing_desired_cols)
-        actuals_query = f"SELECT {columns_str} FROM {ACTUALS_TABLE}"
-        
-        df_actuals = pd.read_sql_query(actuals_query, conn)
+        # === Load actuals
+        df_actuals = pd.read_sql_query(f"SELECT * FROM {ACTUALS_TABLE}", conn)
         df_actuals["target_datetime"] = pd.to_datetime(df_actuals["target_datetime"], utc=True)
-        
-        # Filter by date range
         df_actuals = df_actuals[
             (df_actuals["target_datetime"] >= train_start) &
             (df_actuals["target_datetime"] <= train_end)
         ]
 
-        logger.info(f"✅ Actuals loaded: {df_actuals.shape[0]} rows with {df_actuals.shape[1]} selected columns")
+        # Kolommen die weg mogen
+        columns_to_exclude = ['wind_direction_10m', 'direct_radiation', 'Price_actual', 'datetime', 'date']
+        keep_columns = [col for col in df_actuals.columns if col not in columns_to_exclude]
+        df_actuals = df_actuals[keep_columns]
+        logger.info(f"✅ Actuals geladen: {df_actuals.shape[0]} rijen")
 
-        # === Check if we need forecast data ===
-        logger.info("🔍 Checking for forecast data...")
-        
-        # Check if predictions table exists and has data for this run_date
-        try:
-            pred_count_query = f"""
-            SELECT COUNT(*) as count 
-            FROM {PREDICTIONS_TABLE} 
-            WHERE run_date = '{run_date}'
-            AND target_datetime >= '{forecast_start}'
+        # === Load forecast features
+        df_preds = pd.read_sql_query(f"SELECT * FROM {PREDICTIONS_TABLE}", conn)
+        df_preds["target_datetime"] = pd.to_datetime(df_preds["target_datetime"], utc=True)
+        df_preds["run_date"] = pd.to_datetime(df_preds["run_date"], utc=True)
+
+        df_preds = df_preds[
+            (df_preds["run_date"] == run_date) &
+            (df_preds["target_datetime"] >= forecast_start) &
+            (df_preds["target_datetime"] <= forecast_end)
+        ]
+
+        if df_preds.columns.duplicated().any():
+            dupes = df_preds.columns[df_preds.columns.duplicated()].tolist()
+            logger.warning(f"⚠️ Dubbele kolomnamen in df_preds: {dupes}")
+            df_preds = df_preds.loc[:, ~df_preds.columns.duplicated()]
+
+        # === Get actual prices for forecast period from master_warp
+        df_forecast_prices = pd.read_sql_query(f"""
+            SELECT target_datetime, Price 
+            FROM {ACTUALS_TABLE} 
+            WHERE target_datetime >= '{forecast_start}' 
             AND target_datetime <= '{forecast_end}'
-            """
-            pred_count = pd.read_sql_query(pred_count_query, conn)['count'].iloc[0]
-            logger.info(f"📊 Forecast rows available: {pred_count}")
+        """, conn)
+        
+        if not df_forecast_prices.empty:
+            df_forecast_prices["target_datetime"] = pd.to_datetime(df_forecast_prices["target_datetime"], utc=True)
             
-            if pred_count > 0:
-                logger.info("📊 Found forecast data, but using actuals-only approach for simplicity")
-                # You can uncomment the forecast logic below if you want to include forecasts
-                
-        except Exception as e:
-            logger.info(f"📊 No forecast table or data available: {e}")
-        
-        # === Use actuals only (cleaner approach) ===
-        df_combined = df_actuals.copy()
-        
-        # Sort by datetime and remove duplicates
-        df_combined = df_combined.sort_values("target_datetime").drop_duplicates("target_datetime")
-        
-        # Ensure column order matches desired_order (for columns that exist)
-        final_column_order = [col for col in desired_order if col in df_combined.columns]
-        df_combined = df_combined[final_column_order]
-
-        logger.info(f"📦 Final table: {df_combined.shape[0]} rows, {df_combined.shape[1]} columns")
-        logger.info(f"🧾 Final columns: {df_combined.columns.tolist()}")
-        
-        # Data quality check
-        if 'Price' in df_combined.columns:
-            nan_count = df_combined['Price'].isna().sum()
-            logger.info(f"💰 Price NaN count: {nan_count}/{len(df_combined)} ({100*nan_count/len(df_combined):.1f}%)")
-        
-        # Check for any columns with high NaN rates
-        high_nan_cols = []
-        for col in df_combined.columns:
-            if col != 'target_datetime':
-                nan_pct = 100 * df_combined[col].isna().sum() / len(df_combined)
-                if nan_pct > 20:  # More than 20% NaN
-                    high_nan_cols.append(f"{col}: {nan_pct:.1f}%")
-        
-        if high_nan_cols:
-            logger.warning(f"⚠️ Columns with >20% NaN: {high_nan_cols}")
+            # Merge actual prices into forecast features
+            df_preds = df_preds.merge(df_forecast_prices, on="target_datetime", how="left")
+            logger.info(f"✅ Added actual prices to {len(df_forecast_prices)} forecast rows")
         else:
-            logger.info("✅ All columns have good data quality (<20% NaN)")
+            # Add Price column as NaN if no actuals found
+            df_preds['Price'] = pd.NA
+            logger.warning(f"⚠️ No actual prices found for forecast period")
 
-        # Save to database
+        # Ensure both dataframes have the same columns
+        all_columns = set(df_actuals.columns) | set(df_preds.columns)
+        
+        # Add missing columns to both dataframes
+        for col in all_columns:
+            if col not in df_actuals.columns:
+                df_actuals[col] = pd.NA
+            if col not in df_preds.columns:
+                df_preds[col] = pd.NA
+
+        # Reorder columns to match
+        common_columns = sorted(all_columns)
+        df_actuals = df_actuals[common_columns]
+        df_preds = df_preds[common_columns]
+
+        # Combine actuals + forecasts
+        df_combined = pd.concat([df_actuals, df_preds], ignore_index=True)
+        df_combined = df_combined.sort_values("target_datetime").drop_duplicates("target_datetime")
+
+        # Force column order
+        available_cols = [col for col in desired_order if col in df_combined.columns]
+        remaining_cols = [col for col in df_combined.columns if col not in desired_order]
+        df_combined = df_combined[available_cols + remaining_cols]
+
+        logger.info(f"📦 Eindtabel bevat: {df_combined.shape[0]} rijen, {df_combined.shape[1]} kolommen")
+        logger.info(f"🧾 Kolommen: {df_combined.columns.tolist()}")
+        
+        # Show Price distribution
+        nan_count = df_combined['Price'].isna().sum()
+        logger.info(f"❓ Price NaN count: {nan_count}/{len(df_combined)} ({100*nan_count/len(df_combined):.1f}%)")
+
+        # Save to database AND return DataFrame
         df_combined.to_sql(OUTPUT_TABLE, conn, if_exists="replace", index=False)
-        logger.info(f"✅ Saved as {OUTPUT_TABLE} in {DB_PATH.name}")
+        logger.info(f"✅ Opgeslagen als {OUTPUT_TABLE} in {DB_PATH.name}")
         
         return df_combined
 
     except Exception as e:
-        logger.error(f"❌ Error during build: {e}", exc_info=True)
+        logger.error(f"❌ Fout tijdens build: {e}", exc_info=True)
         return None
     finally:
         conn.close()
-        logger.info("🔒 Connection closed")
-
-
-# Optional: Function to add more specific columns if needed
-def get_essential_features():
-    """
-    Returns the essential features for SARIMAX modeling
-    """
-    return [
-        'Price',           # Target variable
-        'target_datetime', # Time index
-        'Load',           # Main exogenous variable
-        'temperature_2m',  # Weather
-        'Flow_NO',        # Cross-border flows
-        'Flow_GB',        # Cross-border flows
-        'hour_cos',       # Time features
-        'hour_sin',       # Time features
-        'weekday_cos',    # Time features
-        'weekday_sin',    # Time features
-        'month',          # Seasonal
-        'is_weekend',     # Binary features
-        'is_holiday'      # Binary features
-    ]
-
-
-def build_minimal_training_set(train_start, train_end, run_date=None):
-    """
-    Build training set with only essential features for SARIMAX
-    """
-    essential_cols = get_essential_features()
-    
-    # Temporarily override desired_order
-    global desired_order
-    original_order = desired_order.copy()
-    desired_order = essential_cols
-    
-    try:
-        result = build_training_set(train_start, train_end, run_date or train_end)
-        return result
-    finally:
-        # Restore original order
-        desired_order = original_order
-
-
-if __name__ == "__main__":
-    # Test with your parameters
-    result = build_training_set(
-        train_start="2025-01-01 00:00:00",
-        train_end="2025-03-14 23:00:00",
-        run_date="2025-03-15 12:00:00"
-    )
-    
-    if result is not None:
-        print(f"\n✅ SUCCESS! Shape: {result.shape}")
-        print(f"📋 Columns: {result.columns.tolist()}")
-        if 'Price' in result.columns:
-            print(f"💰 Price range: {result['Price'].min():.4f} to {result['Price'].max():.4f}")
-    else:
-        print("❌ FAILED to build training set")
+        logger.info("🔒 Verbinding gesloten")
