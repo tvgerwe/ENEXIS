@@ -94,7 +94,7 @@ logger.info(f"✅ Data loaded and prepared. Total records: {len(df)}")
 
 # === 1. Normal Forecast (single window) ===
 # User-defined start date for the forecast window
-user_forecast_start = pd.to_datetime("2025-05-10")  # <-- Set your desired start date here
+user_forecast_start = pd.to_datetime("2025-05-15")  # <-- Set your desired start date here
 forecast_horizon_days = 6
 forecast_start = user_forecast_start
 forecast_end = forecast_start + pd.Timedelta(days=forecast_horizon_days - 1)
@@ -136,7 +136,7 @@ df_model_metrics.to_csv(model_metrics_results_path, index=False)
 logger.info(f"Normal forecast metrics saved to: {model_metrics_results_path}")
 
 # === 2. Rolling Window Forecast ===
-start_date = pd.to_datetime("2025-05-10") + timedelta(hours=36)
+start_date = pd.to_datetime("2025-05-15") + timedelta(hours=36)
 num_rolling_runs = 6
 horizon = 6  # days ahead
 
