@@ -613,3 +613,371 @@
 2025-05-29 10:49:39,833 - prophet_forecast_tuned_model - INFO - Window 6 metrics: MAE=0.052, RMSE=0.065, R2=-1.528
 2025-05-29 10:49:39,868 - prophet_forecast_tuned_model - INFO - 📁 Rolling Window Forecast vs Actual saved to: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/forecast_vs_actual_rolling.csv
 2025-05-29 10:49:39,870 - prophet_forecast_tuned_model - INFO - Rolling window model run metrics saved to: /Users/sgawde/work/eaisi-code/main-branch-21may/ENEXIS/src/models/model_run_results/model_run_metrics-rolling.csv
+2025-05-31 08:29:48,298 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 08:29:48,384 - prophet_forecast_tuned_model - INFO - ✅ Data loaded and prepared. Total records: 3624
+2025-05-31 08:30:37,922 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 08:30:37,986 - prophet_forecast_tuned_model - INFO - ✅ Data loaded and prepared. Total records: 3624
+2025-05-31 08:31:12,437 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 08:31:12,477 - prophet_forecast_tuned_model - INFO - ✅ Data loaded and prepared. Total records: 3624
+2025-05-31 09:17:16,646 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 09:17:16,694 - prophet_forecast_tuned_model - INFO - ✅ Data loaded and prepared. Total records: 3624
+2025-05-31 09:18:13,215 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 09:18:13,246 - prophet_forecast_tuned_model - INFO - ✅ Data loaded and prepared. Total records: 3624
+2025-05-31 09:18:52,183 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 09:18:52,227 - prophet_forecast_tuned_model - INFO - ✅ Data loaded and prepared. Total records: 3624
+2025-05-31 09:19:29,180 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 09:19:29,216 - prophet_forecast_tuned_model - INFO - ✅ Data loaded and prepared. Total records: 3624
+2025-05-31 09:19:55,617 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 09:19:55,663 - prophet_forecast_tuned_model - INFO - ✅ Data loaded and prepared. Total records: 3624
+2025-05-31 09:24:42,883 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 09:27:52,011 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 09:32:28,706 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 09:32:28,764 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-15, skipping.
+2025-05-31 09:32:28,765 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-16, skipping.
+2025-05-31 09:32:28,766 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-17, skipping.
+2025-05-31 09:32:28,767 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-18, skipping.
+2025-05-31 09:32:28,767 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-19, skipping.
+2025-05-31 09:32:28,768 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-20, skipping.
+2025-05-31 09:32:28,769 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-21, skipping.
+2025-05-31 09:32:28,769 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:43:37,847 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:43:37,895 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-15, skipping.
+2025-05-31 11:43:37,896 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-16, skipping.
+2025-05-31 11:43:37,897 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-17, skipping.
+2025-05-31 11:43:37,898 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-18, skipping.
+2025-05-31 11:43:37,899 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-19, skipping.
+2025-05-31 11:43:37,899 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-20, skipping.
+2025-05-31 11:43:37,900 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-21, skipping.
+2025-05-31 11:43:37,900 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:44:32,034 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:44:32,105 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-15, skipping.
+2025-05-31 11:44:32,106 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-16, skipping.
+2025-05-31 11:44:32,107 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-17, skipping.
+2025-05-31 11:44:32,108 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-18, skipping.
+2025-05-31 11:44:32,109 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-19, skipping.
+2025-05-31 11:44:32,117 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-20, skipping.
+2025-05-31 11:44:32,118 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-21, skipping.
+2025-05-31 11:44:32,118 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:45:17,652 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:45:17,726 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-15, skipping.
+2025-05-31 11:45:17,727 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-16, skipping.
+2025-05-31 11:45:17,728 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-17, skipping.
+2025-05-31 11:45:17,729 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-18, skipping.
+2025-05-31 11:45:17,731 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-19, skipping.
+2025-05-31 11:45:17,732 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-20, skipping.
+2025-05-31 11:45:17,733 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-21, skipping.
+2025-05-31 11:45:17,733 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:46:36,482 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:46:36,519 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-15, skipping.
+2025-05-31 11:46:36,520 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-16, skipping.
+2025-05-31 11:46:36,521 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-17, skipping.
+2025-05-31 11:46:36,522 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-18, skipping.
+2025-05-31 11:46:36,522 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-19, skipping.
+2025-05-31 11:46:36,523 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-20, skipping.
+2025-05-31 11:46:36,524 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-21, skipping.
+2025-05-31 11:46:36,524 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:46:50,558 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:46:50,606 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-15, skipping.
+2025-05-31 11:46:50,606 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-16, skipping.
+2025-05-31 11:46:50,607 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-17, skipping.
+2025-05-31 11:46:50,608 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-18, skipping.
+2025-05-31 11:46:50,609 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-19, skipping.
+2025-05-31 11:46:50,609 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-20, skipping.
+2025-05-31 11:46:50,610 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-21, skipping.
+2025-05-31 11:46:50,610 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:47:05,246 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:47:05,289 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-15, skipping.
+2025-05-31 11:47:05,289 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-16, skipping.
+2025-05-31 11:47:05,290 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-17, skipping.
+2025-05-31 11:47:05,291 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-18, skipping.
+2025-05-31 11:47:05,292 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-19, skipping.
+2025-05-31 11:47:05,292 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-20, skipping.
+2025-05-31 11:47:05,293 - prophet_forecast_tuned_model - WARNING - ⚠️ No data for 2025-03-21, skipping.
+2025-05-31 11:47:05,293 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:47:25,436 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:47:25,483 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:47:25,490 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:47:25,499 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:47:25,508 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:47:25,523 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:47:25,534 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:47:25,541 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:47:25,541 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:48:23,189 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:48:23,235 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:23,242 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:23,252 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:23,259 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:23,268 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:23,283 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:23,290 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:23,290 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:48:58,790 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:48:58,838 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:58,852 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:58,862 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:58,875 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:58,888 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:58,903 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:58,913 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:48:58,913 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:50:33,226 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:50:33,272 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:50:33,295 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:50:33,312 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:50:33,328 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:50:33,341 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:50:33,352 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:50:33,361 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:50:33,361 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:51:11,711 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:51:11,777 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:11,787 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:11,799 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:11,810 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:11,826 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:11,839 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:11,852 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:11,852 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:51:39,079 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:51:39,148 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:39,160 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:39,180 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:39,195 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:39,210 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:39,225 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:39,239 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:51:39,240 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:52:06,259 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:52:06,315 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:06,325 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:06,339 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:06,360 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:06,378 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:06,395 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:06,411 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:06,411 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:52:22,832 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:52:22,895 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:22,909 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:22,919 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:22,928 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:22,938 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:22,947 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:22,956 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:52:22,956 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 11:53:13,442 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 11:53:13,489 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:53:13,499 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:53:13,508 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:53:13,521 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:53:13,530 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:53:13,537 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:53:13,545 - prophet_forecast_tuned_model - ERROR - ❌ Prediction failed for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 11:53:13,545 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 12:24:30,319 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 12:24:30,445 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 112, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:24:30,511 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 112, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:24:30,556 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 112, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:24:30,586 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 112, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:24:30,615 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 112, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:24:30,646 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 112, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:24:30,677 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 112, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:24:30,677 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 12:25:59,164 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 12:25:59,245 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-15: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 113, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:25:59,307 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-16: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 113, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:25:59,337 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-17: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 113, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:25:59,369 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-18: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 113, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:25:59,402 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-19: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 113, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:25:59,433 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-20: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 113, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:25:59,465 - prophet_forecast_tuned_model - ERROR - ❌ Error while predicting for 2025-03-21: Regressor 'wind_speed_10m' missing from dataframe
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/warp-prophet-model-forecast.py", line 113, in <module>
+    forecast = model.predict(future)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 1270, in predict
+    df = self.setup_dataframe(df.copy())
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/prophet/forecaster.py", line 297, in setup_dataframe
+    raise ValueError(
+ValueError: Regressor 'wind_speed_10m' missing from dataframe
+2025-05-31 12:25:59,465 - prophet_forecast_tuned_model - WARNING - ❌ No predictions were made. Check your data coverage.
+2025-05-31 12:35:00,859 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 12:35:00,999 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-15 with 24 rows.
+2025-05-31 12:35:01,079 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-16 with 24 rows.
+2025-05-31 12:35:01,155 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-17 with 24 rows.
+2025-05-31 12:35:01,231 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-18 with 24 rows.
+2025-05-31 12:35:01,309 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-19 with 24 rows.
+2025-05-31 12:35:01,390 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-20 with 24 rows.
+2025-05-31 12:35:01,464 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-21 with 24 rows.
+2025-05-31 12:35:01,472 - prophet_forecast_tuned_model - INFO - 🎯 Rolling RMSE: 0.030 | MAE: 0.021 | R²: 0.625
+2025-05-31 12:35:01,489 - prophet_forecast_tuned_model - INFO - 📁 Rolling predictions saved to: /Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-05-31 12:35:01,489 - prophet_forecast_tuned_model - INFO - 📉 Horizon-wise RMSEs:
+2025-05-31 12:35:01,491 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 1-step ahead → RMSE: 0.0133
+2025-05-31 12:35:01,492 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 2-step ahead → RMSE: 0.0196
+2025-05-31 12:35:01,494 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 3-step ahead → RMSE: 0.0293
+2025-05-31 12:35:01,495 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 4-step ahead → RMSE: 0.0165
+2025-05-31 12:35:01,496 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 5-step ahead → RMSE: 0.0429
+2025-05-31 12:35:01,497 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 6-step ahead → RMSE: 0.0452
+2025-05-31 12:35:01,499 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 7-step ahead → RMSE: 0.0283
+2025-05-31 12:35:01,501 - prophet_forecast_tuned_model - INFO - ✅ Horizon-wise RMSEs saved.
+2025-05-31 12:36:34,110 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 12:36:34,270 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-15 with 24 rows.
+2025-05-31 12:36:34,345 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-16 with 24 rows.
+2025-05-31 12:36:34,425 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-17 with 24 rows.
+2025-05-31 12:36:34,506 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-18 with 24 rows.
+2025-05-31 12:36:34,584 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-19 with 24 rows.
+2025-05-31 12:36:34,660 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-20 with 24 rows.
+2025-05-31 12:36:34,737 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-21 with 24 rows.
+2025-05-31 12:36:34,738 - prophet_forecast_tuned_model - INFO - 🎯 Rolling RMSE: 0.030 | MAE: 0.021 | R²: 0.625
+2025-05-31 12:36:34,756 - prophet_forecast_tuned_model - INFO - 📁 Rolling predictions saved to: /Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-05-31 12:36:34,756 - prophet_forecast_tuned_model - INFO - 📉 Horizon-wise RMSEs:
+2025-05-31 12:36:34,758 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 1-step ahead → RMSE: 0.0133
+2025-05-31 12:36:34,760 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 2-step ahead → RMSE: 0.0196
+2025-05-31 12:36:34,763 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 3-step ahead → RMSE: 0.0293
+2025-05-31 12:36:34,765 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 4-step ahead → RMSE: 0.0165
+2025-05-31 12:36:34,767 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 5-step ahead → RMSE: 0.0429
+2025-05-31 12:36:34,769 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 6-step ahead → RMSE: 0.0452
+2025-05-31 12:36:34,771 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 7-step ahead → RMSE: 0.0283
+2025-05-31 12:36:34,774 - prophet_forecast_tuned_model - INFO - ✅ Horizon-wise RMSEs saved.
+2025-05-31 12:37:47,220 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 12:37:47,368 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-15 with 24 rows.
+2025-05-31 12:37:47,443 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-16 with 24 rows.
+2025-05-31 12:37:47,518 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-17 with 24 rows.
+2025-05-31 12:37:47,591 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-18 with 24 rows.
+2025-05-31 12:37:47,662 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-19 with 24 rows.
+2025-05-31 12:37:47,734 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-20 with 24 rows.
+2025-05-31 12:37:47,806 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-21 with 24 rows.
+2025-05-31 12:37:47,808 - prophet_forecast_tuned_model - INFO - 🎯 Rolling RMSE: 0.030 | MAE: 0.021 | R²: 0.625
+2025-05-31 12:37:47,825 - prophet_forecast_tuned_model - INFO - 📁 Rolling predictions saved to: /Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-05-31 12:37:47,825 - prophet_forecast_tuned_model - INFO - 📉 Horizon-wise RMSEs:
+2025-05-31 12:37:47,827 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 1-step ahead → RMSE: 0.0133
+2025-05-31 12:37:47,830 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 2-step ahead → RMSE: 0.0196
+2025-05-31 12:37:47,831 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 3-step ahead → RMSE: 0.0293
+2025-05-31 12:37:47,832 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 4-step ahead → RMSE: 0.0165
+2025-05-31 12:37:47,833 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 5-step ahead → RMSE: 0.0429
+2025-05-31 12:37:47,835 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 6-step ahead → RMSE: 0.0452
+2025-05-31 12:37:47,836 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 7-step ahead → RMSE: 0.0283
+2025-05-31 12:37:47,837 - prophet_forecast_tuned_model - INFO - ✅ Horizon-wise RMSEs saved.
+2025-05-31 14:48:32,174 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 14:48:32,321 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-15 with 24 rows.
+2025-05-31 14:48:32,398 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-16 with 24 rows.
+2025-05-31 14:48:32,474 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-17 with 24 rows.
+2025-05-31 14:48:32,550 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-18 with 24 rows.
+2025-05-31 14:48:32,627 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-19 with 24 rows.
+2025-05-31 14:48:32,698 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-20 with 24 rows.
+2025-05-31 14:48:32,772 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-21 with 24 rows.
+2025-05-31 14:48:32,773 - prophet_forecast_tuned_model - INFO - 🎯 Rolling RMSE: 0.030 | MAE: 0.021 | R²: 0.625
+2025-05-31 14:48:32,795 - prophet_forecast_tuned_model - INFO - 📁 Rolling predictions saved to: /Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-05-31 14:48:32,796 - prophet_forecast_tuned_model - INFO - 📉 Horizon-wise RMSEs:
+2025-05-31 14:48:32,798 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 1-step ahead → RMSE: 0.0133
+2025-05-31 14:48:32,799 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 2-step ahead → RMSE: 0.0196
+2025-05-31 14:48:32,801 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 3-step ahead → RMSE: 0.0293
+2025-05-31 14:48:32,802 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 4-step ahead → RMSE: 0.0165
+2025-05-31 14:48:32,803 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 5-step ahead → RMSE: 0.0429
+2025-05-31 14:48:32,804 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 6-step ahead → RMSE: 0.0452
+2025-05-31 14:48:32,806 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 7-step ahead → RMSE: 0.0283
+2025-05-31 14:48:32,808 - prophet_forecast_tuned_model - INFO - ✅ Horizon-wise RMSEs saved.

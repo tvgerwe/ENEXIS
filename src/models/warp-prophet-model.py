@@ -18,6 +18,16 @@ import logging
 import json
 import joblib
 import itertools
+import sys
+
+# Zorg dat build_training_set geïmporteerd is
+current_dir = Path.cwd()
+while current_dir.name != "ENEXIS" and current_dir.parent != current_dir:
+    current_dir = current_dir.parent
+project_root = current_dir
+utils_path = project_root / "src" / "utils"
+sys.path.append(str(utils_path))
+from build_training_set import build_training_set
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,6 +36,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger('warp-prophet-model')
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = PROJECT_ROOT / "src" / "config" / "config.json"
@@ -37,172 +48,151 @@ if not CONFIG_PATH.exists():
 with open(CONFIG_PATH, "r") as f:
     config = json.load(f)
 
-# === Model Run Results Directory ===
-WARP_DATA_FILE_PATH = PROJECT_ROOT / "src" / "data" / "warp-csv-dataset.csv"
-logger.info(f"WARP_DATA_FILE_PATH: {WARP_DATA_FILE_PATH}")
+FEATURES = [
+    'Load', 'shortwave_radiation', 'temperature_2m', 
+    'Flow_NO', 'yearday_cos', 'Flow_GB', 
+    'yearday_sin', 
+    'hour_sin']
+target = 'Price'
 
-try:
-    with open(WARP_DATA_FILE_PATH, 'rb') as csv_file:
-        df_pd_orig = pd.read_csv(csv_file)
-    logger.info(f"Loaded data from {WARP_DATA_FILE_PATH}")
-except Exception as e:
-    logger.error(f"Failed to load data: {e}")
-    raise
+# wind_speed_10m
 
+# Initial training window
+base_start = "2025-01-01 00:00:00"
+base_end = "2025-03-14 23:00:00"
+base_run = "2025-03-15 00:00:00"
+
+rmse_results = []
 results = []
 
-# Ensure 'target_datetime' is parsed as timezone-naive datetime
-df_pd_orig['datetime'] = df_pd_orig['target_datetime']
-df_pd_orig['datetime'] = pd.to_datetime(df_pd_orig['datetime'])
-df = df_pd_orig.sort_values(by='datetime')
-df['datetime'] = pd.to_datetime(df['datetime'], utc=True).dt.tz_localize(None)
 
-# Define X and y
-y = df[['datetime', 'Price']]
-X = df.drop(columns=['Price'])
 
-# Ensure 'datetime' is timezone-naive
-train_start = "2025-01-01"
-train_end   = "2025-03-07"
-test_start  = "2025-03-08"
-test_end    = "2025-03-14"
-
-# Split the data into training and testing sets based on datetime
-X_train = X[(X['datetime'] >= train_start) & (X['datetime'] <= train_end)].copy()
-X_test  = X[(X['datetime'] >= test_start) & (X['datetime'] <= test_end)].copy()
-y_train = y[(y['datetime'] >= train_start) & (y['datetime'] <= train_end)].copy()
-y_test  = y[(y['datetime'] >= test_start) & (y['datetime'] <= test_end)].copy()
-
-logger.info(f"Train Date Range: Start: {X_train['datetime'].min()} End: {X_train['datetime'].max()}")
-logger.info(f"Test Date Range: Start: {X_test['datetime'].min()} End: {X_test['datetime'].max()}")
-
-# First run with simple model only
+print("🔍 Testing Prophet Model Top 10 features - RMSE per forecast day")
+print("=" * 60)
 
 model_run_start_time = time.time()
 
-# Combine datetime and Price only (no regressors)
-train_prophet = y_train[['datetime', 'Price']].reset_index(drop=True)
-test_prophet = y_test[['datetime', 'Price']].reset_index(drop=True)
+for i in range(30):
+    start = pd.Timestamp(base_start) + pd.Timedelta(days=i)
+    end = pd.Timestamp(base_end) + pd.Timedelta(days=i)
+    run_date = pd.Timestamp(base_run) + pd.Timedelta(days=i)
 
-# Rename columns for Prophet compatibility
-train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
-test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
+    try:
+        df = build_training_set(
+            train_start=start.strftime("%Y-%m-%d %H:%M:%S"),
+            train_end=end.strftime("%Y-%m-%d %H:%M:%S"),
+            run_date=run_date.strftime("%Y-%m-%d %H:%M:%S")
+        )
 
-# Ensure datetime is timezone naive
-train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
-test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
+        if df is None or df.empty:
+            print(f"Day {i+1}: ❌ No training data returned")
+            continue
 
-# Create and fit Prophet model (without regressors)
-model = Prophet()
-model.fit(train_prophet)
+        df['target_datetime'] = pd.to_datetime(df['target_datetime'], utc=True)
+        df = df.sort_values('target_datetime')
 
-forecast = model.predict(test_prophet)
-y_true = test_prophet['y'].values
-y_pred = forecast['yhat'].values
+        run_date_utc = run_date.tz_localize("UTC")
 
-# Calculate RMSE
-rmse = np.sqrt(mean_squared_error(y_true, y_pred))
-logger.info(f"RMSE: {rmse:.2f}")
+        # Split into training and testing sets
+        train_data = df[df['target_datetime'] <= run_date_utc]
+        test_data = df[df['target_datetime'] > run_date_utc]
+
+        # Drop any missing data in training and test
+        train_data = train_data.dropna(subset=['target_datetime', target] + FEATURES)
+        test_data = test_data.dropna(subset=['target_datetime', target] + FEATURES)
+
+        if test_data.empty or train_data.empty:
+            print(f"Day {i+1}: ❌ Not enough data for training or testing")
+            continue
+
+        # Prepare data for Prophet
+        prophet_train = train_data.rename(columns={'target_datetime': 'ds', target: 'y'})[['ds', 'y'] + FEATURES]
+        prophet_train['ds'] = prophet_train['ds'].dt.tz_localize(None)
+        prophet_test = test_data.rename(columns={'target_datetime': 'ds', target: 'y'})[['ds', 'y'] + FEATURES]
+        prophet_test['ds'] = prophet_test['ds'].dt.tz_localize(None)
+
+        # Train Prophet model with extra regressors
+        model = Prophet(daily_seasonality=True, yearly_seasonality=True, weekly_seasonality=True)
+        for reg in FEATURES:
+            model.add_regressor(reg)
+        model.fit(prophet_train)
+
+        # Forecast for the test period
+        future = prophet_test[['ds'] + FEATURES]
+        forecast = model.predict(future)
+        y_pred = forecast['yhat'].values
+        y_test = prophet_test['y'].values
+
+        # Sla de eerste 24 uur over
+        if len(y_pred) > 24:
+            y_pred = y_pred[24:]
+            y_test = y_test[24:]
+        else:
+            print("Niet genoeg testdata na lag van 24 uur.")
+            rmse = np.nan
+            rmse_results.append({
+                'iteration': i + 1,
+                'run_date': run_date.strftime('%Y-%m-%d'),
+                'valid_predictions': 0,
+                'rmse': rmse
+            })
+            continue
+
+        if len(y_pred) > 0:
+            rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+        else:
+            rmse = np.nan
+
+        rmse_results.append({
+            'iteration': i + 1,
+            'run_date': run_date.strftime('%Y-%m-%d'),
+            'valid_predictions': len(y_pred),
+            'rmse': rmse
+        })
+
+        print(f"Day {i+1}: ✅ {len(y_pred)} test rows, Run: {run_date.strftime('%m-%d')}")
+
+    except Exception as e:
+        print(f"Day {i+1}: ❌ Error: {e}")
+
+# Create results dataframe
+if rmse_results:
+    rmse_df = pd.DataFrame(rmse_results)
+
+    print(f"\n📊 OVERALL RMSE - Prophet Model")
+    print("=" * 80)
+    print(f"Successful runs: {rmse_df['rmse'].notna().sum()}/30")
+
+    print(rmse_df[['iteration', 'run_date', 'valid_predictions', 'rmse']].round(2).to_string(index=False))
+
+    print(f"\n📈 SUMMARY STATISTICS")
+    print("-" * 40)
+    print(rmse_df['rmse'].describe().round(2))
+
+    print(f"\n📊 AVERAGE OVERALL RMSE")
+    print("-" * 40)
+    print(f"Mean RMSE: {rmse_df['rmse'].mean():.4f}")
+    print(f"Stddev RMSE: {rmse_df['rmse'].std():.4f}")
+
+else:
+    print("❌ No runs completed successfully")
 
 model_run_end_time = time.time()
-logger.info("✅ Base Model Train complete with RMSE: {:.2f}".format(rmse))
-
-forecast_indexed = forecast.set_index('ds')
-test_prophet_indexed = test_prophet.set_index('ds')
-merged = test_prophet_indexed[['y']].join(forecast_indexed[['yhat']], how='inner').dropna()
-
-logger.info(f"Aligned data length: {len(merged)}")
-logger.info(f"Date range: {merged.index.min()} to {merged.index.max()}")
-
-diff = merged['y'] - merged['yhat']
-mse = mean_squared_error(merged['y'], merged['yhat'])
-rmse = np.sqrt(mse)
-logger.info("✅ Base Model test complete with RMSE: {:.2f}".format(rmse))
-
-#model.plot(forecast)
-#plt.title("Prophet Train Forecast")
-#plt.xlabel("Date")
-#plt.ylabel("Predicted Price")
-#plt.tight_layout()
-# plt.show()
-
-#model.plot_components(forecast)
-#plt.tight_layout()
-# plt.show()
-
-#y_true = merged['y'].values
-#y_pred = merged['yhat'].values
 execution_time = model_run_end_time - model_run_start_time
-logger.info(f"Execution time: {execution_time:.2f} seconds")
 
-logger.info("\n📊 Evaluation Metrics for base model:")
-logger.info(f"Model Name: Prophet")
-logger.info(f"RMSE: {rmse:.3f}")
-
-comments = "Base model run on 29th May with 10 40 AM run"
+comments = "Base model run on 31st May with rolling df"
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 results.append(["Prophet", rmse, comments, execution_time, model_run_timestamp])
-metrics_df = pd.DataFrame(results, columns=["Model", "R2", "Comments", "Execution Time", "Run At"])
+metrics_df = pd.DataFrame(results, columns=["Model", "RMSE", "Comments", "Execution Time", "Run At"])
 
-model_results_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "warp-prophet-model-results.csv"
+model_results_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "warp-prophet-model-results.csv" 
+# -------------------- SAVE MODEL --------------------
 
-
-# Run with lag and horizon
-
-from datetime import timedelta
-
-model_run_start_time = time.time()
-
-# Parameters
-lag = timedelta(hours=36)                     # Delay after last training point
-forecast_horizon = timedelta(hours=144)       # Forecast window size (6 days)
-
-# Prepare training data (no regressors)
-train_prophet = y_train[['datetime', 'Price']].reset_index(drop=True)
-train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
-train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
-
-# Fit the model
-model = Prophet()
-model.fit(train_prophet)
-
-# Calculate forecast start and end based on lag and horizon
-forecast_start = train_prophet['ds'].max() + lag
-forecast_end = forecast_start + forecast_horizon
-forecast_days = (forecast_end - forecast_start).days + 1
-
-# Create future dataframe (with lag applied)
-future = model.make_future_dataframe(periods=forecast_days, freq='D')
-
-# Filter to lag + horizon range only
-future = future[future['ds'] >= forecast_start]
-
-# Predict
-forecast = model.predict(future)
-
-# Evaluate against test set if test data overlaps
-test_prophet = y_test[['datetime', 'Price']].reset_index(drop=True)
-test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
-test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
-
-# Align and evaluate
-forecast_indexed = forecast.set_index('ds')
-test_prophet_indexed = test_prophet.set_index('ds')
-merged = test_prophet_indexed[['y']].join(forecast_indexed[['yhat']], how='inner').dropna()
-
-if merged.empty:
-    logger.warning("⚠️ No overlapping dates between forecast and test set!")
-else:
-    rmse = np.sqrt(mean_squared_error(merged['y'], merged['yhat']))
-    logger.info(f"✅ Forecast Horizon: {forecast_start.date()} → {forecast_end.date()}")
-    logger.info(f"Aligned data points: {len(merged)}")
-    logger.info(f"Lagged forecast RMSE: {rmse:.3f}")
-
-model_run_end_time = time.time()
-logger.info("✅ Lagged Forecast Complete")
+model_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "prophet_model.pkl"
+joblib.dump(model, model_file_path)
 
 
-######
+###### Run for the BEST param
 
 from prophet import Prophet
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
@@ -223,7 +213,7 @@ regressors = [
 ]
 
 
-available_regressors = [col for col in X_train.columns if col in regressors]
+available_regressors = [col for col in train_data.columns if col in regressors]
 
 # Parameter grid
 # Reduced hyperparameter grid for faster grid search
@@ -254,28 +244,17 @@ best_model = None
 best_forecast = None
 best_params = None
 
-train_prophet = pd.concat([
-    y_train[['datetime', 'Price']].reset_index(drop=True),
-    X_train[available_regressors].reset_index(drop=True)
-], axis=1)
-test_prophet = pd.concat([
-    y_test[['datetime', 'Price']].reset_index(drop=True),
-    X_test[available_regressors].reset_index(drop=True)
-], axis=1)
 
-train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
-test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
-train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
-test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
 
 for params in all_params:
     model = Prophet(**params)
-    for reg in available_regressors:
+    #for reg in available_regressors:
+    for reg in FEATURES:
         model.add_regressor(reg)
-    model.fit(train_prophet)
+    model.fit(prophet_train)
     
-    forecast = model.predict(test_prophet)
-    y_true = test_prophet['y'].values
+    forecast = model.predict(prophet_test)
+    y_true = prophet_test['y'].values
     y_pred = forecast['yhat'].values
     rmse = np.sqrt(mean_squared_error(y_true, y_pred))
     
@@ -288,135 +267,123 @@ for params in all_params:
 logger.info(f"✅ Best Parameters: {best_params}")
 logger.info(f"✅ Best RMSE: {best_rmse:.3f}")
 
+
 # -------------------- SAVE MODEL --------------------
 
 model_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "prophet_hyper_tuned_model.pkl"
 joblib.dump(best_model, model_file_path)
 
-# -------------------- ROLLING FORECAST for training and Test window --------------------
+# -------------------- Prediction on future data --------------------
+"""
+from datetime import timedelta
 
-window_size = 30
-test_size = 7
-step_size = 1
-start_date = pd.Timestamp('2025-03-15')
-end_date = pd.Timestamp.today() - timedelta(days=window_size + test_size)
+# --- Parameters ---
+
+# Step 1: Read data
+csv_file_path = PROJECT_ROOT / "src" / "data" / "warp-csv-dataset.csv"
+with open(csv_file_path, 'rb') as csv_file:
+    df_pd_orig = pd.read_csv(csv_file)
+
+df = df_pd_orig.copy()
+
+
+start_date = pd.Timestamp("2025-03-15 00:00:00")
+rolling_days = 7  # how many days to roll
+horizon = 1       # forecast 1 day at a time
 
 all_preds, all_actuals, all_timestamps, all_horizons = [], [], [], []
-window_rmses = []
-current_start = start_date
 
-while current_start <= end_date:
-    train_start = current_start
-    train_end = train_start + timedelta(days=window_size - 1, hours=23)
-    test_start = train_end + timedelta(hours=1)
-    test_end = test_start + timedelta(days=test_size - 1, hours=23)
+# --- Daily Rolling Prediction ---
+for day_offset in range(rolling_days):
+    predict_date = start_date + timedelta(days=day_offset)
 
-    train = df[(df['datetime'] >= train_start) & (df['datetime'] <= train_end)]
-    test = df[(df['datetime'] >= test_start) & (df['datetime'] <= test_end)]
+    # Filter forecast data for specific day
+    future = df[df['target_datetime'].dt.normalize() == predict_date.normalize()].copy()
 
-    if len(train) == 0 or len(test) == 0:
-        current_start += timedelta(days=step_size)
+    if future.empty:
+        logger.warning(f"⚠️ No data available for {predict_date.date()}, skipping.")
         continue
 
-    y_train_roll = train[['datetime', 'Price']]
-    X_train_roll = train[available_regressors]
-    y_test_roll = test[['datetime', 'Price']]
-    X_test_roll = test[available_regressors]
+    # --- Prepare Input for Prophet ---
+    future.rename(columns={'target_datetime': 'ds', 'Price': 'y'}, inplace=True)
+    future['ds'] = pd.to_datetime(future['ds']).dt.tz_localize(None)
 
-    train_prophet = pd.concat([y_train_roll.reset_index(drop=True), X_train_roll.reset_index(drop=True)], axis=1)
-    test_prophet = pd.concat([y_test_roll.reset_index(drop=True), X_test_roll.reset_index(drop=True)], axis=1)
+    # Align regressors
+    if available_regressors:
+        required_cols = ['ds', 'y'] + available_regressors
+        future = future[required_cols]
+        future[available_regressors] = future[available_regressors].ffill().bfill()
+    else:
+        future = future[['ds', 'y']]
 
-    train_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
-    test_prophet.rename(columns={'datetime': 'ds', 'Price': 'y'}, inplace=True)
-    train_prophet['ds'] = pd.to_datetime(train_prophet['ds']).dt.tz_localize(None)
-    test_prophet['ds'] = pd.to_datetime(test_prophet['ds']).dt.tz_localize(None)
+    try:
+        forecast = best_model.predict(future)
+        y_true = future['y'].values
+        y_pred = forecast['yhat'].values
 
-    model = Prophet(**best_params)
-    for reg in available_regressors:
-        model.add_regressor(reg)
-    model.fit(train_prophet)
+        horizon_values = np.full_like(y_true, fill_value=day_offset, dtype=int)
 
-    forecast = model.predict(test_prophet)
-    y_true = test_prophet['y'].values
-    y_pred = forecast['yhat'].values
+        all_preds.extend(y_pred)
+        all_actuals.extend(y_true)
+        all_timestamps.extend(forecast['ds'].values)
+        all_horizons.extend(horizon_values)
 
-    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
-    window_rmses.append(rmse)
+        logger.info(f"✅ Prediction complete for {predict_date.date()} with {len(y_pred)} rows.")
 
-    horizons = ((test_prophet['ds'] - test_start).dt.days).values
-    all_preds.extend(y_pred)
-    all_actuals.extend(y_true)
-    all_timestamps.extend(test_prophet['ds'].values)
-    all_horizons.extend(horizons)
+    except Exception as e:
+        logger.error(f"❌ Prediction failed for {predict_date.date()}: {e}")
 
-    current_start += timedelta(days=step_size)
 
-avg_rmse = np.mean(window_rmses)
-logger.info(f"📊 Average RMSE across windows: {avg_rmse:.3f}")
+# === Final Evaluation ===
+if not all_preds:
+    logger.warning("❌ No predictions were made. Check your data coverage.")
+else:
+    # Overall Metrics
+    final_rmse = np.sqrt(mean_squared_error(all_actuals, all_preds))
+    final_mae = mean_absolute_error(all_actuals, all_preds)
+    final_r2 = r2_score(all_actuals, all_preds)
 
-# Final evaluation
-assert len(all_preds) == len(all_actuals) == len(all_timestamps) == len(all_horizons)
-final_rmse = np.sqrt(mean_squared_error(all_actuals, all_preds))
-final_mae = mean_absolute_error(all_actuals, all_preds)
-final_r2 = r2_score(all_actuals, all_preds)
+    logger.info(f"🎯 Rolling RMSE: {final_rmse:.3f} | MAE: {final_mae:.3f} | R²: {final_r2:.3f}")
 
-logger.info(f"🎯 Rolling RMSE: {final_rmse:.3f} | MAE: {final_mae:.3f} | R2: {final_r2:.3f}")
+    # --- Combine to DataFrame ---
+    df_eval = pd.DataFrame({
+        'Timestamp': all_timestamps,
+        'Actual': all_actuals,
+        'Predicted': all_preds,
+        'Horizon': all_horizons
+    })
 
-# Convert all lists to numpy arrays for consistency
+    logger.info(f"✅ Evaluation DataFrame created with {len(df_eval)} rows")
 
-# Now, build a DataFrame with the horizon included
-rolling_window_result_df = pd.DataFrame({
-    'Timestamp': all_timestamps,
-    'Actual': all_actuals,
-    'Predicted': all_preds,
-    'Horizon': all_horizons
-})
+    # --- Pivot for per-horizon prediction view ---
+    pivot_df = df_eval.pivot_table(index='Timestamp', columns='Horizon', values='Predicted', aggfunc='first')
+    pivot_df.columns = [f'Predicted_{int(h+1)}d_ahead' for h in pivot_df.columns]
+    pivot_df = pivot_df.reset_index()
 
-print(rolling_window_result_df.head())
+    # Add Actuals
+    actuals = df_eval.drop_duplicates('Timestamp')[['Timestamp', 'Actual']]
+    pivot_df = pd.merge(pivot_df, actuals, on='Timestamp', how='left')
 
-# Pivot so each horizon is a column
-pivot_df = rolling_window_result_df.pivot_table(index='Timestamp', columns='Horizon', values='Predicted', aggfunc='first')
-pivot_df.columns = [f'Predicted_{int(h+1)}d_ahead' for h in pivot_df.columns]  # 1-based
-pivot_df = pivot_df.reset_index()
+    print(pivot_df.head())
 
-print(pivot_df.head())
+    # === Save full prediction table ===
+    forecast_output_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "rolling_predictions.csv"
+    pivot_df.to_csv(forecast_output_path, index=False)
+    logger.info(f"📁 Rolling predictions saved to: {forecast_output_path}")
 
-# Add actuals
-actuals = rolling_window_result_df.drop_duplicates('Timestamp')[['Timestamp', 'Actual']]
-pivot_df = pd.merge(pivot_df, actuals, on='Timestamp', how='left')
+    # === Horizon-wise RMSE ===
+    horizon_rmse_log = {}
+    logger.info("📉 Horizon-wise RMSEs:")
+    for h in sorted(df_eval['Horizon'].unique()):
+        df_h = df_eval[df_eval['Horizon'] == h]
+        if not df_h.empty:
+            rmse_h = np.sqrt(mean_squared_error(df_h['Actual'], df_h['Predicted']))
+            logger.info(f"🔹 Horizon {h+1}-step ahead → RMSE: {rmse_h:.4f}")
+            horizon_rmse_log[f"rmse_horizon_{h+1}"] = rmse_h
 
-print(pivot_df.head())
-
-# Gemiddelde RMSE, MAE en feature importance
-print(f"\nAverage RMSE: {np.mean(final_rmse):.2f}")
-
-# Convert to DataFrame for easier horizon slicing
-df_eval = pd.DataFrame({
-    'timestamp': all_timestamps,
-    'actual': all_actuals,
-    'predicted': all_preds,
-    'horizon': all_horizons
-})
-
-# Ensure proper types
-df_eval['horizon'] = df_eval['horizon'].astype(int)
-
-# Calculate RMSE per horizon
-horizon_rmse_log = {}
-max_horizon = df_eval['horizon'].max()
-
-logger.info("📉 Horizon-wise RMSEs:")
-
-for h in range(max_horizon + 1):  # horizon=0 means 1-step ahead
-    df_h = df_eval[df_eval['horizon'] == h]
-    if len(df_h) == 0:
-        continue
-    rmse_h = np.sqrt(mean_squared_error(df_h['actual'], df_h['predicted']))
-    logger.info(f"🔹 Horizon {h+1}-step ahead → RMSE: {rmse_h:.4f}")
-    horizon_rmse_log[f"rmse_horizon_{h+1}"] = rmse_h
-
-horizon_rmse_df = pd.DataFrame(list(horizon_rmse_log.items()), columns=["Horizon", "RMSE"])
-horizon_model_results_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "horizon_wise_rmse.csv"
-horizon_rmse_df.to_csv(horizon_model_results_file_path, index=False)
-logger.info("✅ Horizon-wise RMSEs saved to horizon_wise_rmse.csv")
-
+    # Save RMSEs
+    horizon_rmse_df = pd.DataFrame(list(horizon_rmse_log.items()), columns=["Horizon", "RMSE"])
+    horizon_model_results_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "horizon_wise_rmse.csv"
+    horizon_rmse_df.to_csv(horizon_model_results_file_path, index=False)
+    logger.info("✅ Horizon-wise RMSEs saved.")
+"""
