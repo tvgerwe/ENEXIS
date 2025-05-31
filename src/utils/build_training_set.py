@@ -5,7 +5,9 @@ from pathlib import Path
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - build_training_set - %(levelname)s - %(message)s"
+    filename=str(Path(__file__).parent / "logs" / "build_training_set_json.log"),
+    filemode='a',
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger("build_training_set")
 
