@@ -1114,3 +1114,22 @@ ValueError: Regressor 'wind_speed_10m' missing from dataframe
 2025-05-31 15:04:32,440 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 6-step ahead → RMSE: 0.0452
 2025-05-31 15:04:32,441 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 7-step ahead → RMSE: 0.0283
 2025-05-31 15:04:32,442 - prophet_forecast_tuned_model - INFO - ✅ Horizon-wise RMSEs saved.
+2025-05-31 18:25:58,570 - prophet_forecast_tuned_model - INFO - ✅ Prophet model loaded from disk.
+2025-05-31 18:25:58,707 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-15 with 24 rows.
+2025-05-31 18:25:58,774 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-16 with 24 rows.
+2025-05-31 18:25:58,832 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-17 with 24 rows.
+2025-05-31 18:25:58,890 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-18 with 24 rows.
+2025-05-31 18:25:58,947 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-19 with 24 rows.
+2025-05-31 18:25:59,005 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-20 with 24 rows.
+2025-05-31 18:25:59,063 - prophet_forecast_tuned_model - INFO - ✅ Prediction complete for 2025-03-21 with 24 rows.
+2025-05-31 18:25:59,065 - prophet_forecast_tuned_model - INFO - 🎯 Rolling RMSE: 0.132 | MAE: 0.125 | R²: -6.221
+2025-05-31 18:25:59,081 - prophet_forecast_tuned_model - INFO - 📁 Rolling predictions saved to: /Users/sgawde/work/eaisi-code/main-branch-30-may/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-05-31 18:25:59,081 - prophet_forecast_tuned_model - INFO - 📉 Horizon-wise RMSEs:
+2025-05-31 18:25:59,083 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 1-step ahead → RMSE: 0.1698
+2025-05-31 18:25:59,085 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 2-step ahead → RMSE: 0.1782
+2025-05-31 18:25:59,086 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 3-step ahead → RMSE: 0.1333
+2025-05-31 18:25:59,088 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 4-step ahead → RMSE: 0.0771
+2025-05-31 18:25:59,089 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 5-step ahead → RMSE: 0.1245
+2025-05-31 18:25:59,090 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 6-step ahead → RMSE: 0.1264
+2025-05-31 18:25:59,091 - prophet_forecast_tuned_model - INFO - 🔹 Horizon 7-step ahead → RMSE: 0.0829
+2025-05-31 18:25:59,093 - prophet_forecast_tuned_model - INFO - ✅ Horizon-wise RMSEs saved.
