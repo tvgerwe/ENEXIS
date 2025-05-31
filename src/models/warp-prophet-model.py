@@ -64,7 +64,7 @@ target = 'Price'
 # wind_speed_10m
 
 # Initial training window
-base_start = "2025-03-01 00:00:00"
+base_start = "2025-01-01 00:00:00"
 base_end = "2025-03-14 23:00:00"
 base_run = "2025-03-15 00:00:00"
 
