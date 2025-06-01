@@ -1,0 +1,8 @@
+Iteration,Model Configs,Feature and Regressors,RMSE,StdDev RMSE
+First,Prophet,None,0.3401,0.4859
+Fifth,Prophet,Top 6 Corr Features,0.2736,0.4138
+Second,Prophet,Time Columns,0.2811,0.3938
+Third,Prophet,All Corr Features,0.2598,0.3861
+Fourth,Prophet,Top 10 Corr Features,0.2631,0.4126
+Sixth,Prophet,Top 4 Corr Features,0.2659,0.4165
+Seventh,Prophet,Best Param,0.2342,0.3938

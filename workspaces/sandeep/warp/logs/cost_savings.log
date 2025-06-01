@@ -1,0 +1,531 @@
+2025-06-01 09:26:24,190 - CostSavings - INFO - Starting cost savings analysis...
+2025-06-01 09:26:24,205 - CostSavings - INFO - Input data prepared
+2025-06-01 09:26:24,205 - CostSavings - INFO - Starting cost savings calculation...
+2025-06-01 09:26:24,208 - CostSavings - INFO - Input data shape: (7, 2)
+2025-06-01 09:26:24,227 - CostSavings - INFO - Sample data:
+            actual_price  predicted_price
+2025-01-01          10.5             10.8
+2025-01-02          11.2             11.0
+2025-01-03           9.8              9.9
+2025-01-04          12.1             11.8
+2025-01-05          10.9             11.2
+2025-06-01 09:26:24,236 - CostSavings - INFO - Cost savings calculation completed
+2025-06-01 09:26:24,237 - CostSavings - INFO - Starting savings analysis...
+2025-06-01 09:26:24,241 - CostSavings - INFO - Savings analysis completed
+2025-06-01 09:26:24,284 - CostSavings - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:26:25,634 - CostSavings - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:26:25,634 - CostSavings - INFO - Cost savings analysis completed successfully
+2025-06-01 09:30:58,969 - CostSavings - INFO - Starting cost savings analysis...
+2025-06-01 09:30:58,983 - CostSavings - INFO - Input data prepared
+2025-06-01 09:30:58,983 - CostSavings - INFO - Starting cost savings calculation...
+2025-06-01 09:30:58,985 - CostSavings - INFO - Input data shape: (7, 2)
+2025-06-01 09:30:59,003 - CostSavings - INFO - Sample data:
+            actual_price  predicted_price
+2025-01-01          10.5             10.8
+2025-01-02          11.2             11.0
+2025-01-03           9.8              9.9
+2025-01-04          12.1             11.8
+2025-01-05          10.9             11.2
+2025-06-01 09:30:59,013 - CostSavings - INFO - Cost savings calculation completed
+2025-06-01 09:30:59,013 - CostSavings - INFO - Starting savings analysis...
+2025-06-01 09:30:59,018 - CostSavings - INFO - Savings analysis completed
+2025-06-01 09:30:59,035 - CostSavings - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:31:00,091 - CostSavings - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:31:00,091 - CostSavings - INFO - Cost savings analysis completed successfully
+2025-06-01 09:33:41,486 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:33:41,487 - CostSavingsAnalyzer - INFO - No input DataFrame provided, generating dummy data
+2025-06-01 09:33:41,487 - CostSavingsAnalyzer - INFO - Generating dummy data for 7 days
+2025-06-01 09:33:41,496 - CostSavingsAnalyzer - INFO - Generated dummy data with shape: (7, 3)
+2025-06-01 09:33:41,496 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:33:41,512 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:33:41,512 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:33:41,514 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:33:41,577 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:33:42,841 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:33:42,841 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:35:39,748 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:35:39,748 - CostSavingsAnalyzer - INFO - No input DataFrame provided, generating dummy data
+2025-06-01 09:35:39,749 - CostSavingsAnalyzer - INFO - Generating dummy data for 7 days
+2025-06-01 09:35:39,757 - CostSavingsAnalyzer - INFO - Generated dummy data with shape: (7, 3)
+2025-06-01 09:35:39,758 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:35:39,776 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:35:39,776 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:35:39,778 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:35:39,818 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:35:41,160 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:35:41,160 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:41:11,515 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:41:11,515 - CostSavingsAnalyzer - INFO - No input DataFrame provided, generating dummy data
+2025-06-01 09:41:11,516 - CostSavingsAnalyzer - INFO - Generating dummy data for 7 days
+2025-06-01 09:41:11,524 - CostSavingsAnalyzer - INFO - Generated dummy data with shape: (7, 3)
+2025-06-01 09:41:11,525 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:41:11,543 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:41:11,543 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:41:11,546 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:41:11,617 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:41:13,047 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:41:13,047 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:42:40,538 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:42:40,539 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:42:40,539 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:42:40,561 - CostSavingsAnalyzer - ERROR - Error loading rolling predictions: 'timestamp'
+2025-06-01 09:42:40,561 - CostSavingsAnalyzer - ERROR - Error in analysis: 'timestamp'
+Traceback (most recent call last):
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7081, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7089, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'timestamp'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 268, in run_analysis
+    df = self.load_rolling_predictions(input_file)
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 56, in load_rolling_predictions
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/frame.py", line 4102, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 'timestamp'
+2025-06-01 09:43:03,103 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:43:03,103 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:43:03,104 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:43:03,119 - CostSavingsAnalyzer - ERROR - Error loading rolling predictions: 'timestamp'
+2025-06-01 09:43:03,119 - CostSavingsAnalyzer - ERROR - Error in analysis: 'timestamp'
+Traceback (most recent call last):
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7081, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7089, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'timestamp'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 268, in run_analysis
+    df = self.load_rolling_predictions(input_file)
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 56, in load_rolling_predictions
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/frame.py", line 4102, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 'timestamp'
+2025-06-01 09:43:57,470 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:43:57,470 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:43:57,470 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:43:57,483 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:43:57,512 - CostSavingsAnalyzer - ERROR - Error loading rolling predictions: "['predicted_price'] not in index"
+2025-06-01 09:43:57,512 - CostSavingsAnalyzer - ERROR - Available columns: ['timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'actual_price']
+2025-06-01 09:43:57,512 - CostSavingsAnalyzer - ERROR - Error in analysis: "['predicted_price'] not in index"
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 274, in run_analysis
+    df = self.load_rolling_predictions(input_file)
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 70, in load_rolling_predictions
+    df = df[['timestamp', 'actual_price', 'predicted_price']]
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/frame.py", line 4108, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 6200, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 6252, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: "['predicted_price'] not in index"
+2025-06-01 09:44:46,471 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:44:46,472 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:44:46,472 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:44:46,497 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:44:46,500 - CostSavingsAnalyzer - WARNING - Column Predicted not found in CSV
+2025-06-01 09:44:46,515 - CostSavingsAnalyzer - ERROR - Error loading rolling predictions: Missing required columns: ['predicted_price']
+2025-06-01 09:44:46,515 - CostSavingsAnalyzer - ERROR - Available columns: ['timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'actual_price']
+2025-06-01 09:44:46,516 - CostSavingsAnalyzer - ERROR - Error in analysis: Missing required columns: ['predicted_price']
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 291, in run_analysis
+    df = self.load_rolling_predictions(input_file)
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 85, in load_rolling_predictions
+    raise ValueError(f"Missing required columns: {missing_columns}")
+ValueError: Missing required columns: ['predicted_price']
+2025-06-01 09:45:26,162 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:45:26,162 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:45:26,162 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:45:26,173 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:45:26,173 - CostSavingsAnalyzer - WARNING - Column Predicted not found in CSV
+2025-06-01 09:45:26,185 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:45:26,188 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:45:26,189 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:45:26,189 - CostSavingsAnalyzer - ERROR - Error in analysis: Input DataFrame must contain columns: ['actual_price', 'predicted_price']
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 297, in run_analysis
+    results_df = self.calculate_cost_savings(df)
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 170, in calculate_cost_savings
+    raise ValueError(f"Input DataFrame must contain columns: {required_columns}")
+ValueError: Input DataFrame must contain columns: ['actual_price', 'predicted_price']
+2025-06-01 09:46:58,495 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:46:58,495 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:46:58,495 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:46:58,521 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:46:58,524 - CostSavingsAnalyzer - WARNING - Column Predicted not found in CSV
+2025-06-01 09:46:58,544 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:46:58,547 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:46:58,547 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:46:58,558 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:46:58,558 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:46:58,560 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:46:58,581 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:47:00,160 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:47:00,160 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:47:27,796 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:47:27,796 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:47:27,796 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:47:27,801 - CostSavingsAnalyzer - ERROR - Error loading rolling predictions: 'timestamp'
+2025-06-01 09:47:27,801 - CostSavingsAnalyzer - ERROR - Error in analysis: 'timestamp'
+Traceback (most recent call last):
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7081, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7089, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'timestamp'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 268, in run_analysis
+    df = self.load_rolling_predictions(input_file)
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 56, in load_rolling_predictions
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/frame.py", line 4102, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/opt/miniconda3/envs/enexis-may-03-env-run/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 'timestamp'
+2025-06-01 09:48:04,915 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:48:04,916 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:48:04,916 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:48:04,934 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:48:04,937 - CostSavingsAnalyzer - INFO - 
+First few rows of the data:
+2025-06-01 09:48:04,953 - CostSavingsAnalyzer - INFO -     Timestamp  Predicted_1d_ahead  Predicted_2d_ahead  Predicted_3d_ahead  Predicted_4d_ahead  Predicted_5d_ahead  Predicted_6d_ahead  Predicted_7d_ahead   Actual
+0  2025-03-15            0.014981                 NaN                 NaN                 NaN                 NaN                 NaN                 NaN  0.09525
+1  2025-03-16                 NaN           -0.007833                 NaN                 NaN                 NaN                 NaN                 NaN  0.08070
+2  2025-03-17                 NaN                 NaN            0.012285                 NaN                 NaN                 NaN                 NaN  0.09350
+3  2025-03-18                 NaN                 NaN                 NaN           -0.014203                 NaN                 NaN                 NaN  0.10042
+4  2025-03-19                 NaN                 NaN                 NaN                 NaN           -0.025354                 NaN                 NaN  0.10644
+2025-06-01 09:48:04,954 - CostSavingsAnalyzer - WARNING - Column Predicted not found in CSV
+2025-06-01 09:48:04,965 - CostSavingsAnalyzer - ERROR - Error loading rolling predictions: Missing required columns: ['predicted_price']
+2025-06-01 09:48:04,965 - CostSavingsAnalyzer - ERROR - Available columns: ['timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'actual_price']
+2025-06-01 09:48:04,965 - CostSavingsAnalyzer - ERROR - Error in analysis: Missing required columns: ['predicted_price']
+Traceback (most recent call last):
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 295, in run_analysis
+    df = self.load_rolling_predictions(input_file)
+  File "/Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/model-demo.py", line 89, in load_rolling_predictions
+    raise ValueError(f"Missing required columns: {missing_columns}")
+ValueError: Missing required columns: ['predicted_price']
+2025-06-01 09:48:56,199 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:48:56,199 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:48:56,199 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:48:56,204 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:48:56,204 - CostSavingsAnalyzer - INFO - 
+First few rows of the data:
+2025-06-01 09:48:56,208 - CostSavingsAnalyzer - INFO -     Timestamp  Predicted_1d_ahead  Predicted_2d_ahead  Predicted_3d_ahead  Predicted_4d_ahead  Predicted_5d_ahead  Predicted_6d_ahead  Predicted_7d_ahead   Actual
+0  2025-03-15            0.014981                 NaN                 NaN                 NaN                 NaN                 NaN                 NaN  0.09525
+1  2025-03-16                 NaN           -0.007833                 NaN                 NaN                 NaN                 NaN                 NaN  0.08070
+2  2025-03-17                 NaN                 NaN            0.012285                 NaN                 NaN                 NaN                 NaN  0.09350
+3  2025-03-18                 NaN                 NaN                 NaN           -0.014203                 NaN                 NaN                 NaN  0.10042
+4  2025-03-19                 NaN                 NaN                 NaN                 NaN           -0.025354                 NaN                 NaN  0.10644
+2025-06-01 09:48:56,221 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:48:56,223 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:48:56,223 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:48:56,232 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:48:56,232 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:48:56,234 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:48:56,253 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:48:57,445 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:48:57,447 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:50:20,470 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:50:20,471 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:50:20,471 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:50:20,494 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:50:20,494 - CostSavingsAnalyzer - INFO - 
+First few rows of the data:
+2025-06-01 09:50:20,507 - CostSavingsAnalyzer - INFO -     Timestamp  Predicted_1d_ahead  Predicted_2d_ahead  Predicted_3d_ahead  Predicted_4d_ahead  Predicted_5d_ahead  Predicted_6d_ahead  Predicted_7d_ahead   Actual
+0  2025-03-15            0.014981                 NaN                 NaN                 NaN                 NaN                 NaN                 NaN  0.09525
+1  2025-03-16                 NaN           -0.007833                 NaN                 NaN                 NaN                 NaN                 NaN  0.08070
+2  2025-03-17                 NaN                 NaN            0.012285                 NaN                 NaN                 NaN                 NaN  0.09350
+3  2025-03-18                 NaN                 NaN                 NaN           -0.014203                 NaN                 NaN                 NaN  0.10042
+4  2025-03-19                 NaN                 NaN                 NaN                 NaN           -0.025354                 NaN                 NaN  0.10644
+2025-06-01 09:50:20,526 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:50:20,528 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:50:20,528 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:50:20,534 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:50:20,535 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:50:20,536 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:50:20,556 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:50:21,940 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:50:21,940 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:51:20,851 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:51:20,851 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:51:20,852 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:51:20,867 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:51:20,870 - CostSavingsAnalyzer - INFO - 
+First few rows of the data:
+2025-06-01 09:51:20,882 - CostSavingsAnalyzer - INFO -     Timestamp  Predicted_1d_ahead  Predicted_2d_ahead  Predicted_3d_ahead  Predicted_4d_ahead  Predicted_5d_ahead  Predicted_6d_ahead  Predicted_7d_ahead   Actual
+0  2025-03-15            0.014981                 NaN                 NaN                 NaN                 NaN                 NaN                 NaN  0.09525
+1  2025-03-16                 NaN           -0.007833                 NaN                 NaN                 NaN                 NaN                 NaN  0.08070
+2  2025-03-17                 NaN                 NaN            0.012285                 NaN                 NaN                 NaN                 NaN  0.09350
+3  2025-03-18                 NaN                 NaN                 NaN           -0.014203                 NaN                 NaN                 NaN  0.10042
+4  2025-03-19                 NaN                 NaN                 NaN                 NaN           -0.025354                 NaN                 NaN  0.10644
+2025-06-01 09:51:20,921 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:51:20,923 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:51:20,923 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:51:20,932 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:51:20,932 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:51:20,934 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:51:20,943 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:51:22,061 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:51:22,061 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:52:16,459 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:52:16,460 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:52:16,460 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:52:16,499 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:52:16,499 - CostSavingsAnalyzer - INFO - 
+First few rows of the data:
+2025-06-01 09:52:16,509 - CostSavingsAnalyzer - INFO -     Timestamp  Predicted_1d_ahead  Predicted_2d_ahead  Predicted_3d_ahead  Predicted_4d_ahead  Predicted_5d_ahead  Predicted_6d_ahead  Predicted_7d_ahead   Actual
+0  2025-03-15            0.014981                 NaN                 NaN                 NaN                 NaN                 NaN                 NaN  0.09525
+1  2025-03-16                 NaN           -0.007833                 NaN                 NaN                 NaN                 NaN                 NaN  0.08070
+2  2025-03-17                 NaN                 NaN            0.012285                 NaN                 NaN                 NaN                 NaN  0.09350
+3  2025-03-18                 NaN                 NaN                 NaN           -0.014203                 NaN                 NaN                 NaN  0.10042
+4  2025-03-19                 NaN                 NaN                 NaN                 NaN           -0.025354                 NaN                 NaN  0.10644
+2025-06-01 09:52:16,524 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:52:16,549 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:52:16,551 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:52:16,558 - CostSavingsAnalyzer - INFO - 
+Optimization Summary:
+2025-06-01 09:52:16,559 - CostSavingsAnalyzer - INFO - Low price days (<= 0.01): 1 days
+2025-06-01 09:52:16,559 - CostSavingsAnalyzer - INFO - High price days (>= 0.01): 1 days
+2025-06-01 09:52:16,560 - CostSavingsAnalyzer - INFO - Medium price days: 0 days
+2025-06-01 09:52:16,567 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:52:16,567 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:52:16,569 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:52:16,585 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:52:17,985 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:52:17,985 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:52:53,868 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:52:53,868 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:52:53,868 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:52:53,872 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:52:53,873 - CostSavingsAnalyzer - INFO - 
+First few rows of the data:
+2025-06-01 09:52:53,879 - CostSavingsAnalyzer - INFO -     Timestamp  Predicted_1d_ahead  Predicted_2d_ahead  Predicted_3d_ahead  Predicted_4d_ahead  Predicted_5d_ahead  Predicted_6d_ahead  Predicted_7d_ahead   Actual
+0  2025-03-15            0.014981                 NaN                 NaN                 NaN                 NaN                 NaN                 NaN  0.09525
+1  2025-03-16                 NaN           -0.007833                 NaN                 NaN                 NaN                 NaN                 NaN  0.08070
+2  2025-03-17                 NaN                 NaN            0.012285                 NaN                 NaN                 NaN                 NaN  0.09350
+3  2025-03-18                 NaN                 NaN                 NaN           -0.014203                 NaN                 NaN                 NaN  0.10042
+4  2025-03-19                 NaN                 NaN                 NaN                 NaN           -0.025354                 NaN                 NaN  0.10644
+2025-06-01 09:52:53,886 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:52:53,887 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:52:53,887 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:52:53,896 - CostSavingsAnalyzer - INFO - 
+Optimization Summary:
+2025-06-01 09:52:53,896 - CostSavingsAnalyzer - INFO - Low price days (<= 0.01): 1 days
+2025-06-01 09:52:53,900 - CostSavingsAnalyzer - INFO - High price days (>= 0.01): 1 days
+2025-06-01 09:52:53,901 - CostSavingsAnalyzer - INFO - Medium price days: 0 days
+2025-06-01 09:52:53,903 - CostSavingsAnalyzer - INFO - 
+Detailed Analysis:
+2025-06-01 09:52:53,904 - CostSavingsAnalyzer - INFO - 
+Price Statistics:
+2025-06-01 09:52:53,904 - CostSavingsAnalyzer - INFO - Mean actual price: 0.09
+2025-06-01 09:52:53,910 - CostSavingsAnalyzer - INFO - Min actual price: 0.02
+2025-06-01 09:52:53,910 - CostSavingsAnalyzer - INFO - Max actual price: 0.11
+2025-06-01 09:52:53,911 - CostSavingsAnalyzer - INFO - 
+Consumption Statistics:
+2025-06-01 09:52:53,913 - CostSavingsAnalyzer - INFO - Mean optimized consumption: 1000.00
+2025-06-01 09:52:53,913 - CostSavingsAnalyzer - INFO - Min optimized consumption: 933.33
+2025-06-01 09:52:53,913 - CostSavingsAnalyzer - INFO - Max optimized consumption: 1400.00
+2025-06-01 09:52:53,913 - CostSavingsAnalyzer - INFO - 
+Cost Statistics:
+2025-06-01 09:52:53,913 - CostSavingsAnalyzer - INFO - Total average consumption cost: 604.03
+2025-06-01 09:52:53,914 - CostSavingsAnalyzer - INFO - Total optimized cost: 608.21
+2025-06-01 09:52:53,914 - CostSavingsAnalyzer - INFO - Total savings: -4.18
+2025-06-01 09:52:53,914 - CostSavingsAnalyzer - INFO - 
+Daily Details (first 5 days):
+2025-06-01 09:52:53,922 - CostSavingsAnalyzer - INFO - 
+   timestamp  actual_price  predicted_price  optimized_consumption  avg_consumption_cost  optimized_cost    savings
+0 2025-03-15       0.09525         0.014981            1400.000000                 95.25      133.350000 -38.100000
+1 2025-03-16       0.08070              NaN             933.333333                 80.70       75.320000   5.380000
+2 2025-03-17       0.09350              NaN             933.333333                 93.50       87.266667   6.233333
+3 2025-03-18       0.10042              NaN             933.333333                100.42       93.725333   6.694667
+4 2025-03-19       0.10644              NaN             933.333333                106.44       99.344000   7.096000
+2025-06-01 09:52:53,922 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:52:53,922 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:52:53,923 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:52:53,940 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:52:54,917 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:52:54,917 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:53:08,046 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:53:08,046 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:53:08,046 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:53:08,050 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:53:08,050 - CostSavingsAnalyzer - INFO - 
+First few rows of the data:
+2025-06-01 09:53:08,055 - CostSavingsAnalyzer - INFO -     Timestamp  Predicted_1d_ahead  Predicted_2d_ahead  Predicted_3d_ahead  Predicted_4d_ahead  Predicted_5d_ahead  Predicted_6d_ahead  Predicted_7d_ahead   Actual
+0  2025-03-15            0.014981                 NaN                 NaN                 NaN                 NaN                 NaN                 NaN  0.09525
+1  2025-03-16                 NaN           -0.007833                 NaN                 NaN                 NaN                 NaN                 NaN  0.08070
+2  2025-03-17                 NaN                 NaN            0.012285                 NaN                 NaN                 NaN                 NaN  0.09350
+3  2025-03-18                 NaN                 NaN                 NaN           -0.014203                 NaN                 NaN                 NaN  0.10042
+4  2025-03-19                 NaN                 NaN                 NaN                 NaN           -0.025354                 NaN                 NaN  0.10644
+2025-06-01 09:53:08,059 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:53:08,061 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:53:08,061 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:53:08,072 - CostSavingsAnalyzer - INFO - 
+Optimization Summary:
+2025-06-01 09:53:08,072 - CostSavingsAnalyzer - INFO - Low price days (<= 0.01): 1 days
+2025-06-01 09:53:08,073 - CostSavingsAnalyzer - INFO - High price days (>= 0.01): 1 days
+2025-06-01 09:53:08,074 - CostSavingsAnalyzer - INFO - Medium price days: 0 days
+2025-06-01 09:53:08,075 - CostSavingsAnalyzer - INFO - 
+Detailed Analysis:
+2025-06-01 09:53:08,075 - CostSavingsAnalyzer - INFO - 
+Price Statistics:
+2025-06-01 09:53:08,076 - CostSavingsAnalyzer - INFO - Mean actual price: 0.09
+2025-06-01 09:53:08,076 - CostSavingsAnalyzer - INFO - Min actual price: 0.02
+2025-06-01 09:53:08,076 - CostSavingsAnalyzer - INFO - Max actual price: 0.11
+2025-06-01 09:53:08,076 - CostSavingsAnalyzer - INFO - 
+Consumption Statistics:
+2025-06-01 09:53:08,076 - CostSavingsAnalyzer - INFO - Mean optimized consumption: 1000.00
+2025-06-01 09:53:08,076 - CostSavingsAnalyzer - INFO - Min optimized consumption: 933.33
+2025-06-01 09:53:08,076 - CostSavingsAnalyzer - INFO - Max optimized consumption: 1400.00
+2025-06-01 09:53:08,077 - CostSavingsAnalyzer - INFO - 
+Cost Statistics:
+2025-06-01 09:53:08,079 - CostSavingsAnalyzer - INFO - Total average consumption cost: 604.03
+2025-06-01 09:53:08,079 - CostSavingsAnalyzer - INFO - Total optimized cost: 608.21
+2025-06-01 09:53:08,079 - CostSavingsAnalyzer - INFO - Total savings: -4.18
+2025-06-01 09:53:08,080 - CostSavingsAnalyzer - INFO - 
+Daily Details (first 5 days):
+2025-06-01 09:53:08,084 - CostSavingsAnalyzer - INFO - 
+   timestamp  actual_price  predicted_price  optimized_consumption  avg_consumption_cost  optimized_cost    savings
+0 2025-03-15       0.09525         0.014981            1400.000000                 95.25      133.350000 -38.100000
+1 2025-03-16       0.08070              NaN             933.333333                 80.70       75.320000   5.380000
+2 2025-03-17       0.09350              NaN             933.333333                 93.50       87.266667   6.233333
+3 2025-03-18       0.10042              NaN             933.333333                100.42       93.725333   6.694667
+4 2025-03-19       0.10644              NaN             933.333333                106.44       99.344000   7.096000
+2025-06-01 09:53:08,085 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:53:08,085 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:53:08,086 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:53:08,106 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:53:09,022 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:53:09,023 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:53:54,465 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:53:54,466 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:53:54,466 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:53:54,483 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:53:54,484 - CostSavingsAnalyzer - INFO - 
+First few rows of the data:
+2025-06-01 09:53:54,494 - CostSavingsAnalyzer - INFO -     Timestamp  Predicted_1d_ahead  Predicted_2d_ahead  Predicted_3d_ahead  Predicted_4d_ahead  Predicted_5d_ahead  Predicted_6d_ahead  Predicted_7d_ahead   Actual
+0  2025-03-15            0.014981                 NaN                 NaN                 NaN                 NaN                 NaN                 NaN  0.09525
+1  2025-03-16                 NaN           -0.007833                 NaN                 NaN                 NaN                 NaN                 NaN  0.08070
+2  2025-03-17                 NaN                 NaN            0.012285                 NaN                 NaN                 NaN                 NaN  0.09350
+3  2025-03-18                 NaN                 NaN                 NaN           -0.014203                 NaN                 NaN                 NaN  0.10042
+4  2025-03-19                 NaN                 NaN                 NaN                 NaN           -0.025354                 NaN                 NaN  0.10644
+2025-06-01 09:53:54,524 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:53:54,526 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:53:54,526 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:53:54,533 - CostSavingsAnalyzer - INFO - Starting consumption optimization...
+2025-06-01 09:53:54,548 - CostSavingsAnalyzer - INFO - 
+Optimization Summary:
+2025-06-01 09:53:54,549 - CostSavingsAnalyzer - INFO - Low price days (<= 0.0795): 2 days
+2025-06-01 09:53:54,549 - CostSavingsAnalyzer - INFO - High price days (>= 0.1001): 3 days
+2025-06-01 09:53:54,550 - CostSavingsAnalyzer - INFO - Medium price days: 2 days
+2025-06-01 09:53:54,552 - CostSavingsAnalyzer - INFO - 
+Detailed Analysis:
+2025-06-01 09:53:54,552 - CostSavingsAnalyzer - INFO - 
+Price Statistics:
+2025-06-01 09:53:54,552 - CostSavingsAnalyzer - INFO - Mean actual price: 0.09
+2025-06-01 09:53:54,556 - CostSavingsAnalyzer - INFO - Min actual price: 0.02
+2025-06-01 09:53:54,558 - CostSavingsAnalyzer - INFO - Max actual price: 0.11
+2025-06-01 09:53:54,559 - CostSavingsAnalyzer - INFO - 
+Consumption Statistics:
+2025-06-01 09:53:54,559 - CostSavingsAnalyzer - INFO - Mean optimized consumption: 1000.00
+2025-06-01 09:53:54,559 - CostSavingsAnalyzer - INFO - Min optimized consumption: 823.53
+2025-06-01 09:53:54,560 - CostSavingsAnalyzer - INFO - Max optimized consumption: 1235.29
+2025-06-01 09:53:54,560 - CostSavingsAnalyzer - INFO - 
+Cost Statistics:
+2025-06-01 09:53:54,560 - CostSavingsAnalyzer - INFO - Total average consumption cost: 604.03
+2025-06-01 09:53:54,560 - CostSavingsAnalyzer - INFO - Total optimized cost: 581.20
+2025-06-01 09:53:54,562 - CostSavingsAnalyzer - INFO - Total savings: 22.83
+2025-06-01 09:53:54,563 - CostSavingsAnalyzer - INFO - 
+Daily Details (first 5 days):
+2025-06-01 09:53:54,568 - CostSavingsAnalyzer - INFO - 
+   timestamp  actual_price  predicted_price  optimized_consumption  avg_consumption_cost  optimized_cost    savings
+0 2025-03-15       0.09525         0.014981            1235.294118                 95.25      117.661765 -22.411765
+1 2025-03-16       0.08070              NaN            1029.411765                 80.70       83.073529  -2.373529
+2 2025-03-17       0.09350              NaN            1029.411765                 93.50       96.250000  -2.750000
+3 2025-03-18       0.10042              NaN             823.529412                100.42       82.698824  17.721176
+4 2025-03-19       0.10644              NaN             823.529412                106.44       87.656471  18.783529
+2025-06-01 09:53:54,568 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:53:54,568 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:53:54,570 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:53:54,588 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:53:55,892 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:53:55,892 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
+2025-06-01 09:55:02,376 - CostSavingsAnalyzer - INFO - Starting cost savings analysis...
+2025-06-01 09:55:02,377 - CostSavingsAnalyzer - INFO - Loading data from file: /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:55:02,377 - CostSavingsAnalyzer - INFO - Loading rolling predictions from /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/src/models/model_run_results/rolling_predictions.csv
+2025-06-01 09:55:02,532 - CostSavingsAnalyzer - INFO - Available columns: ['Timestamp', 'Predicted_1d_ahead', 'Predicted_2d_ahead', 'Predicted_3d_ahead', 'Predicted_4d_ahead', 'Predicted_5d_ahead', 'Predicted_6d_ahead', 'Predicted_7d_ahead', 'Actual']
+2025-06-01 09:55:02,532 - CostSavingsAnalyzer - INFO - 
+First few rows of the data:
+2025-06-01 09:55:02,538 - CostSavingsAnalyzer - INFO -     Timestamp  Predicted_1d_ahead  Predicted_2d_ahead  Predicted_3d_ahead  Predicted_4d_ahead  Predicted_5d_ahead  Predicted_6d_ahead  Predicted_7d_ahead   Actual
+0  2025-03-15            0.014981                 NaN                 NaN                 NaN                 NaN                 NaN                 NaN  0.09525
+1  2025-03-16                 NaN           -0.007833                 NaN                 NaN                 NaN                 NaN                 NaN  0.08070
+2  2025-03-17                 NaN                 NaN            0.012285                 NaN                 NaN                 NaN                 NaN  0.09350
+3  2025-03-18                 NaN                 NaN                 NaN           -0.014203                 NaN                 NaN                 NaN  0.10042
+4  2025-03-19                 NaN                 NaN                 NaN                 NaN           -0.025354                 NaN                 NaN  0.10644
+2025-06-01 09:55:02,550 - CostSavingsAnalyzer - INFO - Loaded data with shape: (7, 3)
+2025-06-01 09:55:02,554 - CostSavingsAnalyzer - INFO - Date range: 2025-03-15 00:00:00 to 2025-03-21 00:00:00
+2025-06-01 09:55:02,554 - CostSavingsAnalyzer - INFO - Starting cost savings calculation...
+2025-06-01 09:55:02,557 - CostSavingsAnalyzer - INFO - Starting consumption optimization...
+2025-06-01 09:55:02,573 - CostSavingsAnalyzer - INFO - 
+Optimization Summary:
+2025-06-01 09:55:02,573 - CostSavingsAnalyzer - INFO - Low price days (<= 0.0795): 2 days
+2025-06-01 09:55:02,574 - CostSavingsAnalyzer - INFO - High price days (>= 0.1001): 3 days
+2025-06-01 09:55:02,574 - CostSavingsAnalyzer - INFO - Medium price days: 2 days
+2025-06-01 09:55:02,576 - CostSavingsAnalyzer - INFO - 
+Detailed Analysis:
+2025-06-01 09:55:02,576 - CostSavingsAnalyzer - INFO - 
+Price Statistics:
+2025-06-01 09:55:02,576 - CostSavingsAnalyzer - INFO - Mean actual price: 0.09
+2025-06-01 09:55:02,576 - CostSavingsAnalyzer - INFO - Min actual price: 0.02
+2025-06-01 09:55:02,578 - CostSavingsAnalyzer - INFO - Max actual price: 0.11
+2025-06-01 09:55:02,578 - CostSavingsAnalyzer - INFO - 
+Consumption Statistics:
+2025-06-01 09:55:02,578 - CostSavingsAnalyzer - INFO - Mean optimized consumption: 1000.00
+2025-06-01 09:55:02,579 - CostSavingsAnalyzer - INFO - Min optimized consumption: 823.53
+2025-06-01 09:55:02,579 - CostSavingsAnalyzer - INFO - Max optimized consumption: 1235.29
+2025-06-01 09:55:02,579 - CostSavingsAnalyzer - INFO - 
+Cost Statistics:
+2025-06-01 09:55:02,579 - CostSavingsAnalyzer - INFO - Total average consumption cost: 604.03
+2025-06-01 09:55:02,580 - CostSavingsAnalyzer - INFO - Total optimized cost: 581.20
+2025-06-01 09:55:02,580 - CostSavingsAnalyzer - INFO - Total savings: 22.83
+2025-06-01 09:55:02,580 - CostSavingsAnalyzer - INFO - 
+Daily Details (first 5 days):
+2025-06-01 09:55:02,584 - CostSavingsAnalyzer - INFO - 
+   timestamp  actual_price  predicted_price  optimized_consumption  avg_consumption_cost  optimized_cost    savings
+0 2025-03-15       0.09525         0.014981            1235.294118                 95.25      117.661765 -22.411765
+1 2025-03-16       0.08070              NaN            1029.411765                 80.70       83.073529  -2.373529
+2 2025-03-17       0.09350              NaN            1029.411765                 93.50       96.250000  -2.750000
+3 2025-03-18       0.10042              NaN             823.529412                100.42       82.698824  17.721176
+4 2025-03-19       0.10644              NaN             823.529412                106.44       87.656471  18.783529
+2025-06-01 09:55:02,585 - CostSavingsAnalyzer - INFO - Creating savings visualization...
+2025-06-01 09:55:03,294 - CostSavingsAnalyzer - INFO - Plot saved to /Users/sgawde/work/eaisi-code/main-branch-01-jun/ENEXIS/workspaces/sandeep/warp/plots/cost_savings_analysis.png
+2025-06-01 09:55:34,145 - CostSavingsAnalyzer - INFO - Cost savings calculation completed
+2025-06-01 09:55:34,151 - CostSavingsAnalyzer - INFO - Starting savings analysis...
+2025-06-01 09:55:34,155 - CostSavingsAnalyzer - INFO - Savings analysis completed
+2025-06-01 09:55:34,166 - CostSavingsAnalyzer - INFO - Results saved to workspaces/sandeep/warp/results/cost_savings_analysis.csv
+2025-06-01 09:55:34,506 - CostSavingsAnalyzer - INFO - Plot saved to workspaces/sandeep/warp/results/cost_savings_plot.png
+2025-06-01 09:55:34,507 - CostSavingsAnalyzer - INFO - Creating savings visualization...
+2025-06-01 09:55:36,898 - CostSavingsAnalyzer - INFO - Cost savings analysis completed successfully
