@@ -186,7 +186,7 @@ else:
 model_run_end_time = time.time()
 execution_time = model_run_end_time - model_run_start_time
 
-comments = "Base model run on 31st May with 10 features"
+comments = "Base model run on 2 Jun"
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 results.append(["Prophet", rmse, comments, execution_time, model_run_timestamp])
 metrics_df = pd.DataFrame(results, columns=["Model", "RMSE", "Comments", "Execution Time", "Run At"])
