@@ -21,7 +21,7 @@ client = EntsoePandasClient(api_key=API_KEY)
 
 country_code = 'NL'
 neighboring_countries = ['GB', 'NO']
-year = 2025  # pas aan indien nodig
+year = 2024  # pas aan indien nodig
 
 # ─────────────────────────────────────────────
 # 🔁 Retry-logica voor API-calls
