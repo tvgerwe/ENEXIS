@@ -1,4 +1,5 @@
 # env - enexis-may-03-env-run
+
 import numpy as np
 import pandas as pd
 from scipy.stats import norm, gamma
@@ -37,7 +38,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger('warp-prophet-model')
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = PROJECT_ROOT / "src" / "config" / "config.json"
 
@@ -55,21 +55,14 @@ FEATURES = [
 ]
 target = 'Price'
 
-#'Load', 'shortwave_radiation', 'temperature_2m', 
-#    'Flow_NO', 'yearday_cos', 'Flow_GB', 
-#    'yearday_sin', 
-#    'hour_sin']
-    
-
-# wind_speed_10m
-
 # Initial training window
-base_start = "2025-01-01 00:00:00"
-base_end = "2025-03-14 23:00:00"
-base_run = "2025-03-15 00:00:00"
+base_start = "2023-01-01 00:00:00"
+base_end = "2024-12-31 23:00:00"
+base_run = "2025-01-01 00:00:00"
 
 rmse_results = []
 results = []
+experiment_runs = []  # Array to store experiment results
 
 ###### Base Model Run
 
@@ -162,6 +155,150 @@ for i in range(30):
 # Create results dataframe
 if rmse_results:
     rmse_df = pd.DataFrame(rmse_results)
+    
+    # Add experiment result
+    experiment_runs.append({
+        'Iteration': 'First',
+        'Model Configs': 'Prophet',
+        'Feature and Regressors': 'None',
+        'RMSE': f"{rmse_df['rmse'].mean():.4f}",
+        'StdDev RMSE': f"{rmse_df['rmse'].std():.4f}"
+    })
+
+    print(f"\n📊 OVERALL RMSE - Prophet Model")
+    print("=" * 80)
+    print(f"Successful runs: {rmse_df['rmse'].notna().sum()}/30")
+
+    print(rmse_df[['iteration', 'run_date', 'valid_predictions', 'rmse']].round(2).to_string(index=False))
+
+    print(f"\n📈 SUMMARY STATISTICS")
+    print("-" * 40)
+    print(rmse_df['rmse'].describe().round(2))
+
+    print(f"\n📊 AVERAGE OVERALL RMSE")
+    print("-" * 40)
+    print(f"Mean RMSE: {rmse_df['rmse'].mean():.4f}")
+    print(f"Stddev RMSE: {rmse_df['rmse'].std():.4f}")
+
+else:
+    print("❌ No runs completed successfully")
+
+model_run_end_time = time.time()
+execution_time = model_run_end_time - model_run_start_time
+
+comments = "Base model run on 2 Jun"
+model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+results.append(["Prophet", rmse, comments, execution_time, model_run_timestamp])
+metrics_df = pd.DataFrame(results, columns=["Model", "RMSE", "Comments", "Execution Time", "Run At"])
+
+model_results_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "warp-prophet-model-results.csv" 
+
+######## Top 6 Features
+
+print("🔍 Testing Prophet Model Top 6 features - RMSE per forecast day")
+print("=" * 60)
+
+TOP_6_FEATURES = [
+    'Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO'
+]
+
+model_run_start_time = time.time()
+
+for i in range(30):
+    start = pd.Timestamp(base_start) + pd.Timedelta(days=i)
+    end = pd.Timestamp(base_end) + pd.Timedelta(days=i)
+    run_date = pd.Timestamp(base_run) + pd.Timedelta(days=i)
+
+    try:
+        df = build_training_set(
+            train_start=start.strftime("%Y-%m-%d %H:%M:%S"),
+            train_end=end.strftime("%Y-%m-%d %H:%M:%S"),
+            run_date=run_date.strftime("%Y-%m-%d %H:%M:%S")
+        )
+
+        if df is None or df.empty:
+            print(f"Day {i+1}: ❌ No training data returned")
+            continue
+
+        df['target_datetime'] = pd.to_datetime(df['target_datetime'], utc=True)
+        df = df.sort_values('target_datetime')
+
+        run_date_utc = run_date.tz_localize("UTC")
+
+        # Split into training and testing sets
+        train_data = df[df['target_datetime'] <= run_date_utc]
+        test_data = df[df['target_datetime'] > run_date_utc]
+
+        # Drop any missing data in training and test
+        train_data = train_data.dropna(subset=['target_datetime', target] + TOP_6_FEATURES)
+        test_data = test_data.dropna(subset=['target_datetime', target] + TOP_6_FEATURES)
+
+        if test_data.empty or train_data.empty:
+            print(f"Day {i+1}: ❌ Not enough data for training or testing")
+            continue
+
+        # Prepare data for Prophet
+        prophet_train = train_data.rename(columns={'target_datetime': 'ds', target: 'y'})[['ds', 'y'] + TOP_6_FEATURES]
+        prophet_train['ds'] = prophet_train['ds'].dt.tz_localize(None)
+        prophet_test = test_data.rename(columns={'target_datetime': 'ds', target: 'y'})[['ds', 'y'] + TOP_6_FEATURES]
+        prophet_test['ds'] = prophet_test['ds'].dt.tz_localize(None)
+
+        # Train Prophet model with extra regressors
+        model = Prophet(daily_seasonality=True, yearly_seasonality=True, weekly_seasonality=True)
+        for reg in TOP_6_FEATURES:
+            model.add_regressor(reg)
+        model.fit(prophet_train)
+
+        # Forecast for the test period
+        future = prophet_test[['ds'] + TOP_6_FEATURES]
+        forecast = model.predict(future)
+        y_pred = forecast['yhat'].values
+        y_test = prophet_test['y'].values
+
+        # Sla de eerste 24 uur over
+        if len(y_pred) > 24:
+            y_pred = y_pred[24:]
+            y_test = y_test[24:]
+        else:
+            print("Niet genoeg testdata na lag van 24 uur.")
+            rmse = np.nan
+            rmse_results.append({
+                'iteration': i + 1,
+                'run_date': run_date.strftime('%Y-%m-%d'),
+                'valid_predictions': 0,
+                'rmse': rmse
+            })
+            continue
+
+        if len(y_pred) > 0:
+            rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+        else:
+            rmse = np.nan
+
+        rmse_results.append({
+            'iteration': i + 1,
+            'run_date': run_date.strftime('%Y-%m-%d'),
+            'valid_predictions': len(y_pred),
+            'rmse': rmse
+        })
+
+        print(f"Day {i+1}: ✅ {len(y_pred)} test rows, Run: {run_date.strftime('%m-%d')}")
+
+    except Exception as e:
+        print(f"Day {i+1}: ❌ Error: {e}")
+
+# Create results dataframe
+if rmse_results:
+    rmse_df = pd.DataFrame(rmse_results)
+    
+    # Add experiment result
+    experiment_runs.append({
+        'Iteration': 'Fifth',
+        'Model Configs': 'Prophet',
+        'Feature and Regressors': 'Top 6 Corr Features',
+        'RMSE': f"{rmse_df['rmse'].mean():.4f}",
+        'StdDev RMSE': f"{rmse_df['rmse'].std():.4f}"
+    })
 
     print(f"\n📊 OVERALL RMSE - Prophet Model")
     print("=" * 80)
@@ -288,6 +425,15 @@ for i in range(30):
 # Create results dataframe
 if rmse_results:
     rmse_df = pd.DataFrame(rmse_results)
+    
+    # Add experiment result
+    experiment_runs.append({
+        'Iteration': 'Second',
+        'Model Configs': 'Prophet',
+        'Feature and Regressors': 'Time Columns',
+        'RMSE': f"{rmse_df['rmse'].mean():.4f}",
+        'StdDev RMSE': f"{rmse_df['rmse'].std():.4f}"
+    })
 
     print(f"\n📊 OVERALL RMSE - Prophet Model")
     print("=" * 80)
@@ -410,6 +556,15 @@ for i in range(30):
 # Create results dataframe
 if rmse_results:
     rmse_df = pd.DataFrame(rmse_results)
+    
+    # Add experiment result
+    experiment_runs.append({
+        'Iteration': 'Third',
+        'Model Configs': 'Prophet',
+        'Feature and Regressors': 'All Corr Features',
+        'RMSE': f"{rmse_df['rmse'].mean():.4f}",
+        'StdDev RMSE': f"{rmse_df['rmse'].std():.4f}"
+    })
 
     print(f"\n📊 OVERALL RMSE - Prophet Model")
     print("=" * 80)
@@ -432,14 +587,12 @@ else:
 model_run_end_time = time.time()
 execution_time = model_run_end_time - model_run_start_time
 
-comments = "Base model run on 31st May with all features"
+comments = "Base model run on 31st May with rolling df"
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 results.append(["Prophet", rmse, comments, execution_time, model_run_timestamp])
 metrics_df = pd.DataFrame(results, columns=["Model", "RMSE", "Comments", "Execution Time", "Run At"])
 
 model_results_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "warp-prophet-model-results.csv" 
-
-
 
 ######## Top 10 Features
 
@@ -450,7 +603,6 @@ TOP_10_FEATURES = [
     'Load', 'shortwave_radiation', 'temperature_2m', 'direct_normal_irradiance',
     'diffuse_radiation', 'Flow_NO', 'yearday_cos', 'Flow_GB', 'month', 'is_dst'
 ]
-
 
 model_run_start_time = time.time()
 
@@ -540,6 +692,15 @@ for i in range(30):
 # Create results dataframe
 if rmse_results:
     rmse_df = pd.DataFrame(rmse_results)
+    
+    # Add experiment result
+    experiment_runs.append({
+        'Iteration': 'Fourth',
+        'Model Configs': 'Prophet',
+        'Feature and Regressors': 'Top 10 Corr Features',
+        'RMSE': f"{rmse_df['rmse'].mean():.4f}",
+        'StdDev RMSE': f"{rmse_df['rmse'].std():.4f}"
+    })
 
     print(f"\n📊 OVERALL RMSE - Prophet Model")
     print("=" * 80)
@@ -563,132 +724,6 @@ model_run_end_time = time.time()
 execution_time = model_run_end_time - model_run_start_time
 
 comments = "Base model run on 31st May with 10 features"
-model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-results.append(["Prophet", rmse, comments, execution_time, model_run_timestamp])
-metrics_df = pd.DataFrame(results, columns=["Model", "RMSE", "Comments", "Execution Time", "Run At"])
-
-model_results_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "warp-prophet-model-results.csv" 
-
-######## Top 6 Features
-
-print("🔍 Testing Prophet Model Top 6 features - RMSE per forecast day")
-print("=" * 60)
-
-TOP_6_FEATURES = [
-    'Load','shortwave_radiation','temperature_2m','direct_normal_irradiance','diffuse_radiation','Flow_NO'
-]
-
-model_run_start_time = time.time()
-
-for i in range(30):
-    start = pd.Timestamp(base_start) + pd.Timedelta(days=i)
-    end = pd.Timestamp(base_end) + pd.Timedelta(days=i)
-    run_date = pd.Timestamp(base_run) + pd.Timedelta(days=i)
-
-    try:
-        df = build_training_set(
-            train_start=start.strftime("%Y-%m-%d %H:%M:%S"),
-            train_end=end.strftime("%Y-%m-%d %H:%M:%S"),
-            run_date=run_date.strftime("%Y-%m-%d %H:%M:%S")
-        )
-
-        if df is None or df.empty:
-            print(f"Day {i+1}: ❌ No training data returned")
-            continue
-
-        df['target_datetime'] = pd.to_datetime(df['target_datetime'], utc=True)
-        df = df.sort_values('target_datetime')
-
-        run_date_utc = run_date.tz_localize("UTC")
-
-        # Split into training and testing sets
-        train_data = df[df['target_datetime'] <= run_date_utc]
-        test_data = df[df['target_datetime'] > run_date_utc]
-
-        # Drop any missing data in training and test
-        train_data = train_data.dropna(subset=['target_datetime', target] + TOP_6_FEATURES)
-        test_data = test_data.dropna(subset=['target_datetime', target] + TOP_6_FEATURES)
-
-        if test_data.empty or train_data.empty:
-            print(f"Day {i+1}: ❌ Not enough data for training or testing")
-            continue
-
-        # Prepare data for Prophet
-        prophet_train = train_data.rename(columns={'target_datetime': 'ds', target: 'y'})[['ds', 'y'] + TOP_6_FEATURES]
-        prophet_train['ds'] = prophet_train['ds'].dt.tz_localize(None)
-        prophet_test = test_data.rename(columns={'target_datetime': 'ds', target: 'y'})[['ds', 'y'] + TOP_6_FEATURES]
-        prophet_test['ds'] = prophet_test['ds'].dt.tz_localize(None)
-
-        # Train Prophet model with extra regressors
-        model = Prophet(daily_seasonality=True, yearly_seasonality=True, weekly_seasonality=True)
-        for reg in TOP_6_FEATURES:
-            model.add_regressor(reg)
-        model.fit(prophet_train)
-
-        # Forecast for the test period
-        future = prophet_test[['ds'] + TOP_6_FEATURES]
-        forecast = model.predict(future)
-        y_pred = forecast['yhat'].values
-        y_test = prophet_test['y'].values
-
-        # Sla de eerste 24 uur over
-        if len(y_pred) > 24:
-            y_pred = y_pred[24:]
-            y_test = y_test[24:]
-        else:
-            print("Niet genoeg testdata na lag van 24 uur.")
-            rmse = np.nan
-            rmse_results.append({
-                'iteration': i + 1,
-                'run_date': run_date.strftime('%Y-%m-%d'),
-                'valid_predictions': 0,
-                'rmse': rmse
-            })
-            continue
-
-        if len(y_pred) > 0:
-            rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-        else:
-            rmse = np.nan
-
-        rmse_results.append({
-            'iteration': i + 1,
-            'run_date': run_date.strftime('%Y-%m-%d'),
-            'valid_predictions': len(y_pred),
-            'rmse': rmse
-        })
-
-        print(f"Day {i+1}: ✅ {len(y_pred)} test rows, Run: {run_date.strftime('%m-%d')}")
-
-    except Exception as e:
-        print(f"Day {i+1}: ❌ Error: {e}")
-
-# Create results dataframe
-if rmse_results:
-    rmse_df = pd.DataFrame(rmse_results)
-
-    print(f"\n📊 OVERALL RMSE - Prophet Model")
-    print("=" * 80)
-    print(f"Successful runs: {rmse_df['rmse'].notna().sum()}/30")
-
-    print(rmse_df[['iteration', 'run_date', 'valid_predictions', 'rmse']].round(2).to_string(index=False))
-
-    print(f"\n📈 SUMMARY STATISTICS")
-    print("-" * 40)
-    print(rmse_df['rmse'].describe().round(2))
-
-    print(f"\n📊 AVERAGE OVERALL RMSE")
-    print("-" * 40)
-    print(f"Mean RMSE: {rmse_df['rmse'].mean():.4f}")
-    print(f"Stddev RMSE: {rmse_df['rmse'].std():.4f}")
-
-else:
-    print("❌ No runs completed successfully")
-
-model_run_end_time = time.time()
-execution_time = model_run_end_time - model_run_start_time
-
-comments = "Base model run on 31st May with rolling df"
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 results.append(["Prophet", rmse, comments, execution_time, model_run_timestamp])
 metrics_df = pd.DataFrame(results, columns=["Model", "RMSE", "Comments", "Execution Time", "Run At"])
@@ -792,6 +827,15 @@ for i in range(30):
 # Create results dataframe
 if rmse_results:
     rmse_df = pd.DataFrame(rmse_results)
+    
+    # Add experiment result
+    experiment_runs.append({
+        'Iteration': 'Sixth',
+        'Model Configs': 'Prophet',
+        'Feature and Regressors': 'Top 4 Corr Features',
+        'RMSE': f"{rmse_df['rmse'].mean():.4f}",
+        'StdDev RMSE': f"{rmse_df['rmse'].std():.4f}"
+    })
 
     print(f"\n📊 OVERALL RMSE - Prophet Model")
     print("=" * 80)
@@ -821,6 +865,15 @@ metrics_df = pd.DataFrame(results, columns=["Model", "RMSE", "Comments", "Execut
 
 model_results_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "warp-prophet-model-results.csv" 
 
+# Save experiment results
+experiment_df = pd.DataFrame(experiment_runs)
+experiment_results_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "experiment_results.csv"
+experiment_df.to_csv(experiment_results_path, index=False)
+
+# Print the experiment results in a formatted table
+print("\n📊 EXPERIMENT RESULTS")
+print("=" * 80)
+print(experiment_df.to_string(index=False))
 
 # -------------------- SAVE MODEL --------------------
 
@@ -1054,17 +1107,36 @@ if rmse_results:
     print(f"Mean RMSE: {rmse_df['rmse'].mean():.4f}")
     print(f"Stddev RMSE: {rmse_df['rmse'].std():.4f}")
 
+    experiment_runs.append({
+        'Iteration': 'Seventh',
+        'Model Configs': 'Prophet',
+        'Feature and Regressors': 'Best Param',
+        'RMSE': f"{rmse_df['rmse'].mean():.4f}",
+        'StdDev RMSE': f"{rmse_df['rmse'].std():.4f}"
+    })
+
 else:
     print("❌ No runs completed successfully")
 
 model_run_end_time = time.time()
 execution_time = model_run_end_time - model_run_start_time
 
-comments = "Base model run on 31st May with all features and best hyperparameters"
+comments = "Base model run on 1 Jun with with 2 year of tran data and 3 month of test data"
 model_run_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 results.append(["Prophet", rmse, comments, execution_time, model_run_timestamp])
 metrics_df = pd.DataFrame(results, columns=["Model", "RMSE", "Comments", "Execution Time", "Run At"])
 
 model_results_file_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "warp-prophet-model-results.csv" 
+
+# Save experiment results
+experiment_df = pd.DataFrame(experiment_runs)
+experiment_results_path = PROJECT_ROOT / "src" / "models" / "model_run_results" / "experiment_results.csv"
+experiment_df.to_csv(experiment_results_path, index=False)
+
+# Print the experiment results in a formatted table
+print("\n📊 EXPERIMENT RESULTS")
+print("=" * 80)
+print(experiment_df.to_string(index=False))
+
 
 
