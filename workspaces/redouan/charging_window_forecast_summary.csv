@@ -1,0 +1,15 @@
+Metric,Value
+Total Days Analyzed,136.0
+Successful Forecasts,111.0
+Success Rate (%),81.62
+Mean Accuracy (%),33.56
+Median Accuracy (%),0.0
+Std Deviation (%),44.27
+Min Accuracy (%),0.0
+Max Accuracy (%),100.0
+Perfect Matches (100%),26.0
+Good Performance (≥75%),39.0
+Moderate Performance (≥50%),42.0
+Poor Performance (≥25%),42.0
+Very Poor Performance (<25%),69.0
+Zero Matches (0%),69.0
