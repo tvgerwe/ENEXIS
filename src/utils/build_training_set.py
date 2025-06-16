@@ -373,8 +373,8 @@ if __name__ == "__main__":
     # Test with your parameters - using a run_date that exists in your DB
     result = build_training_set(
         train_start="2025-01-01 00:00:00",
-        train_end="2025-03-14 23:00:00",  # End day before your first prediction run_date
-        run_date="2025-03-15 00:00:00"   # This will be normalized to 2025-05-14 00:00:00 for DB lookup
+        train_end="2025-03-14 23:00:00",
+        run_date="2025-03-15 00:00:00"   
     )
     
     if result is not None:
